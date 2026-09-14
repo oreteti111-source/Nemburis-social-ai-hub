@@ -1,6 +1,7 @@
 # NEMBURIS SOCIAL AI HUB — FULL EDITION
 
-A phone-first, self-hostable social-media growth and lead-management platform for NEMBURIS SAFARI TOURS.<link rel="stylesheet" href="style.css">
+A phone-first, self-hostable social-media growth and lead-management platform for NEMBURIS SAFARI TOURS.
+<link rel="stylesheet" href="style.css">
 
 ## Included
 - Responsive PWA dashboard
@@ -12,8 +13,10 @@ A phone-first, self-hostable social-media growth and lead-management platform fo
 - Public inquiry form
 - Lead/CRM pipeline
 - Follow-up tasks
-- Analytics dashboard<script src="script.js"></script>
-- Content library<script src="script.js"></script>
+- Analytics dashboard
+- <script src="script.js"></script>
+- Content library
+- <script src="script.js"></script>
 - Social account connection architecture
 - Official-API connector configuration screen
 - SQLite database
