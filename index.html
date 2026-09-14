@@ -90,7 +90,20 @@ required style="padding:12px;width:90%;height:100px;margin:6px 0"></textarea>
 </footer>
 
 <script>
-function sendBooking(){
+<script>
+function sendBooking() {
+  var name = document.getElementById("name").value;
+  var email = document.getElementById("email").value;
+  var message = document.getElementById("message").value;
+
+  var text = "Hello Nemburis Safari Tours.%0A%0A" +
+             "Name: " + encodeURIComponent(name) + "%0A" +
+             "Email: " + encodeURIComponent(email) + "%0A" +
+             "Enquiry: " + encodeURIComponent(message);
+
+  window.location.href = "https://wa.me/255767809050?text=" + text;
+}
+</script>
 let name=document.getElementById("name").value;
 let message=document.getElementById("message").value;
 let text="Hello Nemburis Safari Tours. My name is "+name+
