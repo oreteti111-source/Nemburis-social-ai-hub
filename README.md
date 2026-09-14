@@ -1,6 +1,6 @@
 # NEMBURIS SOCIAL AI HUB — FULL EDITION
 
-A phone-first, self-hostable social-media growth and lead-management platform for NEMBURIS SAFARI TOURS.
+A phone-first, self-hostable social-media growth and lead-management platform for NEMBURIS SAFARI TOURS.<link rel="stylesheet" href="style.css">
 
 ## Included
 - Responsive PWA dashboard
