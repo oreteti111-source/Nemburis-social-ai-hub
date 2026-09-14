@@ -72,20 +72,63 @@ combining wildlife, culture, adventure and the beauty of the coast.
 <h2>Plan Your Tanzania Adventure</h2>
 <p>Tell us what you would like to experience in Tanzania.</p>
 
-<form id="bookingForm">
-<input id="name" placeholder="Your Name" required>
-<input id="email" type="email" placeholder="Your Email" required>
-<textarea id="message" placeholder="Tell us about your safari" required></textarea>
-<button type="submit" class="btn">Send Enquiry</button>
-</form>
+<<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.querySelector("form");
 
-<script>
-<form id="bookingForm">
-<input id="name" placeholder="Your Name" required>
-<input id="email" type="email" placeholder="Your Email" required>
-<textarea id="message" placeholder="Tell us about your safari" required></textarea>
-<button type="submit" class="btn">Send Enquiry</button>
-</form>
+  if (!form) return;
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const fields = form.querySelectorAll("input, textarea, select");
+
+    let message = "New Inquiry%0A%0A";
+
+    fields.forEach(function (field) {
+      if (field.value.trim() !== "") {
+        const label = field.getAttribute("name") || field.getAttribute("placeholder") || "Information";
+        message += encodeURIComponent(label) + ": " +
+                   encodeURIComponent(field.value) + "%0A";
+      }
+    });
+
+    window.open(
+      "https://wa.me/255YOURNUMBER?text=" + message,
+      "_blank"
+    );
+  });
+});
+</script>
+
+<<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.querySelector("form");
+
+  if (!form) return;
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const fields = form.querySelectorAll("input, textarea, select");
+
+    let message = "New Inquiry%0A%0A";
+
+    fields.forEach(function (field) {
+      if (field.value.trim() !== "") {
+        const label = field.getAttribute("name") || field.getAttribute("placeholder") || "Information";
+        message += encodeURIComponent(label) + ": " +
+                   encodeURIComponent(field.value) + "%0A";
+      }
+    });
+
+    window.open(
+      "https://wa.me/255YOURNUMBER?text=" + message,
+      "_blank"
+    );
+  });
+});
+</script>
   var whatsapp =
     "https://wa.me/255767809050?text=" +
     encodeURIComponent(
