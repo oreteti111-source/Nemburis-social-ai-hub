@@ -116,17 +116,25 @@ required style="padding:12px;width:90%;height:100px;margin:6px 0"></textarea>
 
 <script>
 <script>
-function sendBooking() {
-  var name = document.getElementById("name").value;
-  var email = document.getElementById("email").value;
-  var message = document.getElementById("message").value;
+function submitBooking(event) {
+  event.preventDefault();
 
-  var text = "Hello Nemburis Safari Tours.%0A%0A" +
-             "Name: " + encodeURIComponent(name) + "%0A" +
-             "Email: " + encodeURIComponent(email) + "%0A" +
-             "Enquiry: " + encodeURIComponent(message);
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const message = document.getElementById("message").value;
 
-  window.location.href = "https://wa.me/255767809050?text=" + text;
+  const text =
+    "New Inquiry%0A%0A" +
+    "Name: " + encodeURIComponent(name) + "%0A" +
+    "Email: " + encodeURIComponent(email) + "%0A" +
+    "Message: " + encodeURIComponent(message);
+
+  window.open(
+    "https://wa.me/255YOURNUMBER?text=" + text,
+    "_blank"
+  );
+
+  return false;
 }
 </script>
 let name=document.getElementById("name").value;
