@@ -72,7 +72,33 @@ combining wildlife, culture, adventure and the beauty of the coast.
 <h2>Plan Your Tanzania Adventure</h2>
 <p>Tell us what you would like to experience in Tanzania.</p>
 
-<form onsubmit="sendBooking();return false;">
+<form id="bookingForm">
+<input id="name" placeholder="Your Name" required>
+<input id="email" type="email" placeholder="Your Email" required>
+<textarea id="message" placeholder="Tell us about your safari" required></textarea>
+<button type="submit" class="btn">Send Enquiry</button>
+</form>
+
+<script>
+document.getElementById("bookingForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  var name = document.getElementById("name").value;
+  var email = document.getElementById("email").value;
+  var message = document.getElementById("message").value;
+
+  var whatsapp =
+    "https://wa.me/255767809050?text=" +
+    encodeURIComponent(
+      "Hello Nemburis Safari Tours.\n\n" +
+      "Name: " + name + "\n" +
+      "Email: " + email + "\n" +
+      "Enquiry: " + message
+    );
+
+  window.location.href = whatsapp;
+});
+</script>
 <input id="name" placeholder="Your Name" required
 style="padding:12px;width:90%;margin:6px 0">
 <input id="email" type="email" placeholder="Your Email" required
