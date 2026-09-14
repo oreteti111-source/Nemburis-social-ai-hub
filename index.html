@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEMBURIS SAFARI HUB</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f5f1e8;color:#222}
+header{background:#173d2a;color:white;padding:25px;text-align:center}
+h1{margin:0;font-size:30px}
+nav{background:#102d20;padding:12px;text-align:center}
+nav a{color:white;margin:0 10px;text-decoration:none}
+.hero{padding:60px 20px;text-align:center;background:#d9c7a0}
+.hero h2{font-size:36px}
+.btn{display:inline-block;padding:14px 24px;background:#173d2a;color:white;text-decoration:none;border-radius:6px}
+section{padding:35px 20px;max-width:900px;margin:auto}
+.card{background:white;padding:20px;margin:15px 0;border-radius:8px}
+footer{background:#173d2a;color:white;text-align:center;padding:25px}
+</style>
+</head>
+<body>
+
+<header>
+<h1>NEMBURIS SAFARI HUB</h1>
+<p>Safari • Culture • Beach • Travel</p>
+</header>
+
+<nav>
+<a href="#tours">Tours</a>
+<a href="#about">About</a>
+<a href="#contact">Contact</a>
+</nav>
+
+<section class="hero">
+<h2>Discover Tanzania</h2>
+<p>Experience unforgettable safaris, culture and beach adventures.</p>
+<a class="btn" href="#tours">Explore Tours</a>
+</section><section id="tours">
+<h2>Tanzania Safari Tours</h2>
+
+<div class="card">
+<h3>Serengeti Safari</h3>
+<p>Discover the endless plains, wildlife and the Great Migration.</p>
+<a class="btn" href="#contact">Enquire Now</a>
+</div>
+
+<div class="card">
+<h3>Ngorongoro Crater</h3>
+<p>Explore one of Tanzania's most spectacular wildlife destinations.</p>
+<a class="btn" href="#contact">Enquire Now</a>
+</div>
+
+<div class="card">
+<h3>Tarangire Safari</h3>
+<p>Experience elephants, baobabs and incredible African landscapes.</p>
+<a class="btn" href="#contact">Enquire Now</a>
+</div>
+
+<div class="card">
+<h3>Zanzibar Beach</h3>
+<p>Relax on beautiful beaches and experience the culture of Zanzibar.</p>
+<a class="btn" href="#contact">Enquire Now</a>
+</div>
+</section>
+
+<section id="about">
+<h2>About Nemburis Safari Tours</h2>
+<p>
+Nemburis Safari Tours creates memorable Tanzania experiences,
+combining wildlife, culture, adventure and the beauty of the coast.
+</p><section id="contact">
+<h2>Plan Your Tanzania Adventure</h2>
+<p>Tell us what you would like to experience in Tanzania.</p>
+
+<form onsubmit="sendBooking();return false;">
+<input id="name" placeholder="Your Name" required
+style="padding:12px;width:90%;margin:6px 0">
+<input id="email" type="email" placeholder="Your Email" required
+style="padding:12px;width:90%;margin:6px 0">
+<textarea id="message" placeholder="Tell us about your safari"
+required style="padding:12px;width:90%;height:100px;margin:6px 0"></textarea>
+<br>
+<button class="btn" type="submit">Send Enquiry</button>
+</form>
+</section>
+
+<footer>
+<p>NEMBURIS SAFARI TOURS</p>
+<p>Tanzania • Safari • Culture • Beach</p>
+</footer>
+
+<script>
+function sendBooking(){
+let name=document.getElementById("name").value;
+let message=document.getElementById("message").value;
+let text="Hello Nemburis Safari Tours. My name is "+name+
+". I would like to enquire about: "+message;
+window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank");
+}
+</script>
+
+</body>
+</html>
+</section>
