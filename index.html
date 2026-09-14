@@ -80,13 +80,12 @@ combining wildlife, culture, adventure and the beauty of the coast.
 </form>
 
 <script>
-document.getElementById("bookingForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  var name = document.getElementById("name").value;
-  var email = document.getElementById("email").value;
-  var message = document.getElementById("message").value;
-
+<form id="bookingForm">
+<input id="name" placeholder="Your Name" required>
+<input id="email" type="email" placeholder="Your Email" required>
+<textarea id="message" placeholder="Tell us about your safari" required></textarea>
+<button type="submit" class="btn">Send Enquiry</button>
+</form>
   var whatsapp =
     "https://wa.me/255767809050?text=" +
     encodeURIComponent(
