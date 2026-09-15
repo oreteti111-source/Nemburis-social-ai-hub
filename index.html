@@ -645,7 +645,87 @@ function createMarketingContent() {
     "#TanzaniaSafari #Serengeti #AfricanSafari #NemburisSafariTours #VisitTanzania</p>";
 }
 </script>
+<section id="marketing-planner" style="padding:40px 20px;text-align:center;">
 
+  <h2>📅 NEMBURIS MARKETING PLANNER</h2>
+
+  <p>Plan your Facebook, Instagram, TikTok and YouTube content.</p>
+
+  <div class="tour-card">
+
+    <h3>📝 Add Marketing Activity</h3>
+
+    <input
+      id="planTopic"
+      type="text"
+      placeholder="Content topic e.g. Serengeti Safari"
+      style="width:90%;padding:12px;margin:8px 0;"
+    >
+
+    <select
+      id="planPlatform"
+      style="width:90%;padding:12px;margin:8px 0;"
+    >
+      <option>Facebook</option>
+      <option>Instagram</option>
+      <option>TikTok</option>
+      <option>YouTube</option>
+    </select>
+
+    <input
+      id="planDate"
+      type="date"
+      style="width:90%;padding:12px;margin:8px 0;"
+    >
+
+    <br>
+
+    <button class="btn" onclick="addMarketingPlan()">
+      ➕ Add to Planner
+    </button>
+
+  </div>
+
+  <div class="tour-card">
+
+    <h3>📋 My Marketing Plan</h3>
+
+    <div id="marketingPlan">
+      Your planned activities will appear here.
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+
+function addMarketingPlan() {
+
+  let topic = document.getElementById("planTopic").value.trim();
+  let platform = document.getElementById("planPlatform").value;
+  let date = document.getElementById("planDate").value;
+  let planner = document.getElementById("marketingPlan");
+
+  if (topic === "" || date === "") {
+    planner.innerHTML = "<p>Please enter a topic and choose a date.</p>";
+    return;
+  }
+
+  planner.innerHTML +=
+    "<div style='padding:15px;margin:10px 0;background:#f5f5f5;border-radius:10px;'>" +
+    "<strong>📱 " + platform + "</strong><br>" +
+    "📝 " + topic + "<br>" +
+    "📅 " + date +
+    "</div>";
+
+  document.getElementById("planTopic").value = "";
+  document.getElementById("planDate").value = "";
+}
+
+</script>
+
+<footer>
 <footer>
 
 </body>
