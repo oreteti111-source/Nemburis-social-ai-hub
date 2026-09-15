@@ -131,9 +131,13 @@ required style="padding:12px;width:90%;height:100px;margin:6px 0"></textarea>
 <p>Tanzania • Safari • Culture • Beach</p>
 </footer>
 
+<footer>
+<p>NEMBURIS SAFARI TOURS</p>
+<p>Tanzania • Safari • Culture • Beach</p>
+</footer>
+
 <script>
-<script>
-function submitBooking(event) {
+document.querySelector("form").addEventListener("submit", function(event) {
   event.preventDefault();
 
   const name = document.getElementById("name").value;
@@ -141,26 +145,17 @@ function submitBooking(event) {
   const message = document.getElementById("message").value;
 
   const text =
-    "New Inquiry%0A%0A" +
+    "Hello Nemburis Safari Tours.%0A%0A" +
     "Name: " + encodeURIComponent(name) + "%0A" +
     "Email: " + encodeURIComponent(email) + "%0A" +
-    "Message: " + encodeURIComponent(message);
+    "Enquiry: " + encodeURIComponent(message);
 
-  window.open(
-    "https://wa.me/255YOURNUMBER?text=" + text,
-    "_blank"
-  );
-
-  return false;
-}
-</script>
-let name=document.getElementById("name").value;
-let message=document.getElementById("message").value;
-let text="Hello Nemburis Safari Tours. My name is "+name+
-". I would like to enquire about: "+message;
-window.open("https://wa.me/255767809050?text="+encodeURIComponent(text),"_blank");
+  window.location.href =
+    "https://wa.me/255767809050?text=" + text;
+});
 </script>
 
 </body>
 </html>
-</section>
+
+
