@@ -101,34 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-<<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.querySelector("form");
 
-  if (!form) return;
-
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    const fields = form.querySelectorAll("input, textarea, select");
-
-    let message = "New Inquiry%0A%0A";
-
-    fields.forEach(function (field) {
-      if (field.value.trim() !== "") {
-        const label = field.getAttribute("name") || field.getAttribute("placeholder") || "Information";
-        message += encodeURIComponent(label) + ": " +
-                   encodeURIComponent(field.value) + "%0A";
-      }
-    });
-
-    window.open(
-      "https://wa.me/255YOURNUMBER?text=" + message,
-      "_blank"
-    );
-  });
-});
-</script>
   var whatsapp =
     "https://wa.me/255767809050?text=" +
     encodeURIComponent(
@@ -140,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.location.href = whatsapp;
 });
+  
 </script>
 <input id="name" placeholder="Your Name" required
 style="padding:12px;width:90%;margin:6px 0">
