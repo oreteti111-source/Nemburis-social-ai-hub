@@ -3,45 +3,157 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>NEMBURIS SAFARI HUB</title>
+
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#f5f1e8;color:#222}
-header{background:#173d2a;color:white;padding:25px;text-align:center}
-h1{margin:0;font-size:34px;letter-spacing:1px}
-nav{background:#102d20;padding:12px;text-align:center}
-nav a{color:white;margin:0 10px;text-decoration:none}
-.hero{padding:60px 20px;text-align:center;background:#d9c7a0}
-.hero h2{font-size:42px;margin-bottom:15px}
-.btn{display:inline-block;padding:14px 24px;background:#173d2a;color:white;text-decoration:none;border-radius:6px}
-  .btn:hover{opacity:0.85;transform:translateY(-1px)}
-  .btn{transition:0.2s ease;font-weight:bold}
-section{padding:35px 20px;max-width:900px;margin:auto}
-.card{background:white;padding:25px;margin:20px 0;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.12)}
-  .card h3{color:#173d2a;font-size:24px;margin-top:0}
-.card p{line-height:1.6}
-  .card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,0.16)}
-.card{transition:0.2s ease}
-  .tour-card{background:white;padding:25px;margin:20px 0;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.12);transition:0.2s ease}
-.tour-card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,0.16)}
-.tour-card h3{color:#173d2a;font-size:28px;margin-top:0}
-.tour-card p{line-height:1.6}
-.tour-card li{margin:8px 0}
-footer{background:#173d2a;color:white;text-align:center;padding:25px}
-  @media (max-width:600px){
-  .hero h2{font-size:28px}
-  nav a{display:inline-block;margin:6px}
-  .card{padding:20px}
-  .btn{padding:12px 18px}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f1e8;
+  color:#222;
+}
+
+header{
+  background:#173d2a;
+  color:white;
+  padding:25px;
+  text-align:center;
+}
+
+h1{
+  margin:0;
+  font-size:34px;
+  letter-spacing:1px;
+}
+
+nav{
+  background:#102d20;
+  padding:12px;
+  text-align:center;
+}
+
+nav a{
+  color:white;
+  margin:0 10px;
+  text-decoration:none;
+}
+
+.hero{
+  padding:60px 20px;
+  text-align:center;
+  background:#d9c7a0;
+}
+
+.hero h2{
+  font-size:42px;
+  margin-bottom:15px;
+}
+
+.btn{
+  display:inline-block;
+  padding:14px 24px;
+  background:#173d2a;
+  color:white;
+  text-decoration:none;
+  border-radius:6px;
+  border:none;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.2s ease;
+}
+
+.btn:hover{
+  opacity:0.85;
+  transform:translateY(-1px);
+}
+
+section{
+  padding:35px 20px;
+  max-width:900px;
+  margin:auto;
+}
+
+.card,
+.tour-card{
+  background:white;
+  padding:25px;
+  margin:20px 0;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.12);
+  transition:0.2s ease;
+}
+
+.card:hover,
+.tour-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.16);
+}
+
+.card h3,
+.tour-card h3{
+  color:#173d2a;
+  margin-top:0;
+}
+
+.tour-card h3{
+  font-size:28px;
+}
+
+.card p,
+.tour-card p{
+  line-height:1.6;
+}
+
+.tour-card li{
+  margin:8px 0;
+}
+
+footer{
+  background:#173d2a;
+  color:white;
+  text-align:center;
+  padding:25px;
+}
+
+@media (max-width:600px){
+
+  .hero h2{
+    font-size:28px;
   }
+
+  nav a{
+    display:inline-block;
+    margin:6px;
+  }
+
+  .card,
+  .tour-card{
+    padding:20px;
+  }
+
+  .btn{
+    padding:12px 18px;
+  }
+}
 </style>
+
 </head>
+
 <body>
 
 <header>
 <h1>NEMBURIS SAFARI HUB</h1>
+
 <p>Safari • Culture • Beach • Travel</p>
-<p>Luxury Tanzania Safaris • Authentic Experiences • Personalized Journeys</p>
-<p>Grow Your Tanzania Safari Business • Get More Clients • Manage Your Marketing</p>
+
+<p>
+Luxury Tanzania Safaris • Authentic Experiences • Personalized Journeys
+</p>
+
+<p>
+Grow Your Tanzania Safari Business • Get More Clients • Manage Your Marketing
+</p>
 </header>
 
 <nav>
@@ -52,21 +164,51 @@ footer{background:#173d2a;color:white;text-align:center;padding:25px}
 </nav>
 
 <section class="hero">
-<h2>Discover Tanzania in Luxury</h2>
-<p>Experience Tanzania through unforgettable safaris, authentic culture, breathtaking landscapes and beautiful beaches.</p>
-<a class="btn" href="#tours">Explore Tours</a>
-</section><section id="tours">
-<h2>Tanzania Safari Tours</h2>
-  <div class="tour-card">
-  <h3>Serengeti Safari</h3>
-    <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=80"
-     alt="Serengeti Safari"
-     style="width:100%;border-radius:10px;margin:15px 0;">
 
-  <p>
-    Experience the legendary Serengeti, home of the Great Migration,
-    incredible wildlife and unforgettable African landscapes.
-  </p>
+<h2>Discover Tanzania in Luxury</h2>
+
+<p>
+Experience Tanzania through unforgettable safaris,
+authentic culture, breathtaking landscapes and beautiful beaches.
+</p>
+
+<a class="btn" href="#tours">Explore Tours</a>
+
+</section>
+
+<section id="tours">
+
+<h2>Tanzania Safari Tours</h2>
+
+<div class="tour-card">
+
+<h3>Serengeti Safari</h3>
+
+<img
+src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=80"
+alt="Serengeti Safari"
+style="width:100%;border-radius:10px;margin:15px 0;"
+>
+
+<p>
+Experience the legendary Serengeti, home of the Great Migration,
+incredible wildlife and unforgettable African landscapes.
+</p>
+
+<p><strong>Duration:</strong> 3–7 Days</p>
+
+<a class="btn" href="#serengeti-details">
+View Safari Details
+</a>
+
+<a
+class="btn"
+href="https://wa.me/255767809050?text=Hello%20Nemburis%20Safari%20Tours%2C%20I%20am%20interested%20in%20a%20Serengeti%20Safari."
+target="_blank">
+Enquire on WhatsApp
+</a>
+
+</div>
 
   <p><strong>Highlights:</strong></p>
 
