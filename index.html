@@ -72,36 +72,6 @@ combining wildlife, culture, adventure and the beauty of the coast.
 <h2>Plan Your Tanzania Adventure</h2>
 <p>Tell us what you would like to experience in Tanzania.</p>
 
-<<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.querySelector("form");
-
-  if (!form) return;
-
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    const fields = form.querySelectorAll("input, textarea, select");
-
-    let message = "New Inquiry%0A%0A";
-
-    fields.forEach(function (field) {
-      if (field.value.trim() !== "") {
-        const label = field.getAttribute("name") || field.getAttribute("placeholder") || "Information";
-        message += encodeURIComponent(label) + ": " +
-                   encodeURIComponent(field.value) + "%0A";
-      }
-    });
-
-    window.open(
-      "https://wa.me/255YOURNUMBER?text=" + message,
-      "_blank"
-    );
-  });
-});
-</script>
-
-
   var whatsapp =
     "https://wa.me/255767809050?text=" +
     encodeURIComponent(
@@ -131,29 +101,6 @@ required style="padding:12px;width:90%;height:100px;margin:6px 0"></textarea>
 <p>Tanzania • Safari • Culture • Beach</p>
 </footer>
 
-<script>
-<script>
-function submitBooking(event) {
-  event.preventDefault();
-
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const message = document.getElementById("message").value;
-
-  const text =
-    "New Inquiry%0A%0A" +
-    "Name: " + encodeURIComponent(name) + "%0A" +
-    "Email: " + encodeURIComponent(email) + "%0A" +
-    "Message: " + encodeURIComponent(message);
-
-  window.open(
-    "https://wa.me/255YOURNUMBER?text=" + text,
-    "_blank"
-  );
-
-  return false;
-}
-</script>
 let name=document.getElementById("name").value;
 let message=document.getElementById("message").value;
 let text="Hello Nemburis Safari Tours. My name is "+name+
@@ -163,4 +110,3 @@ window.open("https://wa.me/255767809050?text="+encodeURIComponent(text),"_blank"
 
 </body>
 </html>
-</section>
