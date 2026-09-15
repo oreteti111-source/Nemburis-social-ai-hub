@@ -137,21 +137,22 @@ required style="padding:12px;width:90%;height:100px;margin:6px 0"></textarea>
 </footer>
 
 <script>
-document.querySelector("form").addEventListener("submit", function(event) {
-  event.preventDefault();
+document.getElementById("bookingForm").addEventListener("submit", function(e) {
+    e.preventDefault();
 
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const message = document.getElementById("message").value;
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let message = document.getElementById("message").value;
 
-  const text =
-    "Hello Nemburis Safari Tours.%0A%0A" +
-    "Name: " + encodeURIComponent(name) + "%0A" +
-    "Email: " + encodeURIComponent(email) + "%0A" +
-    "Enquiry: " + encodeURIComponent(message);
+    let whatsapp = "https://wa.me/255767809050?text=" +
+        encodeURIComponent(
+            "Hello Nemburis Safari Tours.\n\n" +
+            "Name: " + name + "\n" +
+            "Email: " + email + "\n" +
+            "Enquiry: " + message
+        );
 
-  window.location.href =
-    "https://wa.me/255767809050?text=" + text;
+    window.location.href = whatsapp;
 });
 </script>
 
