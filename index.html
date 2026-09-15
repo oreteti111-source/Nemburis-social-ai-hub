@@ -68,10 +68,37 @@ footer{background:#173d2a;color:white;text-align:center;padding:25px}
 <p>
 Nemburis Safari Tours creates memorable Tanzania experiences,
 combining wildlife, culture, adventure and the beauty of the coast.
-</p><section id="contact">
-<h2>Plan Your Tanzania Adventure</h2>
-<p>Tell us what you would like to experience in Tanzania.</p>
+<section>
+  <h2>Tell us what you would like to experience in Tanzania.</h2>
 
+  <form id="bookingForm">
+
+    <input
+      id="name"
+      type="text"
+      placeholder="Your Name"
+      required
+      style="padding:12px;width:90%;margin:6px 0">
+
+    <input
+      id="email"
+      type="email"
+      placeholder="Your Email"
+      required
+      style="padding:12px;width:90%;margin:6px 0">
+
+    <textarea
+      id="message"
+      placeholder="Tell us about your safari"
+      required
+      style="padding:12px;width:90%;height:100px;margin:6px 0"></textarea>
+
+    <br>
+
+    <button class="btn" type="submit">Send Enquiry</button>
+
+  </form>
+</section>
 <script>
 document.getElementById("bookingForm").addEventListener("submit", function(e) {
     e.preventDefault();
