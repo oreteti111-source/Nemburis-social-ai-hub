@@ -570,15 +570,83 @@ document.getElementById("bookingForm").addEventListener("submit", function(e) {
       into safari enquiries and bookings.
     </p>
   </div>
-  </section>
 
-<!-- PASTE CONTENT CREATOR CODE HERE -->
-  
+<section id="content-creator" style="padding:40px 20px;text-align:center;background:#f5f5f5;">
+
+  <h2>🤖 NEMBURIS AI CONTENT CREATOR</h2>
+
+  <p>Create powerful marketing content for your Tanzania safari business.</p>
+
+  <div class="tour-card">
+
+    <h3>📱 Create Social Media Content</h3>
+
+    <input
+      id="contentTopic"
+      type="text"
+      placeholder="Enter topic e.g. Serengeti Safari"
+      style="width:90%;padding:12px;margin:8px 0;"
+    >
+
+    <select
+      id="contentPlatform"
+      style="width:90%;padding:12px;margin:8px 0;"
+    >
+      <option value="Facebook">Facebook</option>
+      <option value="Instagram">Instagram</option>
+      <option value="TikTok">TikTok</option>
+      <option value="YouTube">YouTube</option>
+    </select>
+
+    <br>
+
+    <button
+      class="btn"
+      onclick="createMarketingContent()">
+      ✨ Create Content
+    </button>
+
+    <div
+      id="contentResult"
+      style="margin-top:20px;padding:15px;background:white;border-radius:10px;text-align:left;">
+      Your marketing content will appear here.
+    </div>
+
+  </div>
+
+</section>
+<script>
+function createMarketingContent() {
+
+  let topic = document.getElementById("contentTopic").value;
+  let platform = document.getElementById("contentPlatform").value;
+  let result = document.getElementById("contentResult");
+
+  if (topic.trim() === "") {
+    result.innerHTML = "Please enter a topic first.";
+    return;
+  }
+
+  result.innerHTML =
+    "<h3>" + platform + " Marketing Post</h3>" +
+    "<p><strong>🔥 Hook:</strong><br>" +
+    "Discover why " + topic +
+    " should be on your Tanzania travel list.</p>" +
+
+    "<p><strong>📖 Caption:</strong><br>" +
+    "Experience Tanzania beyond the ordinary. " +
+    topic +
+    " offers unforgettable wildlife, landscapes and authentic African experiences with Nemburis Safari Tours.</p>" +
+
+    "<p><strong>📣 Call to Action:</strong><br>" +
+    "Ready to plan your Tanzania adventure? Contact Nemburis Safari Tours on WhatsApp today.</p>" +
+
+    "<p><strong>🏷️ Hashtags:</strong><br>" +
+    "#TanzaniaSafari #Serengeti #AfricanSafari #NemburisSafariTours #VisitTanzania</p>";
+}
+</script>
+
 <footer>
-  <h3>NEMBURIS SAFARI TOURS</h3>
-  <p>Luxury Tanzania Safaris • Culture • Beach Experiences</p>
-  <p>WhatsApp: +255 767 809 050</p>
-  <p>© 2026 Nemburis Safari Tours. All Rights Reserved.</p>
-</footer>
+
 </body>
 </html>
