@@ -720,13 +720,152 @@ function addMarketingPlan() {
     "</div>";
 
   document.getElementById("planTopic").value = "";
-  document.getElementById("planDate").value = "";
+document.getElementById("planDate").value = "";
+
+}
+
+</script>
+
+<!-- NEMBURIS LEAD CENTER -->
+
+<section id="lead-center" style="padding:40px 20px;text-align:center;background:#f5f5f5;">
+
+  <h2>💬 NEMBURIS LEAD CENTER</h2>
+
+  <p>Capture and organize potential safari customers.</p>
+
+  <div class="tour-card">
+
+    <h3>👤 New Customer Enquiry</h3>
+
+    <input
+      id="leadName"
+      type="text"
+      placeholder="Customer Name"
+      style="width:90%;padding:12px;margin:8px 0;"
+    >
+
+    <input
+      id="leadPhone"
+      type="tel"
+      placeholder="WhatsApp / Phone Number"
+      style="width:90%;padding:12px;margin:8px 0;"
+    >
+
+    <input
+      id="leadEmail"
+      type="email"
+      placeholder="Customer Email"
+      style="width:90%;padding:12px;margin:8px 0;"
+    >
+
+    <select
+      id="leadSafari"
+      style="width:90%;padding:12px;margin:8px 0;"
+    >
+      <option>Serengeti Safari</option>
+      <option>Ngorongoro Crater Safari</option>
+      <option>Tarangire Safari</option>
+      <option>Luxury Tanzania Safari</option>
+      <option>Tanzania Safari + Zanzibar</option>
+      <option>Zanzibar Beach</option>
+    </select>
+
+    <input
+      id="leadDate"
+      type="date"
+      style="width:90%;padding:12px;margin:8px 0;"
+    >
+
+    <textarea
+      id="leadMessage"
+      placeholder="Customer message or safari requirements"
+      style="width:90%;padding:12px;margin:8px 0;height:100px;"
+    ></textarea>
+
+    <br>
+
+    <button class="btn" onclick="addLead()">
+      💾 Save Enquiry
+    </button>
+
+  </div>
+
+  <div class="tour-card">
+
+    <h3>📋 Customer Enquiries</h3>
+
+    <div id="leadList">
+      No enquiries saved yet.
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+
+function addLead() {
+
+  let name = document.getElementById("leadName").value.trim();
+  let phone = document.getElementById("leadPhone").value.trim();
+  let email = document.getElementById("leadEmail").value.trim();
+  let safari = document.getElementById("leadSafari").value;
+  let date = document.getElementById("leadDate").value;
+  let message = document.getElementById("leadMessage").value.trim();
+  let leadList = document.getElementById("leadList");
+
+  if (name === "" || phone === "") {
+
+    leadList.innerHTML =
+      "<p>Please enter the customer's name and phone number.</p>";
+
+    return;
+  }
+
+  if (leadList.innerHTML.includes("No enquiries saved yet")) {
+    leadList.innerHTML = "";
+  }
+
+  leadList.innerHTML +=
+
+    "<div style='padding:15px;margin:10px 0;background:white;border-radius:10px;text-align:left;'>" +
+
+    "<strong>👤 " + name + "</strong><br>" +
+
+    "📱 " + phone + "<br>" +
+
+    "📧 " + email + "<br>" +
+
+    "🌍 " + safari + "<br>" +
+
+    "📅 " + date + "<br>" +
+
+    "📝 " + message +
+
+    "</div>";
+
+  document.getElementById("leadName").value = "";
+  document.getElementById("leadPhone").value = "";
+  document.getElementById("leadEmail").value = "";
+  document.getElementById("leadDate").value = "";
+  document.getElementById("leadMessage").value = "";
+
 }
 
 </script>
 
 <footer>
-<footer>
+
+  <h3>NEMBURIS SAFARI TOURS</h3>
+
+  <p>Luxury Tanzania Safaris • Culture • Beach Experiences</p>
+
+  <p>WhatsApp: +255 767 809 050</p>
+
+  <p>© 2026 Nemburis Safari Tours. All Rights Reserved.</p>
+
+</footer>
 
 </body>
 </html>
