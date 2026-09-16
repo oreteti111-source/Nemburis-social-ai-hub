@@ -1244,22 +1244,19 @@ document.getElementById("planDate").value = "";
 <script>
 
 function addLead() {
-
   let name = document.getElementById("leadName").value.trim();
   let phone = document.getElementById("leadPhone").value.trim();
   let email = document.getElementById("leadEmail").value.trim();
   let safari = document.getElementById("leadSafari").value;
   let date = document.getElementById("leadDate").value;
   let message = document.getElementById("leadMessage").value.trim();
-  let leadList = document.getElementById("leadList");
 
   if (name === "" || phone === "") {
-    leadList.innerHTML =
-      "<p>Please enter the customer's name and phone number.</p>";
+    alert("Please enter the customer's name and phone number.");
     return;
   }
 
-  let leads = JSON.parse(localStorage.getItem("nemburisLeads")) || [];
+  let leads = JSON.parse(localStorage.getItem("nemburisLeads") || "[]");
 
   leads.push({
     name: name,
@@ -1279,85 +1276,24 @@ function addLead() {
   document.getElementById("leadEmail").value = "";
   document.getElementById("leadDate").value = "";
   document.getElementById("leadMessage").value = "";
+
+  alert("Enquiry saved successfully!");
+          }
+
+
+  displayLeads();
+
+  document.getElementById("leadName").value = "";
+  document.getElementById("leadPhone").value = "";
+  document.getElementById("leadEmail").value = "";
+  document.getElementById("leadDate").value = "";
+  document.getElementById("leadMessage").value = "";
 }
 
 function displayLeads() {
 
   let leadList = document.getElementById("leadList");
-  let leads = JSON.parse(localStorage.getItem("nemburisLeads")) || [];
 
-  if (leads.length === 0) {
-    leadList.innerHTML = "No enquiries saved yet.";
-    return;
-  }
-
-  leadList.innerHTML = "";
-
-  leads.forEach(function(lead) {
-
-    leadList.innerHTML +=
-      "<div style='padding:15px;margin:10px 0;background:white;border-radius:10px;text-align:left;'>" +
-      "<strong>👤 " + lead.name + "</strong><br>" +
-      "📱 " + lead.phone + "<br>" +
-      "📧 " + lead.email + "<br>" +
-      "🌍 " + lead.safari + "<br>" +
-      "📅 " + lead.date + "<br>" +
-      "📝 " + lead.message +
-      "</div>";
-
-  });
-}
-
-displayLeads();
-  <script>
-function displayLeads() {
-
-  let leadList = document.getElementById("leadList");
-  let leads = JSON.parse(localStorage.getItem("nemburisLeads")) || [];
-
-  if (leads.length === 0) {
-    leadList.innerHTML = "No enquiries saved yet.";
-    return;
-  }
-
-  leadList.innerHTML = "";
-
-  leads.forEach(function(lead) {
-
-    let whatsappNumber = lead.phone.replace(/\D/g, "");
-
-    let whatsappMessage =
-      "Hello " + lead.name +
-      ", thank you for contacting Nemburis Safari Tours. " +
-      "I would like to assist you with your " +
-      lead.safari + " enquiry.";
-
-    let whatsappLink =
-      "https://wa.me/" +
-      whatsappNumber +
-      "?text=" +
-      encodeURIComponent(whatsappMessage);
-
-    leadList.innerHTML +=
-
-      "<div style='padding:15px;margin:10px 0;background:white;border-radius:10px;text-align:left;'>" +
-
-      "<strong>👤 " + lead.name + "</strong><br>" +
-      "📱 " + lead.phone + "<br>" +
-      "📧 " + lead.email + "<br>" +
-      "🌍 " + lead.safari + "<br>" +
-      "📅 " + lead.date + "<br>" +
-      "📝 " + lead.message + "<br><br>" +
-
-      "<a href='" + whatsappLink + "' target='_blank' " +
-      "style='display:inline-block;padding:10px 15px;background:#25D366;color:white;border-radius:8px;text-decoration:none;font-weight:bold;'>" +
-      "📲 WhatsApp Customer" +
-      "</a>" +
-
-      "</div>";
-
-  });
-  }
 
 displayLeads();
 </script>
