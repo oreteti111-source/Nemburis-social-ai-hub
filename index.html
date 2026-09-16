@@ -1316,9 +1316,12 @@ function addLead() {
         return;
     }
 
-    if (leadList.innerHTML.includes("No enquiries saved yet")) {
-        leadList.innerHTML = "";
-    }
+    if (
+  leadList.innerHTML.includes("No enquiries saved yet") ||
+  leadList.innerHTML.includes("Please enter the customer's name and phone number.")
+) {
+  leadList.innerHTML = "";
+}
 
     leadList.innerHTML += `
         <div class="lead-card">
