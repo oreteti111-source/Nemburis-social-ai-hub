@@ -1284,7 +1284,45 @@ function displayLeads() {
 
   let leadList = document.getElementById("leadList");
 }
+<!-- NEMBURIS SAFARI HUB - CUSTOMER ENQUIRIES -->
+
+<section id="lead-center" style="padding:20px;">
+
+  <h2>Customer Enquiries</h2>
+
+  <input
+    id="leadName"
+    type="text"
+    placeholder="Customer Name"
+    style="padding:12px;width:90%;margin:6px 0;"
+  >
+
+  <input
+    id="leadPhone"
+    type="text"
+    placeholder="Phone Number"
+    style="padding:12px;width:90%;margin:6px 0;"
+  >
+
+  <button
+    type="button"
+    onclick="addLead()"
+    style="padding:12px 20px;margin-top:10px;background:#333;color:white;border:none;border-radius:6px;"
+  >
+    Save Enquiry
+  </button>
+
+  <div id="leadList" style="margin-top:20px;">
+    <p>No enquiries saved yet.</p>
+  </div>
+
+</section>
+
+
+<script>
+
 async function addLead() {
+
   const name = document.getElementById("leadName").value.trim();
   const phone = document.getElementById("leadPhone").value.trim();
 
@@ -1304,7 +1342,10 @@ async function addLead() {
 
   if (error) {
     console.error("Save error:", error);
-    alert("There was a problem saving the enquiry: " + error.message);
+    alert(
+      "There was a problem saving the enquiry: " +
+      error.message
+    );
     return;
   }
 
@@ -1318,6 +1359,7 @@ async function addLead() {
 
 
 async function displayLeads() {
+
   const leadList = document.getElementById("leadList");
 
   if (!leadList) {
@@ -1325,7 +1367,7 @@ async function displayLeads() {
     return;
   }
 
-  leadList.innerHTML = "";
+  leadList.innerHTML = "<p>Loading enquiries...</p>";
 
   const { data: leads, error } = await supabaseClient
     .from("leads")
@@ -1334,16 +1376,25 @@ async function displayLeads() {
 
   if (error) {
     console.error("Load error:", error);
-    leadList.innerHTML = "<p>Unable to load enquiries.</p>";
+
+    leadList.innerHTML =
+      "<p>Unable to load enquiries: " +
+      error.message +
+      "</p>";
+
     return;
   }
 
   if (!leads || leads.length === 0) {
-    leadList.innerHTML = "<p>No enquiries saved yet.</p>";
+    leadList.innerHTML =
+      "<p>No enquiries saved yet.</p>";
     return;
   }
 
+  leadList.innerHTML = "";
+
   leads.forEach(function(lead) {
+
     const item = document.createElement("div");
 
     item.style.padding = "15px";
@@ -1354,11 +1405,16 @@ async function displayLeads() {
 
     item.innerHTML =
       "<strong>" + lead.name + "</strong><br>" +
+
       "Phone: " + lead.phone + "<br>" +
+
       "Date: " +
-      (lead.created_at
-        ? new Date(lead.created_at).toLocaleString()
-        : "") +
+      (
+        lead.created_at
+          ? new Date(lead.created_at).toLocaleString()
+          : ""
+      ) +
+
       "<br><br>" +
 
       "<a href='tel:" + lead.phone + "' " +
@@ -1371,18 +1427,19 @@ async function displayLeads() {
       "style='display:inline-block;padding:8px 12px;margin-right:6px;background:#25D366;color:white;text-decoration:none;border-radius:6px;'>" +
       "💬 WhatsApp</a>" +
 
-      "<button onclick='deleteLead(\"" +
-      lead.id +
-      "\")' " +
+      "<button type='button' " +
+      "onclick='deleteLead(\"" + lead.id + "\")' " +
       "style='padding:8px 12px;background:#c62828;color:white;border:none;border-radius:6px;'>" +
       "🗑️ Delete</button>";
 
     leadList.appendChild(item);
+
   });
 }
 
 
 async function deleteLead(id) {
+
   if (!confirm("Delete this customer enquiry?")) {
     return;
   }
@@ -1394,13 +1451,25 @@ async function deleteLead(id) {
 
   if (error) {
     console.error("Delete error:", error);
-    alert("Unable to delete the enquiry: " + error.message);
+
+    alert(
+      "Unable to delete the enquiry: " +
+      error.message
+    );
+
     return;
   }
 
   displayLeads();
 }
+
+
+displayLeads();
+
 </script>
+
+
+
 
 <footer>
   <h3>NEMBURIS SAFARI TOURS</h3>
