@@ -1284,7 +1284,6 @@ function displayLeads() {
 
   let leadList = document.getElementById("leadList");
 }
-function addLead() {
 async function addLead() {
   let name = document.getElementById("leadName").value.trim();
   let phone = document.getElementById("leadPhone").value.trim();
@@ -1294,7 +1293,7 @@ async function addLead() {
     return;
   }
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("leads")
     .insert([
       {
@@ -1304,19 +1303,42 @@ async function addLead() {
     ]);
 
   if (error) {
-    console.error(error);
+    console.error("Supabase error:", error);
     alert("There was a problem saving the enquiry.");
     return;
   }
+
   document.getElementById("leadName").value = "";
   document.getElementById("leadPhone").value = "";
 
   alert("Customer enquiry saved successfully.");
 
   displayLeads();
+}
+
+
+async function displayLeads() {
+  let leadList = document.getElementById("leadList");
+
+  leadList.innerHTML = "";
+
+  const { data: leads, error } = await supabase
+    .from("leads")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Supabase error:", error);
+    leadList.innerHTML = "<p>Unable to load enquiries.</p>";
+    return;
   }
+
+  if (!leads || leads.length === 0) {
+    leadList.innerHTML = "<p>No enquiries saved yet.</p>";
+    return;
   }
-  leads.forEach(function(lead, index) {
+
+  leads.forEach(function(lead) {
     let item = document.createElement("div");
 
     item.style.padding = "15px";
@@ -1328,7 +1350,7 @@ async function addLead() {
     item.innerHTML =
       "<strong>" + lead.name + "</strong><br>" +
       "Phone: " + lead.phone + "<br>" +
-      "Date: " + lead.date + "<br><br>" +
+      "Date: " + (lead.created_at ? new Date(lead.created_at).toLocaleString() : "") + "<br><br>" +
 
       "<a href='tel:" + lead.phone + "' " +
       "style='display:inline-block;padding:8px 12px;margin-right:6px;background:#333;color:white;text-decoration:none;border-radius:6px;'>" +
@@ -1339,7 +1361,7 @@ async function addLead() {
       "style='display:inline-block;padding:8px 12px;margin-right:6px;background:#25D366;color:white;text-decoration:none;border-radius:6px;'>" +
       "💬 WhatsApp</a>" +
 
-      "<button onclick='deleteLead(" + index + ")' " +
+      "<button onclick='deleteLead(\"" + lead.id + "\")' " +
       "style='padding:8px 12px;background:#c62828;color:white;border:none;border-radius:6px;'>" +
       "🗑️ Delete</button>";
 
@@ -1347,21 +1369,29 @@ async function addLead() {
   });
 }
 
-function deleteLead(index) {
-  let leads = JSON.parse(localStorage.getItem("nemburisLeads") || "[]");
 
-  if (confirm("Delete this customer enquiry?")) {
-    leads.splice(index, 1);
-    localStorage.setItem("nemburisLeads", JSON.stringify(leads));
-    displayLeads();
+async function deleteLead(id) {
+  if (!confirm("Delete this customer enquiry?")) {
+    return;
   }
-}
+
+  const { error } = await supabase
+    .from("leads")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Supabase error:", error);
+    alert("Unable to delete the enquiry.");
+    return;
+;
+  }
 
 displayLeads();
+  }
 </script>
 
 <footer>
-
   <h3>NEMBURIS SAFARI TOURS</h3>
 
   <p>Luxury Tanzania Safaris • Culture • Beach Experiences</p>
