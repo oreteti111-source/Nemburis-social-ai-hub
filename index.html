@@ -1528,17 +1528,7 @@ async function displayLeads() {
   });
 }
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
-const SUPABASE_URL = "https://avweyxeelpvnflxomdpr.supabase.co";
-const SUPABASE_KEY = "sb_publishable_1cqDPI-X2YvrRAsqK2sduQ_nin4XnYl";
-
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-
 
 async function deleteLead(id) {
 
@@ -1564,9 +1554,6 @@ async function deleteLead(id) {
 
   displayLeads();
 }
-
-
-displayLeads();
 
 </script>
 
