@@ -1251,6 +1251,7 @@ document.getElementById("planDate").value = "";
 
 <script>
 
+
 function addLead() {
 
   let name = document.getElementById("leadName").value.trim();
@@ -1262,41 +1263,63 @@ function addLead() {
   let leadList = document.getElementById("leadList");
 
   if (name === "" || phone === "") {
-
     leadList.innerHTML =
       "<p>Please enter the customer's name and phone number.</p>";
-
     return;
   }
 
-  if (leadList.innerHTML.includes("No enquiries saved yet")) {
-    leadList.innerHTML = "";
-  }
+  let leads = JSON.parse(localStorage.getItem("nemburisLeads")) || [];
 
-  leadList.innerHTML +=
-    "<div style='padding:15px;margin:10px 0;background:white;border-radius:10px;text-align:left;'>" +
+  leads.push({
+    name: name,
+    phone: phone,
+    email: email,
+    safari: safari,
+    date: date,
+    message: message
+  });
 
-    "<strong>👤 " + name + "</strong><br>" +
+  localStorage.setItem("nemburisLeads", JSON.stringify(leads));
 
-    "📱 " + phone + "<br>" +
-
-    "📧 " + email + "<br>" +
-
-    "🌍 " + safari + "<br>" +
-
-    "📅 " + date + "<br>" +
-
-    "📝 " + message +
-
-    "</div>";
+  displayLeads();
 
   document.getElementById("leadName").value = "";
   document.getElementById("leadPhone").value = "";
   document.getElementById("leadEmail").value = "";
   document.getElementById("leadDate").value = "";
   document.getElementById("leadMessage").value = "";
-
 }
+
+function displayLeads() {
+
+  let leadList = document.getElementById("leadList");
+  let leads = JSON.parse(localStorage.getItem("nemburisLeads")) || [];
+
+  if (leads.length === 0) {
+    leadList.innerHTML = "No enquiries saved yet.";
+    return;
+  }
+
+  leadList.innerHTML = "";
+
+  leads.forEach(function(lead) {
+
+    leadList.innerHTML +=
+      "<div style='padding:15px;margin:10px 0;background:white;border-radius:10px;text-align:left;'>" +
+      "<strong>👤 " + lead.name + "</strong><br>" +
+      "📱 " + lead.phone + "<br>" +
+      "📧 " + lead.email + "<br>" +
+      "🌍 " + lead.safari + "<br>" +
+      "📅 " + lead.date + "<br>" +
+      "📝 " + lead.message +
+      "</div>";
+
+  });
+}
+
+displayLeads();
+
+    
 
 </script>
   
