@@ -1285,7 +1285,62 @@ function displayLeads() {
   let leadList = document.getElementById("leadList");
 
 }
+function addLead() {
+  let name = document.getElementById("leadName").value.trim();
+  let phone = document.getElementById("leadPhone").value.trim();
 
+  if (name === "" || phone === "") {
+    alert("Please enter the customer's name and phone number.");
+    return;
+  }
+
+  let leads = JSON.parse(localStorage.getItem("nemburisLeads") || "[]");
+
+  leads.push({
+    name: name,
+    phone: phone,
+    date: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("nemburisLeads", JSON.stringify(leads));
+
+  document.getElementById("leadName").value = "";
+  document.getElementById("leadPhone").value = "";
+
+  displayLeads();
+
+  alert("Customer enquiry saved successfully.");
+}
+
+function displayLeads() {
+  let leadList = document.getElementById("leadList");
+  let leads = JSON.parse(localStorage.getItem("nemburisLeads") || "[]");
+
+  leadList.innerHTML = "";
+
+  if (leads.length === 0) {
+    leadList.innerHTML = "<p>No enquiries saved yet.</p>";
+    return;
+  }
+
+  leads.forEach(function(lead) {
+    let item = document.createElement("div");
+
+    item.style.padding = "10px";
+    item.style.marginBottom = "10px";
+    item.style.border = "1px solid #ddd";
+    item.style.borderRadius = "8px";
+
+    item.innerHTML =
+      "<strong>" + lead.name + "</strong><br>" +
+      "Phone: " + lead.phone + "<br>" +
+      "Date: " + lead.date;
+
+    leadList.appendChild(item);
+  });
+}
+
+displayLeads();
 </script>
 
 <footer>
