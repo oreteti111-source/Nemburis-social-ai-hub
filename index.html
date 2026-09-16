@@ -917,13 +917,19 @@ destination with abundant animals and dramatic volcanic scenery.
 
     <br>
 
-    <button class="btn" type="submit">Send Enquiry</button>
+    <button class="btn" type="submit">
+      Send Enquiry
+    </button>
 
   </form>
+
 </section>
+
 <script>
+
 document.getElementById("bookingForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+
+  e.preventDefault();
 
     let name = document.getElementById("name").value;
     let email = document.getElementById("email").value;
