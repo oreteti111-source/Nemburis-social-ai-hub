@@ -1215,14 +1215,15 @@ document.getElementById("planDate").value = "";
 
     <select
       id="leadSafari"
-      style="width:90%;padding:12px;margin:8px 0;"
-    >
+      style="width:90%;padding:12px;margin:8px 0;">
+
       <option>Serengeti Safari</option>
       <option>Ngorongoro Crater Safari</option>
       <option>Tarangire Safari</option>
       <option>Luxury Tanzania Safari</option>
       <option>Tanzania Safari + Zanzibar</option>
       <option>Zanzibar Beach</option>
+
     </select>
 
     <input
@@ -1239,11 +1240,14 @@ document.getElementById("planDate").value = "";
 
     <br>
 
-    <button class="btn" onclick="addLead()">
+    <button
+      class="btn"
+      onclick="addLead()">
       💾 Save Enquiry
     </button>
 
   </div>
+
 
   <div class="tour-card">
 
@@ -1256,6 +1260,7 @@ document.getElementById("planDate").value = "";
   </div>
 
 </section>
+
 
 <script>
 
@@ -1273,6 +1278,9 @@ function addLead() {
 
     leadList.innerHTML =
       "<p>Please enter the customer's name and phone number.</p>";
+
+    return;
+  }
 
     return;
   }
