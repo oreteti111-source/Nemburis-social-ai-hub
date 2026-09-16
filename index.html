@@ -1309,11 +1309,8 @@ function displayLeads() {
 }
 
 displayLeads();
-  
-</script>
-  
+  <script>
 function addLead() {
-
   let name = document.getElementById("leadName").value.trim();
   let phone = document.getElementById("leadPhone").value.trim();
   let email = document.getElementById("leadEmail").value.trim();
@@ -1348,9 +1345,7 @@ function addLead() {
   document.getElementById("leadMessage").value = "";
 }
 
-
 function displayLeads() {
-
   let leadList = document.getElementById("leadList");
   let leads = JSON.parse(localStorage.getItem("nemburisLeads")) || [];
 
@@ -1362,7 +1357,6 @@ function displayLeads() {
   leadList.innerHTML = "";
 
   leads.forEach(function(lead) {
-
     leadList.innerHTML +=
       "<div style='padding:15px;margin:10px 0;background:white;border-radius:10px;text-align:left;'>" +
       "<strong>👤 " + lead.name + "</strong><br>" +
@@ -1372,13 +1366,10 @@ function displayLeads() {
       "📅 " + lead.date + "<br>" +
       "📝 " + lead.message +
       "</div>";
-
   });
 }
 
-
 displayLeads();
-
 </script>
 
 <footer>
