@@ -1285,15 +1285,15 @@ function displayLeads() {
   let leadList = document.getElementById("leadList");
 }
 async function addLead() {
-  let name = document.getElementById("leadName").value.trim();
-  let phone = document.getElementById("leadPhone").value.trim();
+  const name = document.getElementById("leadName").value.trim();
+  const phone = document.getElementById("leadPhone").value.trim();
 
   if (name === "" || phone === "") {
     alert("Please enter the customer's name and phone number.");
     return;
   }
 
-  const { error } = await supabase
+  const { error } = await supabaseClient
     .from("leads")
     .insert([
       {
@@ -1303,8 +1303,8 @@ async function addLead() {
     ]);
 
   if (error) {
-    console.error("Supabase error:", error);
-    alert("There was a problem saving the enquiry.");
+    console.error("Save error:", error);
+    alert("There was a problem saving the enquiry: " + error.message);
     return;
   }
 
@@ -1318,17 +1318,22 @@ async function addLead() {
 
 
 async function displayLeads() {
-  let leadList = document.getElementById("leadList");
+  const leadList = document.getElementById("leadList");
+
+  if (!leadList) {
+    console.error("leadList element was not found.");
+    return;
+  }
 
   leadList.innerHTML = "";
 
-  const { data: leads, error } = await supabase
+  const { data: leads, error } = await supabaseClient
     .from("leads")
     .select("*")
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error("Supabase error:", error);
+    console.error("Load error:", error);
     leadList.innerHTML = "<p>Unable to load enquiries.</p>";
     return;
   }
@@ -1339,7 +1344,7 @@ async function displayLeads() {
   }
 
   leads.forEach(function(lead) {
-    let item = document.createElement("div");
+    const item = document.createElement("div");
 
     item.style.padding = "15px";
     item.style.marginBottom = "12px";
@@ -1350,18 +1355,25 @@ async function displayLeads() {
     item.innerHTML =
       "<strong>" + lead.name + "</strong><br>" +
       "Phone: " + lead.phone + "<br>" +
-      "Date: " + (lead.created_at ? new Date(lead.created_at).toLocaleString() : "") + "<br><br>" +
+      "Date: " +
+      (lead.created_at
+        ? new Date(lead.created_at).toLocaleString()
+        : "") +
+      "<br><br>" +
 
       "<a href='tel:" + lead.phone + "' " +
       "style='display:inline-block;padding:8px 12px;margin-right:6px;background:#333;color:white;text-decoration:none;border-radius:6px;'>" +
       "📞 Call</a>" +
 
-      "<a href='https://wa.me/" + lead.phone.replace(/[^0-9]/g, "") + "' " +
-      "target='_blank' " +
+      "<a href='https://wa.me/" +
+      lead.phone.replace(/[^0-9]/g, "") +
+      "' target='_blank' " +
       "style='display:inline-block;padding:8px 12px;margin-right:6px;background:#25D366;color:white;text-decoration:none;border-radius:6px;'>" +
       "💬 WhatsApp</a>" +
 
-      "<button onclick='deleteLead(\"" + lead.id + "\")' " +
+      "<button onclick='deleteLead(\"" +
+      lead.id +
+      "\")' " +
       "style='padding:8px 12px;background:#c62828;color:white;border:none;border-radius:6px;'>" +
       "🗑️ Delete</button>";
 
@@ -1375,20 +1387,19 @@ async function deleteLead(id) {
     return;
   }
 
-  const { error } = await supabase
+  const { error } = await supabaseClient
     .from("leads")
     .delete()
     .eq("id", id);
 
   if (error) {
-    console.error("Supabase error:", error);
-    alert("Unable to delete the enquiry.");
+    console.error("Delete error:", error);
+    alert("Unable to delete the enquiry: " + error.message);
     return;
-;
   }
 
-displayLeads();
-  }
+  displayLeads();
+}
 </script>
 
 <footer>
