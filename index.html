@@ -1310,42 +1310,8 @@ function displayLeads() {
 
 displayLeads();
   <script>
-function addLead() {
-  let name = document.getElementById("leadName").value.trim();
-  let phone = document.getElementById("leadPhone").value.trim();
-  let email = document.getElementById("leadEmail").value.trim();
-  let safari = document.getElementById("leadSafari").value;
-  let date = document.getElementById("leadDate").value;
-  let message = document.getElementById("leadMessage").value.trim();
-
-  if (name === "" || phone === "") {
-    alert("Please enter the customer's name and phone number.");
-    return;
-  }
-
-  let leads = JSON.parse(localStorage.getItem("nemburisLeads")) || [];
-
-  leads.push({
-    name: name,
-    phone: phone,
-    email: email,
-    safari: safari,
-    date: date,
-    message: message
-  });
-
-  localStorage.setItem("nemburisLeads", JSON.stringify(leads));
-
-  displayLeads();
-
-  document.getElementById("leadName").value = "";
-  document.getElementById("leadPhone").value = "";
-  document.getElementById("leadEmail").value = "";
-  document.getElementById("leadDate").value = "";
-  document.getElementById("leadMessage").value = "";
-}
-
 function displayLeads() {
+
   let leadList = document.getElementById("leadList");
   let leads = JSON.parse(localStorage.getItem("nemburisLeads")) || [];
 
@@ -1357,17 +1323,41 @@ function displayLeads() {
   leadList.innerHTML = "";
 
   leads.forEach(function(lead) {
+
+    let whatsappNumber = lead.phone.replace(/\D/g, "");
+
+    let whatsappMessage =
+      "Hello " + lead.name +
+      ", thank you for contacting Nemburis Safari Tours. " +
+      "I would like to assist you with your " +
+      lead.safari + " enquiry.";
+
+    let whatsappLink =
+      "https://wa.me/" +
+      whatsappNumber +
+      "?text=" +
+      encodeURIComponent(whatsappMessage);
+
     leadList.innerHTML +=
+
       "<div style='padding:15px;margin:10px 0;background:white;border-radius:10px;text-align:left;'>" +
+
       "<strong>👤 " + lead.name + "</strong><br>" +
       "📱 " + lead.phone + "<br>" +
       "📧 " + lead.email + "<br>" +
       "🌍 " + lead.safari + "<br>" +
       "📅 " + lead.date + "<br>" +
-      "📝 " + lead.message +
+      "📝 " + lead.message + "<br><br>" +
+
+      "<a href='" + whatsappLink + "' target='_blank' " +
+      "style='display:inline-block;padding:10px 15px;background:#25D366;color:white;border-radius:8px;text-decoration:none;font-weight:bold;'>" +
+      "📲 WhatsApp Customer" +
+      "</a>" +
+
       "</div>";
+
   });
-}
+  }
 
 displayLeads();
 </script>
