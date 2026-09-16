@@ -1313,49 +1313,44 @@ function addLead() {
 
 </script>
   
-
 function addLead() {
+    let name = document.getElementById("leadName").value.trim();
+    let phone = document.getElementById("leadPhone").value.trim();
+    let email = document.getElementById("leadEmail").value.trim();
+    let safari = document.getElementById("leadSafari").value;
+    let date = document.getElementById("leadDate").value;
+    let message = document.getElementById("leadMessage").value.trim();
+    let leadList = document.getElementById("leadList");
 
-  let name = document.getElementById("leadName").value.trim();
-  let phone = document.getElementById("leadPhone").value.trim();
-  let email = document.getElementById("leadEmail").value.trim();
-  let safari = document.getElementById("leadSafari").value;
-  let date = document.getElementById("leadDate").value;
-  let message = document.getElementById("leadMessage").value.trim();
+    if (name === "" || phone === "") {
+        leadList.innerHTML = `
+            <p>Please enter the customer's name and phone number.</p>
+        `;
+        return;
+    }
 
-  let leadList = document.getElementById("leadList");
+    if (leadList.innerHTML.includes("No enquiries saved yet")) {
+        leadList.innerHTML = "";
+    }
 
-  if (name === "" || phone === "") {
+    leadList.innerHTML += `
+        <div class="lead-card">
+            <h3>👤 ${name}</h3>
+            <p>📱 ${phone}</p>
+            <p>📧 ${email}</p>
+            <p>🌍 ${safari}</p>
+            <p>📅 ${date}</p>
+            <p>📝 ${message}</p>
+        </div>
+    `;
 
-    leadList.innerHTML =
-      "<p>Please enter the customer's name and phone number.</p>";
-
-    return;
-  }
-
-  if (leadList.innerHTML.includes("No enquiries saved yet")) {
-    leadList.innerHTML = "";
-  }
-
-  leadList.innerHTML +=
-    "<div style='padding:15px;margin:10px 0;background:white;border-radius:10px;text-align:left;'>" +
-
-    "<strong>👤 " + name + "</strong><br>" +
-    "📱 " + phone + "<br>" +
-    "📧 " + email + "<br>" +
-    "🌍 " + safari + "<br>" +
-    "📅 " + date + "<br>" +
-    "📝 " + message +
-
-    "</div>";
-
-  document.getElementById("leadName").value = "";
-  document.getElementById("leadPhone").value = "";
-  document.getElementById("leadEmail").value = "";
-  document.getElementById("leadDate").value = "";
-  document.getElementById("leadMessage").value = "";
-
+    document.getElementById("leadName").value = "";
+    document.getElementById("leadPhone").value = "";
+    document.getElementById("leadEmail").value = "";
+    document.getElementById("leadDate").value = "";
+    document.getElementById("leadMessage").value = "";
 }
+
 
 </script>
 
