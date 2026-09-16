@@ -1323,21 +1323,45 @@ function displayLeads() {
     return;
   }
 
-  leads.forEach(function(lead) {
+  leads.forEach(function(lead, index) {
     let item = document.createElement("div");
 
-    item.style.padding = "10px";
-    item.style.marginBottom = "10px";
+    item.style.padding = "15px";
+    item.style.marginBottom = "12px";
     item.style.border = "1px solid #ddd";
-    item.style.borderRadius = "8px";
+    item.style.borderRadius = "10px";
+    item.style.background = "#f9f9f9";
 
     item.innerHTML =
       "<strong>" + lead.name + "</strong><br>" +
       "Phone: " + lead.phone + "<br>" +
-      "Date: " + lead.date;
+      "Date: " + lead.date + "<br><br>" +
+
+      "<a href='tel:" + lead.phone + "' " +
+      "style='display:inline-block;padding:8px 12px;margin-right:6px;background:#333;color:white;text-decoration:none;border-radius:6px;'>" +
+      "📞 Call</a>" +
+
+      "<a href='https://wa.me/" + lead.phone.replace(/[^0-9]/g, "") + "' " +
+      "target='_blank' " +
+      "style='display:inline-block;padding:8px 12px;margin-right:6px;background:#25D366;color:white;text-decoration:none;border-radius:6px;'>" +
+      "💬 WhatsApp</a>" +
+
+      "<button onclick='deleteLead(" + index + ")' " +
+      "style='padding:8px 12px;background:#c62828;color:white;border:none;border-radius:6px;'>" +
+      "🗑️ Delete</button>";
 
     leadList.appendChild(item);
   });
+}
+
+function deleteLead(index) {
+  let leads = JSON.parse(localStorage.getItem("nemburisLeads") || "[]");
+
+  if (confirm("Delete this customer enquiry?")) {
+    leads.splice(index, 1);
+    localStorage.setItem("nemburisLeads", JSON.stringify(leads));
+    displayLeads();
+  }
 }
 
 displayLeads();
