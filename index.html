@@ -1324,46 +1324,71 @@ displayLeads();
 </script>
   
 function addLead() {
-    let name = document.getElementById("leadName").value.trim();
-    let phone = document.getElementById("leadPhone").value.trim();
-    let email = document.getElementById("leadEmail").value.trim();
-    let safari = document.getElementById("leadSafari").value;
-    let date = document.getElementById("leadDate").value;
-    let message = document.getElementById("leadMessage").value.trim();
-    let leadList = document.getElementById("leadList");
 
-    if (name === "" || phone === "") {
-        leadList.innerHTML = `
-            <p>Please enter the customer's name and phone number.</p>
-        `;
-        return;
-    }
+  let name = document.getElementById("leadName").value.trim();
+  let phone = document.getElementById("leadPhone").value.trim();
+  let email = document.getElementById("leadEmail").value.trim();
+  let safari = document.getElementById("leadSafari").value;
+  let date = document.getElementById("leadDate").value;
+  let message = document.getElementById("leadMessage").value.trim();
 
-    if (
-  leadList.innerHTML.includes("No enquiries saved yet") ||
-  leadList.innerHTML.includes("Please enter the customer's name and phone number.")
-) {
+  if (name === "" || phone === "") {
+    alert("Please enter the customer's name and phone number.");
+    return;
+  }
+
+  let leads = JSON.parse(localStorage.getItem("nemburisLeads")) || [];
+
+  leads.push({
+    name: name,
+    phone: phone,
+    email: email,
+    safari: safari,
+    date: date,
+    message: message
+  });
+
+  localStorage.setItem("nemburisLeads", JSON.stringify(leads));
+
+  displayLeads();
+
+  document.getElementById("leadName").value = "";
+  document.getElementById("leadPhone").value = "";
+  document.getElementById("leadEmail").value = "";
+  document.getElementById("leadDate").value = "";
+  document.getElementById("leadMessage").value = "";
+}
+
+
+function displayLeads() {
+
+  let leadList = document.getElementById("leadList");
+  let leads = JSON.parse(localStorage.getItem("nemburisLeads")) || [];
+
+  if (leads.length === 0) {
+    leadList.innerHTML = "No enquiries saved yet.";
+    return;
+  }
+
   leadList.innerHTML = "";
+
+  leads.forEach(function(lead) {
+
+    leadList.innerHTML +=
+      "<div style='padding:15px;margin:10px 0;background:white;border-radius:10px;text-align:left;'>" +
+      "<strong>👤 " + lead.name + "</strong><br>" +
+      "📱 " + lead.phone + "<br>" +
+      "📧 " + lead.email + "<br>" +
+      "🌍 " + lead.safari + "<br>" +
+      "📅 " + lead.date + "<br>" +
+      "📝 " + lead.message +
+      "</div>";
+
+  });
 }
 
-    leadList.innerHTML += `
-        <div class="lead-card">
-            <h3>👤 ${name}</h3>
-            <p>📱 ${phone}</p>
-            <p>📧 ${email}</p>
-            <p>🌍 ${safari}</p>
-            <p>📅 ${date}</p>
-            <p>📝 ${message}</p>
-        </div>
-    `;
 
-    document.getElementById("leadName").value = "";
-    document.getElementById("leadPhone").value = "";
-    document.getElementById("leadEmail").value = "";
-    document.getElementById("leadDate").value = "";
-    document.getElementById("leadMessage").value = "";
-}
-
+displayLeads();
 
 </script>
 
