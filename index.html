@@ -1454,6 +1454,11 @@ async function deleteLead(id) {
 
     alert(
       "Unable to delete the enquiry: " +
+      if (error) {
+    console.error("Delete error:", error);
+
+    alert(
+      "Unable to delete the enquiry: " +
       error.message
     );
 
@@ -1463,13 +1468,9 @@ async function deleteLead(id) {
   displayLeads();
 }
 
-
 displayLeads();
 
 </script>
-
-
-
 
 <footer>
   <h3>NEMBURIS SAFARI TOURS</h3>
