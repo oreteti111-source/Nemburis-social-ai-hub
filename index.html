@@ -1592,8 +1592,11 @@ document.addEventListener(
 
 async function addLead() {
 
-  const name = document.getElementById("leadName").value.trim();
-  const phone = document.getElementById("leadPhone").value.trim();
+  const name =
+    document.getElementById("leadName").value.trim();
+
+  const phone =
+    document.getElementById("leadPhone").value.trim();
 
   if (!name || !phone) {
     alert("Please enter the customer's name and phone number.");
@@ -1612,8 +1615,14 @@ async function addLead() {
       ]);
 
     if (error) {
+
       console.error("Supabase error:", error);
-      alert("Unable to save enquiry: " + error.message);
+
+      alert(
+        "Unable to save enquiry: " +
+        error.message
+      );
+
       return;
     }
 
@@ -1622,7 +1631,7 @@ async function addLead() {
     document.getElementById("leadName").value = "";
     document.getElementById("leadPhone").value = "";
 
-    displayLeads();
+    await displayLeads();
 
   } catch (error) {
 
@@ -1630,15 +1639,11 @@ async function addLead() {
 
     alert(
       "SAVE ERROR:\n\n" +
-      (error.message || error) +
-      "\n\nCheck the browser console for more details."
+      (error.message || error)
     );
-
   }
 }
 
-
-  <script>
 
 async function displayLeads() {
 
@@ -1695,35 +1700,75 @@ async function displayLeads() {
     item.style.textAlign = "left";
 
     item.innerHTML =
-      "<strong>" + (lead.name || "") + "</strong><br><br>" +
-      "📞 Phone: " + (lead.phone || "") + "<br>" +
-      "📧 Email: " + (lead.email || "Not provided") + "<br>" +
-      "🦁 Safari: " + (lead.safari || "Not selected") + "<br>" +
-      "📅 Travel Date: " + (lead.travel_date || "Not selected") + "<br>" +
-      "💬 Message: " + (lead.message || "No message") + "<br>" +
+
+      "<strong>" +
+      (lead.name || "") +
+      "</strong><br><br>" +
+
+      "📞 Phone: " +
+      (lead.phone || "") +
+      "<br>" +
+
+      "📧 Email: " +
+      (lead.email || "Not provided") +
+      "<br>" +
+
+      "🦁 Safari: " +
+      (lead.safari || "Not selected") +
+      "<br>" +
+
+      "📅 Travel Date: " +
+      (lead.travel_date || "Not selected") +
+      "<br>" +
+
+      "💬 Message: " +
+      (lead.message || "No message") +
+      "<br>" +
+
       "🕒 Enquiry Date: " +
-      (lead.created_at
-        ? new Date(lead.created_at).toLocaleString()
-        : "") +
+
+      (
+        lead.created_at
+          ? new Date(
+              lead.created_at
+            ).toLocaleString()
+          : ""
+      ) +
+
       "<br><br>" +
 
-      "<button onclick=\"window.location.href='tel:" +
+      "<button " +
+      "type='button' " +
+      "onclick=\"window.location.href='tel:" +
       (lead.phone || "") +
-      "'\">📞 Call</button> " +
+      "'\">" +
 
-      "<button onclick=\"window.open('https://wa.me/" +
-      (lead.phone || "").replace(/[^0-9]/g, "") +
-      "','_blank')\">💬 WhatsApp</button> " +
+      "📞 Call</button> " +
 
-      "<button onclick=\"deleteLead('" +
+      "<button " +
+      "type='button' " +
+      "onclick=\"window.open('https://wa.me/" +
+      (lead.phone || "")
+        .replace(/[^0-9]/g, "") +
+      "','_blank')\">" +
+
+      "💬 WhatsApp</button> " +
+
+      "<button " +
+      "type='button' " +
+      "onclick=\"deleteLead('" +
       lead.id +
-      "')\">🗑️ Delete</button>";
+      "')\">" +
+
+      "🗑️ Delete</button>";
 
     leadList.appendChild(item);
 
   });
 }
 
+
+</script>
 
 async function deleteLead(id) {
 
