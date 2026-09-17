@@ -1653,11 +1653,18 @@ async function addLead() {
 
   } catch (error) {
 
-    console.error("Error:", error);
-    alert("Something went wrong while saving the enquiry.");
+    console.error("FULL ERROR:", error);
+
+    alert(
+      "SAVE ERROR:\n\n" +
+      (error.message || error) +
+      "\n\nCheck the browser console for more details."
+    );
 
   }
 }
+
+</script>
 
 
 async function displayLeads() {
