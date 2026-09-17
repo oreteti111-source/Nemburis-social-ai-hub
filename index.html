@@ -1277,112 +1277,56 @@ document.getElementById("planDate").value = "";
 
 <script>
 
-async function addLead() {
-
-async function displayLeads() {
-
-  const leadList = document.getElementById("leadList");
-
-  if (!leadList) {
-    return;
-  }
-
-  const { data: leads, error } = await supabaseClient
-    .from("leads")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Load error:", error);
-    leadList.innerHTML =
-      "<p>Unable to load enquiries: " +
-      error.message +
-      "</p>";
-    return;
-  }
-
-  leadList.innerHTML = "";
-
-  if (!leads || leads.length === 0) {
-    leadList.innerHTML = "<p>No enquiries saved yet.</p>";
-    return;
-  }
-
-  leads.forEach(function(lead) {
-
-    const item = document.createElement("div");
-
-    item.style.padding = "15px";
-    item.style.marginBottom = "12px";
-    item.style.border = "1px solid #ddd";
-    item.style.borderRadius = "10px";
-    item.style.background = "#f9f9f9";
-
-    item.innerHTML =
-      "<strong>" + lead.name + "</strong><br>" +
-      "Phone: " + lead.phone + "<br>" +
-      "Date: " +
-      (lead.created_at
-        ? new Date(lead.created_at).toLocaleString()
-        : "") +
-      "<br><br>" +
-
-      "<a href='tel:" + lead.phone + "' " +
-      "style='display:inline-block;padding:8px 12px;margin-right:6px;background:#333;color:white;text-decoration:none;border-radius:6px;'>" +
-      "📞 Call</a>" +
-
-      "<a href='https://wa.me/" +
-      lead.phone.replace(/[^0-9]/g, "") +
-      "' target='_blank' " +
-      "style='display:inline-block;padding:8px 12px;margin-right:6px;background:#25D366;color:white;text-decoration:none;border-radius:6px;'>" +
-      "💬 WhatsApp</a>" +
-
-      "<button type='button' onclick='deleteLead(\"" +
-      lead.id +
-      "\")' " +
-      "style='padding:8px 12px;background:#c62828;color:white;border:none;border-radius:6px;'>" +
-      "🗑️ Delete</button>";
-
-    leadList.appendChild(item);
-
-  });
-}
-
-
-async function deleteLead(id) {
-
-  if (!confirm("Delete this customer enquiry?")) {
-    return;
-  }
-
-  const { error } = await supabaseClient
-    .from("leads")
-    .delete()
-    .eq("id", id);
-
-  if (error) {
-    console.error("Delete error:", error);
-    alert("Unable to delete the enquiry: " + error.message);
-    return;
-  }
-
-  displayLeads();
-}
-
-
-displayLeads();
-
-</script>
-
-
 <script>
 
+async function addLead() {
+
+  const name = document.getElementById("leadName").value.trim();
+  const phone = document.getElementById("leadPhone").value.trim();
+
+  if (!name || !phone) {
+    alert("Please enter the customer's name and phone number.");
+    return;
+  }
+
+  try {
+
+    const { error } = await supabaseClient
+      .from("leads")
+      .insert([
+        {
+          name: name,
+          phone: phone
+        }
+      ]);
+
+    if (error) {
+      console.error("Supabase error:", error);
+      alert("Unable to save enquiry: " + error.message);
+      return;
+    }
+
+    alert("Customer enquiry saved successfully!");
+
+    document.getElementById("leadName").value = "";
+    document.getElementById("leadPhone").value = "";
+
+    displayLeads();
+
+  } catch (error) {
+
+    console.error("Error:", error);
+    alert("Something went wrong while saving the enquiry.");
+
+  }
+}
+
+
 async function displayLeads() {
 
   const leadList = document.getElementById("leadList");
 
   if (!leadList) {
-    console.error("leadList element was not found.");
     return;
   }
 
@@ -1424,16 +1368,11 @@ async function displayLeads() {
 
     item.innerHTML =
       "<strong>" + lead.name + "</strong><br>" +
-
       "Phone: " + lead.phone + "<br>" +
-
       "Date: " +
-      (
-        lead.created_at
-          ? new Date(lead.created_at).toLocaleString()
-          : ""
-      ) +
-
+      (lead.created_at
+        ? new Date(lead.created_at).toLocaleString()
+        : "") +
       "<br><br>" +
 
       "<a href='tel:" + lead.phone + "' " +
@@ -1456,7 +1395,6 @@ async function displayLeads() {
   });
 }
 
-<script>
 
 async function deleteLead(id) {
 
@@ -1483,9 +1421,10 @@ async function deleteLead(id) {
   displayLeads();
 }
 
+displayLeads();
+
 </script>
-
-
+  
 <footer>
   <h3>NEMBURIS SAFARI TOURS</h3>
 
