@@ -1281,18 +1281,6 @@ async function addLead() {
   const phone =
     document.getElementById("leadPhone").value.trim();
 
-  const email =
-    document.getElementById("leadEmail").value.trim();
-
-  const safari =
-    document.getElementById("leadSafari").value;
-
-  const date =
-    document.getElementById("leadDate").value;
-
-  const message =
-    document.getElementById("leadMessage").value.trim();
-
 
   if (!name || !phone) {
 
@@ -1306,18 +1294,15 @@ async function addLead() {
 
   try {
 
-    const { error } = await supabaseClient
-      .from("leads")
-      .insert([
-        {
-          name: name,
-          phone: phone,
-          email: email,
-          safari: safari,
-          travel_date: date,
-          message: message
-        }
-      ]);
+    const { error } =
+      await supabaseClient
+        .from("leads")
+        .insert([
+          {
+            name: name,
+            phone: phone
+          }
+        ]);
 
 
     if (error) {
@@ -1337,16 +1322,12 @@ async function addLead() {
 
 
     alert(
-  "Customer enquiry saved successfully!"
-);
+      "Customer enquiry saved successfully!"
+    );
 
 
     document.getElementById("leadName").value = "";
     document.getElementById("leadPhone").value = "";
-    document.getElementById("leadEmail").value = "";
-    document.getElementById("leadSafari").value = "";
-    document.getElementById("leadDate").value = "";
-    document.getElementById("leadMessage").value = "";
 
 
     displayLeads();
@@ -1366,9 +1347,9 @@ async function addLead() {
   }
 
 }
-</script>
 
-
+      </script>
+  
 
 async function displayLeads() {
 
