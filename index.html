@@ -1354,17 +1354,19 @@ async function addLead() {
   } catch (error) {
 
     console.error(
-      "Error:",
+      "FULL SAVE ERROR:",
       error
     );
 
     alert(
-      "Something went wrong while saving the enquiry."
+      "SAVE ERROR:\n\n" +
+      (error.message || error)
     );
 
   }
 
 }
+</script>
 
 
 
