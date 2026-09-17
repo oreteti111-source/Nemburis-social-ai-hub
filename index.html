@@ -1666,71 +1666,87 @@ async function addLead() {
   }
 }
 
-</script>
 
+  <script>
 
 async function displayLeads() {
 
-  const leadList = document.getElementById("leadList");
+  const leadList =
+    document.getElementById("leadList");
 
   if (!leadList) {
     return;
   }
 
-  const { data: leads, error } = await supabaseClient
-    .from("leads")
-    .select("*")
-    .order("created_at", { ascending: false });
+  const { data: leads, error } =
+    await supabaseClient
+      .from("leads")
+      .select("*")
+      .order("created_at", {
+        ascending: false
+      });
 
   if (error) {
-    console.error("Load error:", error);
+
+    console.error(
+      "Load error:",
+      error
+    );
+
     leadList.innerHTML =
       "<p>Unable to load enquiries: " +
       error.message +
       "</p>";
+
     return;
   }
 
   leadList.innerHTML = "";
 
   if (!leads || leads.length === 0) {
-    leadList.innerHTML = "<p>No enquiries saved yet.</p>";
+
+    leadList.innerHTML =
+      "<p>No enquiries saved yet.</p>";
+
     return;
   }
 
   leads.forEach(function(lead) {
 
-    const item = document.createElement("div");
+    const item =
+      document.createElement("div");
 
     item.style.padding = "15px";
     item.style.marginBottom = "12px";
     item.style.border = "1px solid #ddd";
     item.style.borderRadius = "10px";
+    item.style.background = "white";
+    item.style.textAlign = "left";
 
     item.innerHTML =
-      "<strong>" + lead.name + "</strong><br>" +
-      "Phone: " + lead.phone + "<br>" +
-      "Date: " +
+      "<strong>" + (lead.name || "") + "</strong><br><br>" +
+      "📞 Phone: " + (lead.phone || "") + "<br>" +
+      "📧 Email: " + (lead.email || "Not provided") + "<br>" +
+      "🦁 Safari: " + (lead.safari || "Not selected") + "<br>" +
+      "📅 Travel Date: " + (lead.travel_date || "Not selected") + "<br>" +
+      "💬 Message: " + (lead.message || "No message") + "<br>" +
+      "🕒 Enquiry Date: " +
       (lead.created_at
         ? new Date(lead.created_at).toLocaleString()
         : "") +
       "<br><br>" +
 
-      "<a href='tel:" + lead.phone + "' " +
-      "style='display:inline-block;padding:8px 12px;margin-right:6px;background:#333;color:white;text-decoration:none;border-radius:6px;'>" +
-      "📞 Call</a>" +
+      "<button onclick=\"window.location.href='tel:" +
+      (lead.phone || "") +
+      "'\">📞 Call</button> " +
 
-      "<a href='https://wa.me/" +
-      lead.phone.replace(/[^0-9]/g, "") +
-      "' target='_blank' " +
-      "style='display:inline-block;padding:8px 12px;margin-right:6px;background:#25D366;color:white;text-decoration:none;border-radius:6px;'>" +
-      "💬 WhatsApp</a>" +
+      "<button onclick=\"window.open('https://wa.me/" +
+      (lead.phone || "").replace(/[^0-9]/g, "") +
+      "','_blank')\">💬 WhatsApp</button> " +
 
-      "<button type='button' onclick='deleteLead(\"" +
+      "<button onclick=\"deleteLead('" +
       lead.id +
-      "\")' " +
-      "style='padding:8px 12px;background:#c62828;color:white;border:none;border-radius:6px;'>" +
-      "🗑️ Delete</button>";
+      "')\">🗑️ Delete</button>";
 
     leadList.appendChild(item);
 
@@ -1740,24 +1756,65 @@ async function displayLeads() {
 
 async function deleteLead(id) {
 
-  if (!confirm("Delete this customer enquiry?")) {
+  if (!confirm(
+    "Delete this customer enquiry?"
+  )) {
     return;
   }
 
-  const { error } = await supabaseClient
-    .from("leads")
-    .delete()
-    .eq("id", id);
+  try {
 
-  if (error) {
-    alert("Unable to delete enquiry: " + error.message);
-    return;
+    const { error } =
+      await supabaseClient
+        .from("leads")
+        .delete()
+        .eq("id", id);
+
+    if (error) {
+
+      console.error(
+        "Delete error:",
+        error
+      );
+
+      alert(
+        "Unable to delete enquiry: " +
+        error.message
+      );
+
+      return;
+    }
+
+    alert(
+      "Customer enquiry deleted successfully!"
+    );
+
+    displayLeads();
+
+  } catch (error) {
+
+    console.error(
+      "FULL DELETE ERROR:",
+      error
+    );
+
+    alert(
+      "DELETE ERROR:\n\n" +
+      (error.message || error)
+    );
+
   }
-
-  displayLeads();
 }
 
-</script>    
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+    displayLeads();
+  }
+);
+
+</script>  
 <footer>
   <h3>NEMBURIS SAFARI TOURS</h3>
 
