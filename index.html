@@ -1268,7 +1268,25 @@ document.getElementById("planDate").value = "";
 
 </section>
 
+<!-- SUPABASE CONNECTION -->
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const supabaseUrl =
+  "https://avweyxeelpvnflxomdpr.supabase.co";
+
+const supabaseKey =
+  "sb_publishable_1cqDPI-X2YvrRAsqK2sduQ_nin4XnYl";
+
+const supabaseClient =
+  supabase.createClient(
+    supabaseUrl,
+    supabaseKey
+  );
+
+</script>
 <!-- LEAD CENTER JAVASCRIPT -->
 
 <script>
