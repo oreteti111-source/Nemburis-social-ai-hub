@@ -1240,12 +1240,13 @@ document.getElementById("planDate").value = "";
 </section>
   
 <script>
-
 <!-- NEMBURIS SAFARI HUB - CUSTOMER ENQUIRIES -->
 
-<section id="lead-center" style="padding:20px;">
+<section id="lead-center" style="padding:20px;max-width:700px;margin:auto;">
 
   <h2>Customer Enquiries</h2>
+
+  <p>Save and manage your safari customer enquiries.</p>
 
   <input
     id="leadName"
@@ -1256,26 +1257,28 @@ document.getElementById("planDate").value = "";
 
   <input
     id="leadPhone"
-    type="text"
-    placeholder="Phone Number"
+    type="tel"
+    placeholder="Customer Phone Number"
     style="padding:12px;width:90%;margin:6px 0;"
   >
+
+  <br>
 
   <button
     type="button"
     onclick="addLead()"
-    style="padding:12px 20px;margin-top:10px;background:#333;color:white;border:none;border-radius:6px;"
+    style="padding:12px 20px;margin:10px 0;cursor:pointer;"
   >
-    Save Enquiry
+    ➕ Add Customer Enquiry
   </button>
 
-  <div id="leadList" style="margin-top:20px;">
-    <p>No enquiries saved yet.</p>
+  <h3>Saved Enquiries</h3>
+
+  <div id="leadList">
+    <p>Loading enquiries...</p>
   </div>
 
 </section>
-
-<script>
 
 <script>
 
@@ -1330,8 +1333,6 @@ async function displayLeads() {
     return;
   }
 
-  leadList.innerHTML = "<p>Loading enquiries...</p>";
-
   const { data: leads, error } = await supabaseClient
     .from("leads")
     .select("*")
@@ -1339,22 +1340,19 @@ async function displayLeads() {
 
   if (error) {
     console.error("Load error:", error);
-
     leadList.innerHTML =
       "<p>Unable to load enquiries: " +
       error.message +
       "</p>";
-
-    return;
-  }
-
-  if (!leads || leads.length === 0) {
-    leadList.innerHTML =
-      "<p>No enquiries saved yet.</p>";
     return;
   }
 
   leadList.innerHTML = "";
+
+  if (!leads || leads.length === 0) {
+    leadList.innerHTML = "<p>No enquiries saved yet.</p>";
+    return;
+  }
 
   leads.forEach(function(lead) {
 
@@ -1364,7 +1362,6 @@ async function displayLeads() {
     item.style.marginBottom = "12px";
     item.style.border = "1px solid #ddd";
     item.style.borderRadius = "10px";
-    item.style.background = "#f9f9f9";
 
     item.innerHTML =
       "<strong>" + lead.name + "</strong><br>" +
@@ -1385,8 +1382,9 @@ async function displayLeads() {
       "style='display:inline-block;padding:8px 12px;margin-right:6px;background:#25D366;color:white;text-decoration:none;border-radius:6px;'>" +
       "💬 WhatsApp</a>" +
 
-      "<button type='button' " +
-      "onclick='deleteLead(\"" + lead.id + "\")' " +
+      "<button type='button' onclick='deleteLead(\"" +
+      lead.id +
+      "\")' " +
       "style='padding:8px 12px;background:#c62828;color:white;border:none;border-radius:6px;'>" +
       "🗑️ Delete</button>";
 
@@ -1408,23 +1406,14 @@ async function deleteLead(id) {
     .eq("id", id);
 
   if (error) {
-    console.error("Delete error:", error);
-
-    alert(
-      "Unable to delete the enquiry: " +
-      error.message
-    );
-
+    alert("Unable to delete enquiry: " + error.message);
     return;
   }
 
   displayLeads();
 }
 
-displayLeads();
-
-</script>
-  
+</script>    
 <footer>
   <h3>NEMBURIS SAFARI TOURS</h3>
 
