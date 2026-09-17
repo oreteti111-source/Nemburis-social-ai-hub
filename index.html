@@ -1368,36 +1368,24 @@ async function addLead() {
 
       </script>
   
-
 async function displayLeads() {
 
-  const leadList =
-    document.getElementById("leadList");
-
+  const leadList = document.getElementById("leadList");
 
   if (!leadList) {
     return;
   }
 
-
-  const { data: leads, error } =
-    await supabaseClient
-      .from("leads")
-      .select("*")
-      .order(
-        "created_at",
-        {
-          ascending: false
-        }
-      );
-
+  const { data: leads, error } = await supabaseClient
+    .from("leads")
+    .select("*")
+    .order("created_at", {
+      ascending: false
+    });
 
   if (error) {
 
-    console.error(
-      "Load error:",
-      error
-    );
+    console.error("Load error:", error);
 
     leadList.innerHTML =
       "<p>Unable to load enquiries: " +
@@ -1407,9 +1395,7 @@ async function displayLeads() {
     return;
   }
 
-
   leadList.innerHTML = "";
-
 
   if (!leads || leads.length === 0) {
 
@@ -1419,12 +1405,9 @@ async function displayLeads() {
     return;
   }
 
-
   leads.forEach(function(lead) {
 
-    const item =
-      document.createElement("div");
-
+    const item = document.createElement("div");
 
     item.style.padding = "15px";
     item.style.marginBottom = "12px";
@@ -1432,7 +1415,6 @@ async function displayLeads() {
     item.style.borderRadius = "10px";
     item.style.background = "white";
     item.style.textAlign = "left";
-
 
     item.innerHTML =
 
@@ -1464,14 +1446,11 @@ async function displayLeads() {
 
       (
         lead.created_at
-          ? new Date(
-              lead.created_at
-            ).toLocaleString()
+          ? new Date(lead.created_at).toLocaleString()
           : ""
       ) +
 
       "<br><br>" +
-
 
       "<a href='tel:" +
       (lead.phone || "") +
@@ -1487,11 +1466,9 @@ async function displayLeads() {
 
       "📞 Call</a>" +
 
-
       "<a href='https://wa.me/" +
 
-      (lead.phone || "")
-        .replace(/[^0-9]/g, "") +
+      (lead.phone || "").replace(/[^0-9]/g, "") +
 
       "' target='_blank' " +
 
@@ -1504,7 +1481,6 @@ async function displayLeads() {
       "border-radius:6px;'>" +
 
       "💬 WhatsApp</a>" +
-
 
       "<button " +
       "type='button' " +
@@ -1521,14 +1497,10 @@ async function displayLeads() {
 
       "🗑️ Delete</button>";
 
-
     leadList.appendChild(item);
 
   });
-
 }
-
-
 
 async function deleteLead(id) {
 
