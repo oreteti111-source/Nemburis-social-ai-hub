@@ -1299,7 +1299,6 @@ async function addLead() {
   const phone =
     document.getElementById("leadPhone").value.trim();
 
-
   if (!name || !phone) {
 
     alert(
@@ -1308,7 +1307,6 @@ async function addLead() {
 
     return;
   }
-
 
   try {
 
@@ -1321,7 +1319,6 @@ async function addLead() {
             phone: phone
           }
         ]);
-
 
     if (error) {
 
@@ -1338,17 +1335,12 @@ async function addLead() {
       return;
     }
 
-
     alert(
       "Customer enquiry saved successfully!"
     );
 
-
     document.getElementById("leadName").value = "";
     document.getElementById("leadPhone").value = "";
-
-
-    displayLeads();
 
   } catch (error) {
 
@@ -1366,7 +1358,9 @@ async function addLead() {
 
 }
 
-      </script>
+</script>
+
+
   
 async function displayLeads() {
 
