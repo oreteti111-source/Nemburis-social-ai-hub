@@ -1453,43 +1453,6 @@ displayLeads();
 
 <script>
 
-async function addLead() {
-
-  const name = document.getElementById("leadName").value.trim();
-  const phone = document.getElementById("leadPhone").value.trim();
-
-  if (name === "" || phone === "") {
-    alert("Please enter the customer's name and phone number.");
-    return;
-  }
-
-  const { error } = await supabaseClient
-    .from("leads")
-    .insert([
-      {
-        name: name,
-        phone: phone
-      }
-    ]);
-
-  if (error) {
-    console.error("Save error:", error);
-    alert(
-      "There was a problem saving the enquiry: " +
-      error.message
-    );
-    return;
-  }
-
-  document.getElementById("leadName").value = "";
-  document.getElementById("leadPhone").value = "";
-
-  alert("Customer enquiry saved successfully.");
-
-  displayLeads();
-}
-
-
 async function displayLeads() {
 
   const leadList = document.getElementById("leadList");
