@@ -1364,114 +1364,98 @@ async function addLead() {
 
 async function displayLeads() {
 
-  const leadList =
-    document.getElementById("leadList");
+  const leadList = document.getElementById("leadList");
 
   if (!leadList) {
-    console.error("leadList element not found.");
+    console.error("leadList element not found");
     return;
   }
 
-  leadList.innerHTML =
-    "<p>Loading enquiries...</p>";
+  leadList.innerHTML = "Loading enquiries...";
 
   try {
 
-    const { data: leads, error } =
-      await supabaseClient
-        .from("leads")
-        .select("*");
+    const { data: leads, error } = await supabaseClient
+      .from("leads")
+      .select("*")
+      .order("id", { ascending: false });
 
     if (error) {
 
-      console.error(
-        "Load error:",
-        error
-      );
+      console.error("Display enquiries error:", error);
 
       leadList.innerHTML =
-        "<p>Unable to load enquiries: " +
-        error.message +
-        "</p>";
+        "Unable to load enquiries: " + error.message;
+
+      return;
+    }
+
+    if (!leads || leads.length === 0) {
+
+      leadList.innerHTML =
+        "No enquiries saved yet.";
 
       return;
     }
 
     leadList.innerHTML = "";
 
-    if (!leads || leads.length === 0) {
-
-      leadList.innerHTML =
-        "<p>No enquiries saved yet.</p>";
-
-      return;
-    }
-
     leads.forEach(function(lead) {
 
-      const item =
-        document.createElement("div");
+      const enquiry = document.createElement("div");
 
-      item.style.padding = "15px";
-      item.style.marginBottom = "12px";
-      item.style.border = "1px solid #ddd";
-      item.style.borderRadius = "10px";
-      item.style.background = "white";
-      item.style.textAlign = "left";
+      enquiry.className = "lead-card";
 
-      item.innerHTML =
-        "<h3>" +
-        (lead.name || "No name") +
-        "</h3>" +
+      enquiry.innerHTML = `
+        <h3>${lead.name || "No name"}</h3>
 
-        "<p>📞 Phone: " +
-        (lead.phone || "Not provided") +
-        "</p>" +
+        <p>
+          <strong>Phone:</strong>
+          ${lead.phone || "Not provided"}
+        </p>
 
-        "<p>📧 Email: " +
-        (lead.email || "Not provided") +
-        "</p>" +
+        <p>
+          <strong>Email:</strong>
+          ${lead.email || "Not provided"}
+        </p>
 
-        "<p>🦁 Safari: " +
-        (lead.safari || "Not selected") +
-        "</p>" +
+        <p>
+          <strong>Safari:</strong>
+          ${lead.safari || "Not provided"}
+        </p>
 
-        "<p>📅 Travel Date: " +
-        (lead.travel_date || "Not selected") +
-        "</p>" +
+        <p>
+          <strong>Date:</strong>
+          ${lead.date || "Not provided"}
+        </p>
 
-        "<p>💬 Message: " +
-        (lead.message || "No message") +
-        "</p>" +
+        <p>
+          <strong>Message:</strong>
+          ${lead.message || "No message"}
+        </p>
 
-        "<br>" +
+        <button onclick="deleteLead('${lead.id}')">
+          Delete
+        </button>
+      `;
 
-        "<button onclick=\"deleteLead('" +
-        lead.id +
-        "')\">" +
-        "🗑️ Delete" +
-        "</button>";
-
-      leadList.appendChild(item);
+      leadList.appendChild(enquiry);
 
     });
 
-  } catch (error) {
+  } catch (err) {
 
-    console.error(
-      "FULL LOAD ERROR:",
-      error
-    );
+    console.error("Unexpected display error:", err);
 
     leadList.innerHTML =
-      "<p>Something went wrong while loading enquiries.</p>";
+      "Unable to load enquiries.";
 
   }
 
 }
 
 </script>
-    
+ 
 <script>
 
 async function deleteLead(id) {
