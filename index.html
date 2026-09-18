@@ -1299,6 +1299,18 @@ async function addLead() {
   const phone =
     document.getElementById("leadPhone").value.trim();
 
+  const email =
+    document.getElementById("leadEmail")?.value.trim() || "";
+
+  const safari =
+    document.getElementById("leadSafari")?.value.trim() || "";
+
+  const travelDate =
+    document.getElementById("leadDate")?.value || "";
+
+  const message =
+    document.getElementById("leadMessage")?.value.trim() || "";
+
   if (!name || !phone) {
 
     alert(
@@ -1309,22 +1321,30 @@ async function addLead() {
   }
 
   console.log("Saving enquiry:", {
-    name: name,
-    phone: phone
+    Name: name,
+    Phone: phone,
+    Email: email,
+    Safari: safari,
+    Travel_Date: travelDate,
+    Message: message
   });
 
   try {
 
-    const { data, error } =
+    const { error } =
       await supabaseClient
         .from("Leads")
         .insert([
           {
-            name: name,
-            phone: phone
+            Name: name,
+            Phone: phone,
+            Email: email,
+            Safari: safari,
+            Travel_date: travelDate || null,
+            Message: message,
+            Status: "New"
           }
-        ])
-        .select();
+        ]);
 
     if (error) {
 
@@ -1341,17 +1361,28 @@ async function addLead() {
       return;
     }
 
-    console.log(
-      "Enquiry saved:",
-      data
-    );
-
     alert(
       "Customer enquiry saved successfully!"
     );
 
     document.getElementById("leadName").value = "";
     document.getElementById("leadPhone").value = "";
+
+    if (document.getElementById("leadEmail")) {
+      document.getElementById("leadEmail").value = "";
+    }
+
+    if (document.getElementById("leadSafari")) {
+      document.getElementById("leadSafari").value = "";
+    }
+
+    if (document.getElementById("leadDate")) {
+      document.getElementById("leadDate").value = "";
+    }
+
+    if (document.getElementById("leadMessage")) {
+      document.getElementById("leadMessage").value = "";
+    }
 
     if (typeof displayLeads === "function") {
       displayLeads();
@@ -1374,7 +1405,6 @@ async function addLead() {
 }
 
 </script>
-
 <script>
 
 async function displayLeads() {
