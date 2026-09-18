@@ -1409,14 +1409,16 @@ async function addLead() {
 
 async function displayLeads() {
 
-  const leadList = document.getElementById("leadList");
+  const leadList =
+    document.getElementById("leadList");
 
   if (!leadList) {
     console.error("leadList element not found");
     return;
   }
 
-  leadList.innerHTML = "Loading enquiries...";
+  leadList.innerHTML =
+    "Loading enquiries...";
 
   try {
 
@@ -1424,7 +1426,9 @@ async function displayLeads() {
       await supabaseClient
         .from("Leads")
         .select("*")
-        .order("id", { ascending: false });
+        .order("id", {
+          ascending: false
+        });
 
     if (error) {
 
@@ -1455,37 +1459,46 @@ async function displayLeads() {
       const enquiry =
         document.createElement("div");
 
-      enquiry.className = "lead-card";
+      enquiry.className =
+        "lead-card";
 
       enquiry.innerHTML = `
-        <h3>${lead.name || "No name"}</h3>
+        <h3>
+          ${lead.Name || "No name"}
+        </h3>
 
         <p>
           <strong>Phone:</strong>
-          ${lead.phone || "Not provided"}
+          ${lead.Phone || "Not provided"}
         </p>
 
         <p>
           <strong>Email:</strong>
-          ${lead.email || "Not provided"}
+          ${lead.Email || "Not provided"}
         </p>
 
         <p>
           <strong>Safari:</strong>
-          ${lead.safari || "Not provided"}
+          ${lead.Safari || "Not provided"}
         </p>
 
         <p>
-          <strong>Date:</strong>
-          ${lead.travel_date || "Not provided"}
+          <strong>Travel Date:</strong>
+          ${lead.Travel_date || "Not provided"}
         </p>
 
         <p>
           <strong>Message:</strong>
-          ${lead.message || "No message"}
+          ${lead.Message || "No message"}
         </p>
 
-        <button onclick="deleteLead('${lead.id}')">
+        <p>
+          <strong>Status:</strong>
+          ${lead.Status || "New"}
+        </p>
+
+        <button
+          onclick="deleteLead('${lead.id}')">
           Delete
         </button>
       `;
@@ -1509,8 +1522,6 @@ async function displayLeads() {
 }
 
 </script>
-
- 
 <script>
 
 async function deleteLead(id) {
