@@ -1308,9 +1308,14 @@ async function addLead() {
     return;
   }
 
+  console.log("Saving enquiry:", {
+    name: name,
+    phone: phone
+  });
+
   try {
 
-    const { error } =
+    const { data, error } =
       await supabaseClient
         .from("leads")
         .insert([
@@ -1318,22 +1323,28 @@ async function addLead() {
             name: name,
             phone: phone
           }
-        ]);
+        ])
+        .select();
 
     if (error) {
 
       console.error(
-        "Supabase error:",
+        "SUPABASE SAVE ERROR:",
         error
       );
 
       alert(
-        "Unable to save enquiry: " +
+        "Unable to save enquiry:\n\n" +
         error.message
       );
 
       return;
     }
+
+    console.log(
+      "Enquiry saved:",
+      data
+    );
 
     alert(
       "Customer enquiry saved successfully!"
@@ -1341,6 +1352,10 @@ async function addLead() {
 
     document.getElementById("leadName").value = "";
     document.getElementById("leadPhone").value = "";
+
+    if (typeof displayLeads === "function") {
+      displayLeads();
+    }
 
   } catch (error) {
 
