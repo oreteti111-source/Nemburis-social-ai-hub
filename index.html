@@ -1375,7 +1375,6 @@ async function addLead() {
 
 </script>
 
-
 <script>
 
 async function displayLeads() {
@@ -1391,17 +1390,22 @@ async function displayLeads() {
 
   try {
 
-    const { data: leads, error } = await supabaseClient
-      .from("leads")
-      .select("*")
-      .order("id", { ascending: false });
+    const { data: leads, error } =
+      await supabaseClient
+        .from("Leads")
+        .select("*")
+        .order("id", { ascending: false });
 
     if (error) {
 
-      console.error("Display enquiries error:", error);
+      console.error(
+        "Display enquiries error:",
+        error
+      );
 
       leadList.innerHTML =
-        "Unable to load enquiries: " + error.message;
+        "Unable to load enquiries: " +
+        error.message;
 
       return;
     }
@@ -1418,7 +1422,8 @@ async function displayLeads() {
 
     leads.forEach(function(lead) {
 
-      const enquiry = document.createElement("div");
+      const enquiry =
+        document.createElement("div");
 
       enquiry.className = "lead-card";
 
@@ -1442,7 +1447,7 @@ async function displayLeads() {
 
         <p>
           <strong>Date:</strong>
-          ${lead.date || "Not provided"}
+          ${lead.travel_date || "Not provided"}
         </p>
 
         <p>
@@ -1461,7 +1466,10 @@ async function displayLeads() {
 
   } catch (err) {
 
-    console.error("Unexpected display error:", err);
+    console.error(
+      "Unexpected display error:",
+      err
+    );
 
     leadList.innerHTML =
       "Unable to load enquiries.";
@@ -1471,6 +1479,7 @@ async function displayLeads() {
 }
 
 </script>
+
  
 <script>
 
