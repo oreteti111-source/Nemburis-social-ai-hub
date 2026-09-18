@@ -1290,7 +1290,6 @@ const supabaseClient =
 <!-- LEAD CENTER JAVASCRIPT -->
 
 <script>
-
 async function addLead() {
 
   const name =
@@ -1312,22 +1311,11 @@ async function addLead() {
     document.getElementById("leadMessage")?.value.trim() || "";
 
   if (!name || !phone) {
-
     alert(
       "Please enter the customer's name and phone number."
     );
-
     return;
   }
-
-  console.log("Saving enquiry:", {
-    Name: name,
-    Phone: phone,
-    Email: email,
-    Safari: safari,
-    Travel_Date: travelDate,
-    Message: message
-  });
 
   try {
 
@@ -1336,13 +1324,13 @@ async function addLead() {
         .from("Leads")
         .insert([
           {
-            Name: name,
-            Phone: phone,
-            Email: email,
-            Safari: safari,
-            Travel_date: travelDate || null,
-            Message: message,
-            Status: "New"
+            "Name": name,
+            "Phone": phone,
+            "Email": email,
+            "Safari": safari,
+            "Travel date": travelDate || null,
+            "Message": message,
+            "Status": "New"
           }
         ]);
 
@@ -1368,21 +1356,17 @@ async function addLead() {
     document.getElementById("leadName").value = "";
     document.getElementById("leadPhone").value = "";
 
-    if (document.getElementById("leadEmail")) {
+    if (document.getElementById("leadEmail"))
       document.getElementById("leadEmail").value = "";
-    }
 
-    if (document.getElementById("leadSafari")) {
+    if (document.getElementById("leadSafari"))
       document.getElementById("leadSafari").value = "";
-    }
 
-    if (document.getElementById("leadDate")) {
+    if (document.getElementById("leadDate"))
       document.getElementById("leadDate").value = "";
-    }
 
-    if (document.getElementById("leadMessage")) {
+    if (document.getElementById("leadMessage"))
       document.getElementById("leadMessage").value = "";
-    }
 
     if (typeof displayLeads === "function") {
       displayLeads();
@@ -1399,12 +1383,10 @@ async function addLead() {
       "SAVE ERROR:\n\n" +
       (error.message || error)
     );
-
   }
-
 }
-
 </script>
+
 <script>
 
 async function displayLeads() {
