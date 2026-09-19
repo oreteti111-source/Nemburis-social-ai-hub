@@ -1394,7 +1394,7 @@ async function displayLeads() {
       await supabaseClient
         .from("Leads")
         .select("*")
-        .order("Id", {
+        .order("id", {
           ascending: false
         });
 
@@ -1465,7 +1465,7 @@ async function displayLeads() {
         </p>
 
         <button
-          onclick="deleteLead('${lead.Id}')">
+          onclick="deleteLead('${lead.id}')">
           Delete
         </button>
       `;
