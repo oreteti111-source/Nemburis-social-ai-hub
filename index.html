@@ -1660,6 +1660,13 @@ function updateLeadSummary(leads) {
 
   document.getElementById("completedLeads").textContent =
     completedCount;
+
+updateLeadStatusChart(
+  newCount,
+  contactedCount,
+  confirmedCount,
+  completedCount
+);
   }
 
 function createLeadCard(lead, leadList) {
