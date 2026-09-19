@@ -1318,6 +1318,7 @@ const supabaseClient =
 </script>
 <!-- LEAD CENTER JAVASCRIPT -->
 <script>
+
 async function addLead() {
 
   const name =
@@ -1339,13 +1340,16 @@ async function addLead() {
     document.getElementById("leadMessage")?.value.trim() || "";
 
   if (!name || !phone) {
-    alert("Please enter the customer's name and phone number.");
+
+    alert(
+      "Please enter the customer's name and phone number."
+    );
+
     return;
   }
 
-  try {
-
-    const { error } = await supabaseClient
+  const { error } =
+    await supabaseClient
       .from("Leads")
       .insert([
         {
@@ -1359,50 +1363,339 @@ async function addLead() {
         }
       ]);
 
-    if (error) {
+  if (error) {
 
-      console.error("SUPABASE SAVE ERROR:", error);
-
-      alert(
-        "Unable to save enquiry:\n\n" +
-        error.message
-      );
-
-      return;
-    }
-
-    alert("Customer enquiry saved successfully!");
-
-    document.getElementById("leadName").value = "";
-    document.getElementById("leadPhone").value = "";
-
-    if (document.getElementById("leadEmail"))
-      document.getElementById("leadEmail").value = "";
-
-    if (document.getElementById("leadSafari"))
-      document.getElementById("leadSafari").value = "";
-
-    if (document.getElementById("leadDate"))
-      document.getElementById("leadDate").value = "";
-
-    if (document.getElementById("leadMessage"))
-      document.getElementById("leadMessage").value = "";
-
-    if (typeof displayLeads === "function") {
-      displayLeads();
-    }
-
-  } catch (error) {
-
-    console.error("FULL SAVE ERROR:", error);
+    console.error("SAVE ERROR:", error);
 
     alert(
-      "SAVE ERROR:\n\n" +
-      (error.message || error)
+      "Unable to save enquiry:\n\n" +
+      error.message
     );
+
+    return;
   }
+
+  alert("Customer enquiry saved successfully!");
+
+  document.getElementById("leadName").value = "";
+  document.getElementById("leadPhone").value = "";
+
+  if (document.getElementById("leadEmail"))
+    document.getElementById("leadEmail").value = "";
+
+  if (document.getElementById("leadSafari"))
+    document.getElementById("leadSafari").value = "";
+
+  if (document.getElementById("leadDate"))
+    document.getElementById("leadDate").value = "";
+
+  if (document.getElementById("leadMessage"))
+    document.getElementById("leadMessage").value = "";
+
+  displayLeads();
 }
+
+
+async function displayLeads() {
+
+  const leadList =
+    document.getElementById("leadList");
+
+  if (!leadList) {
+    console.error("leadList not found");
+    return;
+  }
+
+  leadList.innerHTML =
+    "Loading enquiries...";
+
+  const { data: leads, error } =
+    await supabaseClient
+      .from("Leads")
+      .select("*")
+      .order("id", {
+        ascending: false
+      });
+
+  if (error) {
+
+    console.error("LOAD ERROR:", error);
+
+    leadList.innerHTML =
+      "Unable to load enquiries: " +
+      error.message;
+
+    return;
+  }
+
+  if (!leads || leads.length === 0) {
+
+    leadList.innerHTML =
+      "No enquiries saved yet.";
+
+    return;
+  }
+
+  leadList.innerHTML = "";
+
+  leads.forEach(function(lead) {
+
+    createLeadCard(lead, leadList);
+
+  });
+}
+
+
+function createLeadCard(lead, leadList) {
+
+  const enquiry =
+    document.createElement("div");
+
+  enquiry.className =
+    "lead-card";
+
+  enquiry.style =
+    "padding:15px;margin:15px 0;background:white;border-radius:8px;text-align:left;";
+
+  enquiry.innerHTML = `
+
+    <h3>
+      ${lead.Name || "No name"}
+    </h3>
+
+    <p>
+      <strong>Phone:</strong>
+      ${lead.Phone || "Not provided"}
+    </p>
+
+    <p>
+      <strong>Email:</strong>
+      ${lead.Email || "Not provided"}
+    </p>
+
+    <p>
+      <strong>Safari:</strong>
+      ${lead.Safari || "Not provided"}
+    </p>
+
+    <p>
+      <strong>Travel Date:</strong>
+      ${lead.Travel_date || "Not provided"}
+    </p>
+
+    <p>
+      <strong>Message:</strong>
+      ${lead.Message || "No message"}
+    </p>
+
+    <p>
+      <strong>Status:</strong>
+
+      <select
+        onchange="updateLeadStatus('${lead.id}', this.value)"
+        style="padding:6px;margin-left:5px;"
+      >
+
+        <option value="New"
+          ${lead.Status === "New" ? "selected" : ""}>
+          New
+        </option>
+
+        <option value="Contacted"
+          ${lead.Status === "Contacted" ? "selected" : ""}>
+          Contacted
+        </option>
+
+        <option value="Confirmed"
+          ${lead.Status === "Confirmed" ? "selected" : ""}>
+          Confirmed
+        </option>
+
+        <option value="Completed"
+          ${lead.Status === "Completed" ? "selected" : ""}>
+          Completed
+        </option>
+
+      </select>
+
+    </p>
+
+    <a
+      href="https://wa.me/${(lead.Phone || "").replace(/\D/g, "")}"
+      target="_blank"
+      style="
+        display:inline-block;
+        margin:5px;
+        padding:8px 12px;
+        background:#25D366;
+        color:white;
+        text-decoration:none;
+        border-radius:6px;
+      "
+    >
+      WhatsApp
+    </a>
+
+    <button
+      onclick="deleteLead('${lead.id}')"
+      style="margin:5px;padding:8px 12px;"
+    >
+      Delete
+    </button>
+
+  `;
+
+  leadList.appendChild(enquiry);
+}
+
+
+async function searchLeads() {
+
+  const searchInput =
+    document.getElementById("leadSearch");
+
+  const leadList =
+    document.getElementById("leadList");
+
+  if (!searchInput || !leadList) {
+    return;
+  }
+
+  const search =
+    searchInput.value.trim().toLowerCase();
+
+  const { data: leads, error } =
+    await supabaseClient
+      .from("Leads")
+      .select("*")
+      .order("id", {
+        ascending: false
+      });
+
+  if (error) {
+
+    console.error("SEARCH ERROR:", error);
+
+    leadList.innerHTML =
+      "Unable to search enquiries: " +
+      error.message;
+
+    return;
+  }
+
+  const results =
+    search
+      ? leads.filter(function(lead) {
+
+          return (
+            (lead.Name || "").toLowerCase().includes(search) ||
+            (lead.Phone || "").toLowerCase().includes(search) ||
+            (lead.Email || "").toLowerCase().includes(search) ||
+            (lead.Safari || "").toLowerCase().includes(search)
+          );
+
+        })
+      : leads;
+
+  leadList.innerHTML = "";
+
+  if (results.length === 0) {
+
+    leadList.innerHTML =
+      "No matching enquiries found.";
+
+    return;
+  }
+
+  results.forEach(function(lead) {
+
+    createLeadCard(lead, leadList);
+
+  });
+}
+
+
+async function updateLeadStatus(id, newStatus) {
+
+  const { error } =
+    await supabaseClient
+      .from("Leads")
+      .update({
+        "Status": newStatus
+      })
+      .eq("id", id);
+
+  if (error) {
+
+    console.error(
+      "STATUS UPDATE ERROR:",
+      error
+    );
+
+    alert(
+      "Unable to update status:\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+  alert(
+    "Status updated successfully!"
+  );
+
+  displayLeads();
+}
+
+
+async function deleteLead(id) {
+
+  if (!confirm(
+    "Delete this customer enquiry?"
+  )) {
+    return;
+  }
+
+  const { error } =
+    await supabaseClient
+      .from("Leads")
+      .delete()
+      .eq("id", id);
+
+  if (error) {
+
+    console.error(
+      "DELETE ERROR:",
+      error
+    );
+
+    alert(
+      "Unable to delete the enquiry:\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+  alert(
+    "Customer enquiry deleted successfully!"
+  );
+
+  displayLeads();
+}
+
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    displayLeads();
+
+  }
+);
+
 </script>
+
 <script>
 
 async function displayLeads() {
