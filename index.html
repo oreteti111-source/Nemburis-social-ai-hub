@@ -1386,8 +1386,7 @@ async function displayLeads() {
     return;
   }
 
-  leadList.innerHTML =
-    "Loading enquiries...";
+  leadList.innerHTML = "Loading enquiries...";
 
   try {
 
@@ -1395,7 +1394,7 @@ async function displayLeads() {
       await supabaseClient
         .from("Leads")
         .select("*")
-        .order("id", {
+        .order("Id", {
           ascending: false
         });
 
@@ -1428,8 +1427,7 @@ async function displayLeads() {
       const enquiry =
         document.createElement("div");
 
-      enquiry.className =
-        "lead-card";
+      enquiry.className = "lead-card";
 
       enquiry.innerHTML = `
         <h3>
@@ -1467,7 +1465,7 @@ async function displayLeads() {
         </p>
 
         <button
-          onclick="deleteLead('${lead.id}')">
+          onclick="deleteLead('${lead.Id}')">
           Delete
         </button>
       `;
