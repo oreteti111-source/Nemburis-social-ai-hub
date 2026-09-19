@@ -1459,11 +1459,32 @@ async function displayLeads() {
           ${lead.Message || "No message"}
         </p>
 
-        <p>
-          <strong>Status:</strong>
-          ${lead.Status || "New"}
-        </p>
+<p>
+  <strong>Status:</strong>
 
+  <select
+    onchange="updateLeadStatus('${lead.id}', this.value)"
+    style="padding:6px; margin-left:5px;"
+  >
+
+    <option value="New" ${lead.Status === "New" ? "selected" : ""}>
+      New
+    </option>
+
+    <option value="Contacted" ${lead.Status === "Contacted" ? "selected" : ""}>
+      Contacted
+    </option>
+
+    <option value="Confirmed" ${lead.Status === "Confirmed" ? "selected" : ""}>
+      Confirmed
+    </option>
+
+    <option value="Completed" ${lead.Status === "Completed" ? "selected" : ""}>
+      Completed
+    </option>
+
+  </select>
+</p>
         <a
   href="https://wa.me/${(lead.Phone || '').replace(/\D/g, '')}"
   target="_blank"
