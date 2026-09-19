@@ -1288,7 +1288,6 @@ const supabaseClient =
 
 </script>
 <!-- LEAD CENTER JAVASCRIPT -->
-
 <script>
 async function addLead() {
 
@@ -1311,35 +1310,29 @@ async function addLead() {
     document.getElementById("leadMessage")?.value.trim() || "";
 
   if (!name || !phone) {
-    alert(
-      "Please enter the customer's name and phone number."
-    );
+    alert("Please enter the customer's name and phone number.");
     return;
   }
 
   try {
 
-    const { error } =
-      await supabaseClient
-        .from("Leads")
-        .insert([
-          {
-            "Name": name,
-            "Phone": phone,
-            "Email": email,
-            "Safari": safari,
-            "Travel date": travelDate || null,
-            "Message": message,
-            "Status": "New"
-          }
-        ]);
+    const { error } = await supabaseClient
+      .from("Leads")
+      .insert([
+        {
+          "Name": name,
+          "Phone": phone,
+          "Email": email,
+          "Safari": safari,
+          "Travel_date": travelDate || null,
+          "Message": message,
+          "Status": "New"
+        }
+      ]);
 
     if (error) {
 
-      console.error(
-        "SUPABASE SAVE ERROR:",
-        error
-      );
+      console.error("SUPABASE SAVE ERROR:", error);
 
       alert(
         "Unable to save enquiry:\n\n" +
@@ -1349,9 +1342,7 @@ async function addLead() {
       return;
     }
 
-    alert(
-      "Customer enquiry saved successfully!"
-    );
+    alert("Customer enquiry saved successfully!");
 
     document.getElementById("leadName").value = "";
     document.getElementById("leadPhone").value = "";
@@ -1374,10 +1365,7 @@ async function addLead() {
 
   } catch (error) {
 
-    console.error(
-      "FULL SAVE ERROR:",
-      error
-    );
+    console.error("FULL SAVE ERROR:", error);
 
     alert(
       "SAVE ERROR:\n\n" +
@@ -1386,7 +1374,6 @@ async function addLead() {
   }
 }
 </script>
-
 <script>
 
 async function displayLeads() {
