@@ -1593,11 +1593,13 @@ async function displayLeads() {
 
   leadList.innerHTML = "";
 
-  leads.forEach(function(lead) {
+  updateLeadSummary(leads);
 
-    createLeadCard(lead, leadList);
+leads.forEach(function(lead) {
 
-  });
+  createLeadCard(lead, leadList);
+
+});
 }
 
 
