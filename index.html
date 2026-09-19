@@ -1582,7 +1582,7 @@ async function updateLeadStatus(id, newStatus) {
 
   displayLeads();
 }
-  async function searchLeads() {
+ async function searchLeads() {
 
   const searchInput =
     document.getElementById("leadSearch");
@@ -1592,11 +1592,6 @@ async function updateLeadStatus(id, newStatus) {
 
   const search =
     searchInput.value.trim().toLowerCase();
-
-  if (!search) {
-    displayLeads();
-    return;
-  }
 
   const { data: leads, error } =
     await supabaseClient
@@ -1608,34 +1603,32 @@ async function updateLeadStatus(id, newStatus) {
 
   if (error) {
 
-    console.error(
-      "Search error:",
-      error
-    );
+    console.error("Search error:", error);
 
     leadList.innerHTML =
-      "Unable to search enquiries: " +
+      "Unable to load enquiries: " +
       error.message;
 
     return;
   }
 
-  const results =
-    leads.filter(function(lead) {
+  const results = search
+    ? leads.filter(function(lead) {
 
-      return (
-        (lead.Name || "").toLowerCase().includes(search) ||
-        (lead.Phone || "").toLowerCase().includes(search) ||
-        (lead.Email || "").toLowerCase().includes(search) ||
-        (lead.Safari || "").toLowerCase().includes(search)
-      );
+        return (
+          (lead.Name || "").toLowerCase().includes(search) ||
+          (lead.Phone || "").toLowerCase().includes(search) ||
+          (lead.Email || "").toLowerCase().includes(search) ||
+          (lead.Safari || "").toLowerCase().includes(search)
+        );
 
-    });
+      })
+    : leads;
 
   if (results.length === 0) {
 
     leadList.innerHTML =
-      "No matching enquiries found.";
+      "No enquiries found.";
 
     return;
   }
@@ -1651,9 +1644,7 @@ async function updateLeadStatus(id, newStatus) {
 
     enquiry.innerHTML = `
 
-      <h3>
-        ${lead.Name || "No name"}
-      </h3>
+      <h3>${lead.Name || "No name"}</h3>
 
       <p>
         <strong>Phone:</strong>
@@ -1711,8 +1702,8 @@ async function updateLeadStatus(id, newStatus) {
 
   });
 
-  }
-</script>
+        }
+
 <script>
 
 async function deleteLead(id) {
