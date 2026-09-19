@@ -1179,17 +1179,7 @@ document.getElementById("planTopic").value = "";
 document.getElementById("planDate").value = "";
 </script>
 
-
 <!-- NEMBURIS LEAD CENTER -->
-
-<section id="lead-center"
-  style="padding:40px 20px;text-align:center;background:#f5f5f5;">
-
-  <h2>💬 NEMBURIS LEAD CENTER</h2>
-
-  <p>Capture and organize potential safari customers.</p>
-
-  <!-- NEW CUSTOMER ENQUIRY -->
 
 <section id="lead-center"
   style="padding:40px 20px;text-align:center;background:#f5f5f5;">
@@ -1277,7 +1267,41 @@ document.getElementById("planDate").value = "";
 
   </div>
 
+
+  <!-- CUSTOMER ENQUIRIES -->
+
+  <div class="tour-card">
+
+    <h3>📋 Customer Enquiries</h3>
+
+    <input
+      type="text"
+      id="leadSearch"
+      placeholder="🔍 Search customer, phone, email or safari..."
+      oninput="searchLeads()"
+      style="
+        width:90%;
+        padding:12px;
+        margin:8px 0;
+        box-sizing:border-box;
+        border:1px solid #ccc;
+        border-radius:6px;
+      "
+    >
+
+    <div id="leadList">
+      Loading enquiries...
+    </div>
+
+  </div>
+
 </section>
+
+After pasting, save the GitHub file and refresh the website.
+
+You should now have one NEMBURIS LEAD CENTER, one New Customer Enquiry, and one Customer Enquiries/Search section.
+
+
 
 <!-- SUPABASE CONNECTION -->
 
