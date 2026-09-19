@@ -1523,7 +1523,30 @@ async function displayLeads() {
   }
 
 }
+async function updateLeadStatus(id, newStatus) {
 
+  const { error } = await supabaseClient
+    .from("Leads")
+    .update({
+      "Status": newStatus
+    })
+    .eq("id", id);
+
+  if (error) {
+    console.error("Status update error:", error);
+
+    alert(
+      "Unable to update status:\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+  alert("Status updated successfully!");
+
+  displayLeads();
+}
 </script>
 <script>
 
