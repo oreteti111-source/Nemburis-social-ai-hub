@@ -1601,7 +1601,46 @@ leads.forEach(function(lead) {
 
 });
 }
+function updateLeadSummary(leads) {
 
+  const total =
+    leads.length;
+
+  const newCount =
+    leads.filter(function(lead) {
+      return lead.Status === "New";
+    }).length;
+
+  const contactedCount =
+    leads.filter(function(lead) {
+      return lead.Status === "Contacted";
+    }).length;
+
+  const confirmedCount =
+    leads.filter(function(lead) {
+      return lead.Status === "Confirmed";
+    }).length;
+
+  const completedCount =
+    leads.filter(function(lead) {
+      return lead.Status === "Completed";
+    }).length;
+
+  document.getElementById("totalLeads").textContent =
+    total;
+
+  document.getElementById("newLeads").textContent =
+    newCount;
+
+  document.getElementById("contactedLeads").textContent =
+    contactedCount;
+
+  document.getElementById("confirmedLeads").textContent =
+    confirmedCount;
+
+  document.getElementById("completedLeads").textContent =
+    completedCount;
+  }
 
 function createLeadCard(lead, leadList) {
 
