@@ -1630,6 +1630,9 @@ updateFollowUpList(leads);
   }
   function updateFollowUpList(leads) {
 
+  const followUpCount =
+    document.getElementById("followUpCount");
+
   const followUpList =
     document.getElementById("followUpList");
 
@@ -1647,6 +1650,15 @@ updateFollowUpList(leads);
 
     });
 
+  /* UPDATE FOLLOW-UP NUMBER */
+
+  if (followUpCount) {
+    followUpCount.textContent =
+      followUps.length;
+  }
+
+  /* NO FOLLOW-UPS */
+
   if (followUps.length === 0) {
 
     followUpList.innerHTML =
@@ -1655,6 +1667,8 @@ updateFollowUpList(leads);
     return;
   }
 
+  /* DISPLAY FOLLOW-UPS */
+
   followUpList.innerHTML = "";
 
   followUps.forEach(function(lead) {
@@ -1662,43 +1676,53 @@ updateFollowUpList(leads);
     const item =
       document.createElement("div");
 
-    item.style =
-      "padding:12px;margin:10px 0;background:#f5f5f5;border-radius:8px;text-align:left;";
+    item.style.cssText = `
+      padding:15px;
+      margin-bottom:12px;
+      border-radius:10px;
+      background:#f5f5f5;
+      border:1px solid #ddd;
+    `;
 
     item.innerHTML = `
 
-      <strong>${lead.Name || "No name"}</strong>
+      <strong>
+        ${lead.Name || "Customer"}
+      </strong>
 
       <p>
-        📞 ${lead.Phone || "No phone"}
+        📞 ${lead.Phone || ""}
       </p>
-
-<p>
-  🦁 ${lead.Safari || "No safari selected"}
-</p>
-
-<p>
-  📅 Travel Date: ${lead.Travel_date || "Not provided"}
-</p>
 
       <p>
-        Status: ${lead.Status || "New"}
+        🦁 ${lead.Safari || ""}
       </p>
 
-      <a
-        href="https://wa.me/${(lead.Phone || "").replace(/\D/g, "")}"
-        target="_blank"
+      <p>
+        📅 Travel Date:
+        ${lead.Travel_date || ""}
+      </p>
+
+      <p>
+        Status:
+        <strong>${lead.Status || "New"}</strong>
+      </p>
+
+      <button
+        type="button"
+        onclick="window.open('https://wa.me/${(lead.Phone || '').replace(/[^0-9]/g, '')}','_blank')"
         style="
-          display:inline-block;
-          padding:7px 12px;
+          padding:9px 14px;
+          border:none;
+          border-radius:8px;
           background:#25D366;
           color:white;
-          text-decoration:none;
-          border-radius:6px;
+          font-weight:bold;
+          cursor:pointer;
         "
       >
         WhatsApp Customer
-      </a>
+      </button>
 
     `;
 
