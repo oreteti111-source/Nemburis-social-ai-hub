@@ -1280,17 +1280,41 @@ document.getElementById("planDate").value = "";
     "
   >
     Loading chart...
-  </div>
-
 <!-- FOLLOW-UP PANEL -->
 
 <div class="tour-card">
 
-  <h3>📞 Customers Needing Follow-Up</h3>
+  <button
+    type="button"
+    onclick="toggleFollowUpPanel()"
+    style="
+      width:100%;
+      padding:16px;
+      border:none;
+      border-radius:12px;
+      background:#1f6f43;
+      color:white;
+      font-size:17px;
+      font-weight:bold;
+      cursor:pointer;
+      text-align:left;
+    "
+  >
+    📞 Customers Needing Follow-Up
+    <span style="float:right;">▼</span>
+  </button>
 
-  <div id="followUpList">
+  <div
+    id="followUpList"
+    style="
+      display:none;
+      margin-top:12px;
+    "
+  >
     Loading follow-ups...
   </div>
+
+</div>
 
 </div>
 
