@@ -1269,28 +1269,29 @@ document.getElementById("planDate").value = "";
 
 <div class="tour-card">
 
-  <h3>📈 Lead Status Overview</h3>
+<h3>📈 Lead Status Overview</h3>
 
-  <div
-    id="leadStatusChart"
-    style="
-      max-width:600px;
-      margin:20px auto;
-      text-align:left;
-    "
-  >
-    Loading chart...
+<div
+  id="leadStatusChart"
+  style="
+    max-width:600px;
+    margin:20px auto;
+    text-align:left;
+  "
+>
+  Loading chart...
+</div>
+
 <!-- FOLLOW-UP PANEL -->
 
-<div class="tour-card">
+<div class="tour-card" id="followUpPanel">
 
-  <button
-    type="button"
+  <div
     onclick="toggleFollowUpPanel()"
     style="
       width:100%;
       padding:16px 18px;
-      border:none;
+      box-sizing:border-box;
       border-radius:12px;
       background:#1f6f43;
       color:white;
@@ -1301,20 +1302,16 @@ document.getElementById("planDate").value = "";
     "
   >
     📞 Customers Needing Follow-Up
-    <span style="float:right;">▼</span>
-  </button>
+    <span id="followUpArrow" style="float:right;">▼</span>
+  </div>
 
   <div
     id="followUpList"
     style="display:none; margin-top:15px;"
   >
-    Loading follow-ups...
   </div>
 
 </div>
-
-</div>
-
 
 <!-- NEW CUSTOMER ENQUIRY -->
 
