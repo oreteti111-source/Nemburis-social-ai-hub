@@ -1753,20 +1753,20 @@ function updateFollowUpList(leads) {
 
 /* MARK CUSTOMER AS CONTACTED */
 
-async function markLeadContacted(id) {
+async function markLeadContacted(phone) {
 
-  if (!id) {
-    alert("Customer ID is missing.");
+  if (!phone) {
+    alert("Customer phone number is missing.");
     return;
   }
 
   const { error } =
-  await supabaseClient
-    .from("Leads")
-    .update({
-      Status: "Contacted"
-    })
-    .eq("id", id);
+    await supabaseClient
+      .from("Leads")
+      .update({
+        Status: "Contacted"
+      })
+      .eq("Phone", phone);
 
   if (error) {
 
@@ -1783,17 +1783,6 @@ async function markLeadContacted(id) {
   alert("Customer marked as Contacted.");
 
   displayLeads();
-  }
-  function toggleFollowUpPanel() {
-
-  const panel = document.getElementById("followUpList");
-
-  if (!panel) return;
-
-  if (panel.style.display === "none") {
-    panel.style.display = "block";
-  } else {
-    panel.style.display = "none";
   }
 
                                                          }
