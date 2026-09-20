@@ -1543,12 +1543,12 @@ async function displayLeads() {
     "Loading enquiries...";
 
   const { data: leads, error } =
-    await supabaseClient
-      .from("Leads")
-      .select("*")
-      .order("id", {
-        ascending: false
-      });
+  await supabaseClient
+    .from("Leads")
+    .select("*")
+    .order("Id", {
+      ascending: false
+    });
 
   if (error) {
 
