@@ -1766,14 +1766,14 @@ function toggleFollowUpPanel() {
     panel.style.display = "block";
   } else {
     panel.style.display = "none";
-  }
-  }
+}
+
 /* MARK CUSTOMER AS CONTACTED */
 
-async function markLeadContacted(phone) {
+async function markLeadContacted(id) {
 
-  if (!phone) {
-    alert("Customer phone number is missing.");
+  if (!id) {
+    alert("Customer ID is missing.");
     return;
   }
 
@@ -1783,10 +1783,9 @@ async function markLeadContacted(phone) {
       .update({
         Status: "Contacted"
       })
-      .eq("Phone", phone);
+      .eq("Id", id);
 
   if (error) {
-
     console.error("Status update error:", error);
 
     alert(
@@ -1800,8 +1799,7 @@ async function markLeadContacted(phone) {
   alert("Customer marked as Contacted.");
 
   displayLeads();
-  }
-
+}
                                                          }
 function updateLeadStatusChart(
   newCount,
