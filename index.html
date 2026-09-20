@@ -1761,12 +1761,12 @@ async function markLeadContacted(id) {
   }
 
   const { error } =
-    await supabaseClient
-      .from("Leads")
-      .update({
-        Status: "Contacted"
-      })
-      .eq("Id", id);
+  await supabaseClient
+    .from("Leads")
+    .update({
+      Status: "Contacted"
+    })
+    .eq("id", id);
 
   if (error) {
 
