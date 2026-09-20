@@ -1628,7 +1628,7 @@ updateLeadStatusChart(
 
 updateFollowUpList(leads);
   }
-  function updateFollowUpList(leads) {
+function updateFollowUpList(leads) {
 
   const followUpCount =
     document.getElementById("followUpCount");
@@ -1719,9 +1719,27 @@ updateFollowUpList(leads);
           color:white;
           font-weight:bold;
           cursor:pointer;
+          margin-right:6px;
         "
       >
         WhatsApp Customer
+      </button>
+
+      <button
+        type="button"
+        onclick="markLeadContacted('${lead.Id}')"
+        style="
+          padding:9px 14px;
+          border:none;
+          border-radius:8px;
+          background:#1f6f43;
+          color:white;
+          font-weight:bold;
+          cursor:pointer;
+          margin-top:8px;
+        "
+      >
+        📞 Mark Contacted
       </button>
 
     `;
@@ -1730,6 +1748,41 @@ updateFollowUpList(leads);
 
   });
 
+}
+
+
+/* MARK CUSTOMER AS CONTACTED */
+
+async function markLeadContacted(id) {
+
+  if (!id) {
+    alert("Customer ID is missing.");
+    return;
+  }
+
+  const { error } =
+    await supabaseClient
+      .from("Leads")
+      .update({
+        Status: "Contacted"
+      })
+      .eq("Id", id);
+
+  if (error) {
+
+    console.error("Status update error:", error);
+
+    alert(
+      "Unable to update customer status: " +
+      error.message
+    );
+
+    return;
+  }
+
+  alert("Customer marked as Contacted.");
+
+  displayLeads();
   }
   function toggleFollowUpPanel() {
 
