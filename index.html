@@ -1614,6 +1614,9 @@ async function displayLeads() {
       err.message;
   }
   }
+  document.addEventListener("DOMContentLoaded", function () {
+  displayLeads();
+});
 function updateLeadSummary(leads) {
 
   const total =
