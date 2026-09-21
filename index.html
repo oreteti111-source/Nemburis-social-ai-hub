@@ -2058,9 +2058,9 @@ function createLeadCard(lead, leadList) {
       <strong>Status:</strong>
 
       <select
-        onchange="updateLeadStatus('${lead.id}', this.value)"
-        style="padding:6px;margin-left:5px;"
-      >
+  onchange="updateLeadStatus('${lead.Id}', this.value)"
+  style="padding:6px;margin-left:5px;"
+>
 
         <option value="New"
           ${lead.Status === "New" ? "selected" : ""}>
@@ -2078,9 +2078,9 @@ function createLeadCard(lead, leadList) {
         </option>
 
         <option value="Completed"
-          ${lead.Status === "Completed" ? "selected" : ""}>
-          Completed
-        </option>
+  ${lead.Status === "Completed" ? "selected" : ""}>
+  Completed
+</option>
 
       </select>
 
