@@ -2263,7 +2263,6 @@ document.addEventListener(
 </script>
 
 <script>
-
 async function displayLeads() {
 
   const leadList =
@@ -2274,7 +2273,8 @@ async function displayLeads() {
     return;
   }
 
-  leadList.innerHTML = "Loading enquiries...";
+  leadList.innerHTML =
+    "Loading enquiries...";
 
   try {
 
@@ -2282,7 +2282,7 @@ async function displayLeads() {
       await supabaseClient
         .from("Leads")
         .select("*")
-        .order("id", {
+        .order("Id", {
           ascending: false
         });
 
@@ -2315,83 +2315,78 @@ async function displayLeads() {
       const enquiry =
         document.createElement("div");
 
-      enquiry.className = "lead-card";
+      enquiry.style.cssText = `
+        padding:15px;
+        margin-bottom:12px;
+        border-radius:10px;
+        background:#f5f5f5;
+        border:1px solid #ddd;
+        text-align:left;
+      `;
 
       enquiry.innerHTML = `
-        <h3>
-          ${lead.Name || "No name"}
-        </h3>
+        <strong>${lead.Name || "Customer"}</strong>
+
+        <p>📞 ${lead.Phone || ""}</p>
+
+        <p>📧 ${lead.Email || ""}</p>
+
+        <p>🦁 ${lead.Safari || ""}</p>
+
+        <p>📅 Travel Date: ${lead.Travel_date || ""}</p>
 
         <p>
-          <strong>Phone:</strong>
-          ${lead.Phone || "Not provided"}
+          Status:
+          <select
+            onchange="updateLeadStatus('${lead.Id}', this.value)"
+            style="padding:6px;border-radius:5px;"
+          >
+            <option value="New" ${lead.Status === "New" ? "selected" : ""}>
+              New
+            </option>
+
+            <option value="Contacted" ${lead.Status === "Contacted" ? "selected" : ""}>
+              Contacted
+            </option>
+
+            <option value="Confirmed" ${lead.Status === "Confirmed" ? "selected" : ""}>
+              Confirmed
+            </option>
+
+            <option value="Completed" ${lead.Status === "Completed" ? "selected" : ""}>
+              Completed
+            </option>
+          </select>
         </p>
 
-        <p>
-          <strong>Email:</strong>
-          ${lead.Email || "Not provided"}
-        </p>
-
-        <p>
-          <strong>Safari:</strong>
-          ${lead.Safari || "Not provided"}
-        </p>
-
-        <p>
-          <strong>Travel Date:</strong>
-          ${lead.Travel_date || "Not provided"}
-        </p>
-
-        <p>
-          <strong>Message:</strong>
-          ${lead.Message || "No message"}
-        </p>
-
-<p>
-  <strong>Status:</strong>
-
-  <select
-    onchange="updateLeadStatus('${lead.id}', this.value)"
-    style="padding:6px; margin-left:5px;"
-  >
-
-    <option value="New" ${lead.Status === "New" ? "selected" : ""}>
-      New
-    </option>
-
-    <option value="Contacted" ${lead.Status === "Contacted" ? "selected" : ""}>
-      Contacted
-    </option>
-
-    <option value="Confirmed" ${lead.Status === "Confirmed" ? "selected" : ""}>
-      Confirmed
-    </option>
-
-    <option value="Completed" ${lead.Status === "Completed" ? "selected" : ""}>
-      Completed
-    </option>
-
-  </select>
-</p>
         <a
-  href="https://wa.me/${(lead.Phone || '').replace(/\D/g, '')}"
-  target="_blank"
-  style="
-    display:inline-block;
-    margin-right:10px;
-    padding:8px 12px;
-    background:#25D366;
-    color:white;
-    text-decoration:none;
-    border-radius:6px;
-  ">
-  WhatsApp
-</a>
+          href="https://wa.me/${(lead.Phone || '').replace(/\\D/g, '')}"
+          target="_blank"
+          style="
+            display:inline-block;
+            margin-right:10px;
+            padding:8px 12px;
+            background:#25D366;
+            color:white;
+            text-decoration:none;
+            border-radius:6px;
+          "
+        >
+          WhatsApp
+        </a>
 
-<button
-  onclick="deleteLead('${lead.id}')">
-  Delete
-</button>
+        <button
+          type="button"
+          onclick="deleteLead('${lead.Id}')"
+          style="
+            padding:8px 12px;
+            border:0;
+            border-radius:6px;
+            cursor:pointer;
+          "
+        >
+          Delete
+        </button>
       `;
 
       leadList.appendChild(enquiry);
@@ -2406,22 +2401,38 @@ async function displayLeads() {
     );
 
     leadList.innerHTML =
-      "Unable to load enquiries.";
-
+      "Unable to load enquiries: " +
+      err.message;
   }
-
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  displayLeads();
+});
+</script>
+<script>
+
 async function updateLeadStatus(id, newStatus) {
 
-  const { error } = await supabaseClient
-    .from("Leads")
-    .update({
-      "Status": newStatus
-    })
-    .eq("id", id);
+  if (!id) {
+    alert("Customer ID is missing.");
+    return;
+  }
+
+  const { error } =
+    await supabaseClient
+      .from("Leads")
+      .update({
+        Status: newStatus
+      })
+      .eq("Id", id);
 
   if (error) {
-    console.error("Status update error:", error);
+
+    console.error(
+      "Status update error:",
+      error
+    );
 
     alert(
       "Unable to update status:\n\n" +
@@ -2435,13 +2446,19 @@ async function updateLeadStatus(id, newStatus) {
 
   displayLeads();
 }
- async function searchLeads() {
+
+
+async function searchLeads() {
 
   const searchInput =
     document.getElementById("leadSearch");
 
   const leadList =
     document.getElementById("leadList");
+
+  if (!searchInput || !leadList) {
+    return;
+  }
 
   const search =
     searchInput.value.trim().toLowerCase();
@@ -2450,13 +2467,16 @@ async function updateLeadStatus(id, newStatus) {
     await supabaseClient
       .from("Leads")
       .select("*")
-      .order("id", {
+      .order("Id", {
         ascending: false
       });
 
   if (error) {
 
-    console.error("Search error:", error);
+    console.error(
+      "Search error:",
+      error
+    );
 
     leadList.innerHTML =
       "Unable to load enquiries: " +
@@ -2545,7 +2565,8 @@ async function updateLeadStatus(id, newStatus) {
       </a>
 
       <button
-        onclick="deleteLead('${lead.id}')">
+        type="button"
+        onclick="deleteLead('${lead.Id}')">
         Delete
       </button>
 
@@ -2555,8 +2576,9 @@ async function updateLeadStatus(id, newStatus) {
 
   });
 
-        }
+}
 
+</script>
 <script>
 
 async function deleteLead(id) {
@@ -2568,7 +2590,7 @@ async function deleteLead(id) {
   const { error } = await supabaseClient
     .from("Leads")
     .delete()
-    .eq("id", id);
+    .eq("Id", id);
 
   if (error) {
 
