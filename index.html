@@ -2262,19 +2262,44 @@ document.addEventListener(
 
 </script>
 
+        <p>📅 Travel Date: ${lead.Travel_date || ""}</p>
+
+        <p>
+          Status:
+          <select
+            onchange="updateLeadStatus('${lead.Id}', this.value)"
+            style="padding:6px;border-radius:5px;"
+          >
+            <option value="New" ${lead.Status === "New" ? "selected" : ""}>
+              New
+            </option>
+
+            <option value="Contacted" ${lead.Status === "Contacted" ? "selected" : ""}>
+              Contacted
+            </option>
+
+            <option value="Confirmed" ${lead.Status === "Confirmed" ? "selected" : ""}>
+              Confirmed
+            </option>
+
+            <option value="Completed" ${lead.Status === "Completed" ? "selected" : ""}>
+              Completed
+            </option>
+          </select>
+        </p>
+
+<script>
 <script>
 async function displayLeads() {
 
-  const leadList =
-    document.getElementById("leadList");
+  const leadList = document.getElementById("leadList");
 
   if (!leadList) {
     console.error("leadList element not found");
     return;
   }
 
-  leadList.innerHTML =
-    "Loading enquiries...";
+  leadList.innerHTML = "Loading enquiries...";
 
   try {
 
@@ -2282,7 +2307,7 @@ async function displayLeads() {
       await supabaseClient
         .from("Leads")
         .select("*")
-        .order("Id", {
+        .order("id", {
           ascending: false
         });
 
@@ -2337,30 +2362,37 @@ async function displayLeads() {
 
         <p>
           Status:
+
           <select
-            onchange="updateLeadStatus('${lead.Id}', this.value)"
+            onchange="updateLeadStatus('${lead.id}', this.value)"
             style="padding:6px;border-radius:5px;"
           >
-            <option value="New" ${lead.Status === "New" ? "selected" : ""}>
+
+            <option value="New"
+              ${lead.Status === "New" ? "selected" : ""}>
               New
             </option>
 
-            <option value="Contacted" ${lead.Status === "Contacted" ? "selected" : ""}>
+            <option value="Contacted"
+              ${lead.Status === "Contacted" ? "selected" : ""}>
               Contacted
             </option>
 
-            <option value="Confirmed" ${lead.Status === "Confirmed" ? "selected" : ""}>
+            <option value="Confirmed"
+              ${lead.Status === "Confirmed" ? "selected" : ""}>
               Confirmed
             </option>
 
-            <option value="Completed" ${lead.Status === "Completed" ? "selected" : ""}>
+            <option value="Completed"
+              ${lead.Status === "Completed" ? "selected" : ""}>
               Completed
             </option>
+
           </select>
         </p>
 
         <a
-          href="https://wa.me/${(lead.Phone || '').replace(/\\D/g, '')}"
+          href="https://wa.me/${(lead.Phone || '').replace(/\D/g, '')}"
           target="_blank"
           style="
             display:inline-block;
@@ -2377,7 +2409,7 @@ async function displayLeads() {
 
         <button
           type="button"
-          onclick="deleteLead('${lead.Id}')"
+          onclick="deleteLead('${lead.id}')"
           style="
             padding:8px 12px;
             border:0;
@@ -2410,8 +2442,6 @@ document.addEventListener("DOMContentLoaded", function () {
   displayLeads();
 });
 </script>
-<script>
-
 async function updateLeadStatus(id, newStatus) {
 
   if (!id) {
