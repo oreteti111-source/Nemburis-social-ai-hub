@@ -1546,7 +1546,7 @@ async function displayLeads() {
       await supabaseClient
         .from("Leads")
         .select("*")
-        .order("Id", {
+        .order("id", {
           ascending: false
         });
 
