@@ -1527,37 +1527,39 @@ async function addLead() {
 
   displayLeads();
 }
-
 async function displayLeads() {
 
   const leadList = document.getElementById("leadList");
 
   if (!leadList) {
-    console.error("leadList element not found");
     return;
   }
 
-  leadList.innerHTML = "Loading enquiries...";
+  leadList.innerHTML = "⏳ Connecting to customer enquiries...";
 
   try {
 
-    const { data: leads, error } =
+    if (!supabaseClient) {
+      leadList.innerHTML =
+        "❌ Supabase connection is missing.";
+      return;
+    }
+
+    leadList.innerHTML =
+      "⏳ Loading enquiries from Leads table...";
+
+    const result =
       await supabaseClient
         .from("Leads")
-        .select("*")
-        .order("Id", {
-          ascending: false
-        });
+        .select("*");
+
+    const leads = result.data;
+    const error = result.error;
 
     if (error) {
 
-      console.error(
-        "Display enquiries error:",
-        error
-      );
-
       leadList.innerHTML =
-        "Unable to load enquiries: " +
+        "❌ Unable to load enquiries:<br><br>" +
         error.message;
 
       return;
@@ -1566,7 +1568,7 @@ async function displayLeads() {
     if (!leads || leads.length === 0) {
 
       leadList.innerHTML =
-        "No enquiries saved yet.";
+        "📭 No enquiries found in the Leads table.";
 
       return;
     }
@@ -1586,7 +1588,8 @@ async function displayLeads() {
         "background:#fff;";
 
       enquiry.innerHTML =
-        "<strong>" +
+
+        "<strong>👤 " +
         (lead.Name || "Customer") +
         "</strong>" +
 
@@ -1598,7 +1601,7 @@ async function displayLeads() {
         (lead.Email || "") +
         "</p>" +
 
-        "<p>🦁 " +
+        "<p>🦁 Safari: " +
         (lead.Safari || "") +
         "</p>" +
 
@@ -1616,7 +1619,7 @@ async function displayLeads() {
         "onchange=\"updateLeadStatus('" +
         lead.Id +
         "', this.value)\" " +
-        "style='padding:6px;margin-left:5px;border-radius:5px;'>" +
+        "style='padding:6px;border-radius:5px;'>" +
 
         "<option value='New' " +
         (lead.Status === "New" ? "selected" : "") +
@@ -1651,7 +1654,7 @@ async function displayLeads() {
         "onclick=\"deleteLead('" +
         lead.Id +
         "')\" " +
-        "style='margin:5px;padding:8px 12px;border:0;border-radius:6px;cursor:pointer;'>" +
+        "style='margin:5px;padding:8px 12px;border:0;border-radius:6px;'>" +
 
         "🗑️ Delete" +
 
@@ -1663,18 +1666,10 @@ async function displayLeads() {
 
   } catch (error) {
 
-    console.error(
-      "Unexpected display error:",
-      error
-    );
-
     leadList.innerHTML =
-  "Unable to load enquiries: " +
-  error.message;
+      "❌ Loading failed:<br><br>" +
+      error.message;
 
-console.error("ACTUAL ERROR:", error.message);
-
-return;
   }
   }
 
@@ -2174,7 +2169,6 @@ function createLeadCard(lead, leadList) {
 
   leadList.appendChild(enquiry);
 }
-
 
 async function searchLeads() {
 
