@@ -1669,8 +1669,12 @@ async function displayLeads() {
     );
 
     leadList.innerHTML =
-      "Unable to load enquiries: " +
-      error.message;
+  "Unable to load enquiries: " +
+  error.message;
+
+console.error("ACTUAL ERROR:", error.message);
+
+return;
   }
   }
 
