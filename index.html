@@ -1562,110 +1562,80 @@ async function displayLeads() {
       leadList.innerHTML =
         "No enquiries saved yet.";
       return;
-    }
+  }enquiry.innerHTML = `
+  <strong>${lead.Name || "Customer"}</strong>
 
-    leadList.innerHTML = "";
+  <p>📞 ${lead.Phone || ""}</p>
 
-    leads.forEach(function(lead) {
+  <p>📧 ${lead.Email || ""}</p>
 
-      const enquiry = document.createElement("div");
+  <p>🦁 ${lead.Safari || ""}</p>
 
-      enquiry.style.cssText = `
-        padding:15px;
-        margin-bottom:12px;
-        border-radius:10px;
-        background:#f5f5f5;
-        border:1px solid #ddd;
-        text-align:left;
-      `;
+  <p>📅 Travel Date: ${lead.Travel_date || ""}</p>
 
-      enquiry.innerHTML = `
-        <strong>${lead.Name || "Customer"}</strong>
+  <p>💬 Message: ${lead.Message || ""}</p>
 
-        <p>📞 ${lead.Phone || ""}</p>
-        <p>📧 ${lead.Email || ""}</p>
-        <p>🦁 ${lead.Safari || ""}</p>
-        <p>📅 Travel Date: ${lead.Travel_date || ""}</p>
-        <p>💬 Message: ${lead.Message || ""}</p>
+  <p>
+    Status:
 
-        <p>
-          Status:
+    <select
+      onchange="updateLeadStatus('${lead.id}', this.value)"
+      style="padding:6px;margin-left:5px;border-radius:5px;"
+    >
 
-          <select
-            onchange="updateLeadStatus('${lead.id}', this.value)"
-            style="padding:6px;margin-left:5px;border-radius:5px;"
-          >
+      <option value="New"
+        ${lead.Status === "New" ? "selected" : ""}>
+        New
+      </option>
 
-            <option value="New"
-              ${lead.Status === "New" ? "selected" : ""}>
-              New
-            </option>
+      <option value="Contacted"
+        ${lead.Status === "Contacted" ? "selected" : ""}>
+        Contacted
+      </option>
 
-            <option value="Contacted"
-              ${lead.Status === "Contacted" ? "selected" : ""}>
-              Contacted
-            </option>
+      <option value="Confirmed"
+        ${lead.Status === "Confirmed" ? "selected" : ""}>
+        Confirmed
+      </option>
 
-            <option value="Confirmed"
-              ${lead.Status === "Confirmed" ? "selected" : ""}>
-              Confirmed
-            </option>
+      <option value="Completed"
+        ${lead.Status === "Completed" ? "selected" : ""}>
+        Completed
+      </option>
 
-            <option value="Completed"
-              ${lead.Status === "Completed" ? "selected" : ""}>
-              Completed
-            </option>
+    </select>
+  </p>
 
-          </select>
-        </p>
+  <a
+    href="https://wa.me/${(lead.Phone || "").replace(/\D/g, "")}"
+    target="_blank"
+    style="
+      display:inline-block;
+      margin:5px;
+      padding:8px 12px;
+      background:#25D366;
+      color:white;
+      text-decoration:none;
+      border-radius:6px;
+    "
+  >
+    💬 WhatsApp Customer
+  </a>
 
-        <a
-          href="https://wa.me/${(lead.Phone || "").replace(/\D/g, "")}"
-          target="_blank"
-          style="
-            display:inline-block;
-            margin:5px;
-            padding:8px 12px;
-            background:#25D366;
-            color:white;
-            text-decoration:none;
-            border-radius:6px;
-          "
-        >
-          💬 WhatsApp Customer
-        </a>
-
-        <button
-          type="button"
-          onclick="deleteLead('${lead.id}')"
-          style="
-            margin:5px;
-            padding:8px 12px;
-            border:0;
-            border-radius:6px;
-            cursor:pointer;
-          "
-        >
-          🗑️ Delete
-        </button>
-      `;
-
-      leadList.appendChild(enquiry);
-    });
-
-  } catch (err) {
-
-    console.error("Unexpected display error:", err);
-
-    leadList.innerHTML =
-      "Unable to load enquiries: " +
-      err.message;
-  }
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  displayLeads();
-});
+  <button
+    type="button"
+    onclick="deleteLead('${lead.id}')"
+    style="
+      margin:5px;
+      padding:8px 12px;
+      border:0;
+      border-radius:6px;
+      cursor:pointer;
+    "
+  >
+    🗑️ Delete
+  </button>
+`;
 
 function updateLeadSummary(leads) {
 
