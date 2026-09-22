@@ -1527,6 +1527,7 @@ async function addLead() {
 
   displayLeads();
 }
+
 async function displayLeads() {
 
   const leadList = document.getElementById("leadList");
@@ -1586,91 +1587,73 @@ async function displayLeads() {
 
       enquiry.innerHTML =
         "<strong>" +
-          (lead.Name || "Customer") +
+        (lead.Name || "Customer") +
         "</strong>" +
 
         "<p>📞 " +
-          (lead.Phone || "") +
+        (lead.Phone || "") +
         "</p>" +
 
         "<p>📧 " +
-          (lead.Email || "") +
+        (lead.Email || "") +
         "</p>" +
 
         "<p>🦁 " +
-          (lead.Safari || "") +
+        (lead.Safari || "") +
         "</p>" +
 
         "<p>📅 Travel Date: " +
-          (lead.Travel_date || "") +
+        (lead.Travel_date || "") +
         "</p>" +
 
         "<p>💬 Message: " +
-          (lead.Message || "") +
+        (lead.Message || "") +
         "</p>" +
 
         "<p>Status: " +
 
-          "<select " +
-            "onchange=\"updateLeadStatus('" +
-              lead.Id +
-              "', this.value)\" " +
-            "style='padding:6px;margin-left:5px;border-radius:5px;'>" +
+        "<select " +
+        "onchange=\"updateLeadStatus('" +
+        lead.Id +
+        "', this.value)\" " +
+        "style='padding:6px;margin-left:5px;border-radius:5px;'>" +
 
-            "<option value='New' " +
-              (lead.Status === "New"
-                ? "selected"
-                : "") +
-              ">New</option>" +
+        "<option value='New' " +
+        (lead.Status === "New" ? "selected" : "") +
+        ">New</option>" +
 
-            "<option value='Contacted' " +
-              (lead.Status === "Contacted"
-                ? "selected"
-                : "") +
-              ">Contacted</option>" +
+        "<option value='Contacted' " +
+        (lead.Status === "Contacted" ? "selected" : "") +
+        ">Contacted</option>" +
 
-            "<option value='Confirmed' " +
-              (lead.Status === "Confirmed"
-                ? "selected"
-                : "") +
-              ">Confirmed</option>" +
+        "<option value='Confirmed' " +
+        (lead.Status === "Confirmed" ? "selected" : "") +
+        ">Confirmed</option>" +
 
-            "<option value='Completed' " +
-              (lead.Status === "Completed"
-                ? "selected"
-                : "") +
-              ">Completed</option>" +
+        "<option value='Completed' " +
+        (lead.Status === "Completed" ? "selected" : "") +
+        ">Completed</option>" +
 
-          "</select>" +
+        "</select>" +
 
         "</p>" +
 
         "<a href='https://wa.me/" +
-          (lead.Phone || "").replace(/\D/g, "") +
-          "' target='_blank' " +
-          "style='display:inline-block;" +
-          "margin:5px;" +
-          "padding:8px 12px;" +
-          "background:#25D366;" +
-          "color:white;" +
-          "text-decoration:none;" +
-          "border-radius:6px;'>" +
+        (lead.Phone || "").replace(/\D/g, "") +
+        "' target='_blank' " +
+        "style='display:inline-block;margin:5px;padding:8px 12px;background:#25D366;color:white;text-decoration:none;border-radius:6px;'>" +
 
-          "💬 WhatsApp Customer" +
+        "💬 WhatsApp Customer" +
 
         "</a>" +
 
         "<button type='button' " +
-          "onclick=\"deleteLead('" +
-            lead.Id +
-          "')\" " +
-          "style='margin:5px;" +
-          "padding:8px 12px;" +
-          "border:0;" +
-          "border-radius:6px;" +
-          "cursor:pointer;'>" +
+        "onclick=\"deleteLead('" +
+        lead.Id +
+        "')\" " +
+        "style='margin:5px;padding:8px 12px;border:0;border-radius:6px;cursor:pointer;'>" +
 
-          "🗑️ Delete" +
+        "🗑️ Delete" +
 
         "</button>";
 
