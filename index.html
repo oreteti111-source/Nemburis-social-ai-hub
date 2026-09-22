@@ -1544,12 +1544,16 @@ async function displayLeads() {
       await supabaseClient
         .from("Leads")
         .select("*")
-        .order("id", {
+        .order("Id", {
           ascending: false
         });
 
     if (error) {
-      console.error("Display enquiries error:", error);
+
+      console.error(
+        "Display enquiries error:",
+        error
+      );
 
       leadList.innerHTML =
         "Unable to load enquiries: " +
@@ -1559,59 +1563,133 @@ async function displayLeads() {
     }
 
     if (!leads || leads.length === 0) {
+
       leadList.innerHTML =
         "No enquiries saved yet.";
+
       return;
-enquiry.innerHTML =
-  "<strong>" + (lead.Name || "Customer") + "</strong>" +
+    }
 
-  "<p>📞 " + (lead.Phone || "") + "</p>" +
+    leadList.innerHTML = "";
 
-  "<p>📧 " + (lead.Email || "") + "</p>" +
+    leads.forEach(function(lead) {
 
-  "<p>🦁 " + (lead.Safari || "") + "</p>" +
+      const enquiry =
+        document.createElement("div");
 
-  "<p>📅 Travel Date: " + (lead.Travel_date || "") + "</p>" +
+      enquiry.style.cssText =
+        "padding:15px;" +
+        "margin-bottom:12px;" +
+        "border:1px solid #ddd;" +
+        "border-radius:10px;" +
+        "background:#fff;";
 
-  "<p>💬 Message: " + (lead.Message || "") + "</p>" +
+      enquiry.innerHTML =
+        "<strong>" +
+          (lead.Name || "Customer") +
+        "</strong>" +
 
-  "<p>Status: " +
-    "<select onchange=\"updateLeadStatus('" +
-      lead.id +
-      "', this.value)\" " +
-      "style='padding:6px;margin-left:5px;border-radius:5px;'>" +
+        "<p>📞 " +
+          (lead.Phone || "") +
+        "</p>" +
 
-      "<option value='New' " +
-        (lead.Status === "New" ? "selected" : "") +
-        ">New</option>" +
+        "<p>📧 " +
+          (lead.Email || "") +
+        "</p>" +
 
-      "<option value='Contacted' " +
-        (lead.Status === "Contacted" ? "selected" : "") +
-        ">Contacted</option>" +
+        "<p>🦁 " +
+          (lead.Safari || "") +
+        "</p>" +
 
-      "<option value='Confirmed' " +
-        (lead.Status === "Confirmed" ? "selected" : "") +
-        ">Confirmed</option>" +
+        "<p>📅 Travel Date: " +
+          (lead.Travel_date || "") +
+        "</p>" +
 
-      "<option value='Completed' " +
-        (lead.Status === "Completed" ? "selected" : "") +
-        ">Completed</option>" +
+        "<p>💬 Message: " +
+          (lead.Message || "") +
+        "</p>" +
 
-    "</select>" +
-  "</p>" +
+        "<p>Status: " +
 
-  "<a href='https://wa.me/" +
-    (lead.Phone || "").replace(/\D/g, "") +
-    "' target='_blank' " +
-    "style='display:inline-block;margin:5px;padding:8px 12px;background:#25D366;color:white;text-decoration:none;border-radius:6px;'>" +
-    "💬 WhatsApp Customer" +
-  "</a>" +
+          "<select " +
+            "onchange=\"updateLeadStatus('" +
+              lead.Id +
+              "', this.value)\" " +
+            "style='padding:6px;margin-left:5px;border-radius:5px;'>" +
 
-  "<button type='button' " +
-    "onclick=\"deleteLead('" + lead.id + "')\" " +
-    "style='margin:5px;padding:8px 12px;border:0;border-radius:6px;cursor:pointer;'>" +
-    "🗑️ Delete" +
-  "</button>";
+            "<option value='New' " +
+              (lead.Status === "New"
+                ? "selected"
+                : "") +
+              ">New</option>" +
+
+            "<option value='Contacted' " +
+              (lead.Status === "Contacted"
+                ? "selected"
+                : "") +
+              ">Contacted</option>" +
+
+            "<option value='Confirmed' " +
+              (lead.Status === "Confirmed"
+                ? "selected"
+                : "") +
+              ">Confirmed</option>" +
+
+            "<option value='Completed' " +
+              (lead.Status === "Completed"
+                ? "selected"
+                : "") +
+              ">Completed</option>" +
+
+          "</select>" +
+
+        "</p>" +
+
+        "<a href='https://wa.me/" +
+          (lead.Phone || "").replace(/\D/g, "") +
+          "' target='_blank' " +
+          "style='display:inline-block;" +
+          "margin:5px;" +
+          "padding:8px 12px;" +
+          "background:#25D366;" +
+          "color:white;" +
+          "text-decoration:none;" +
+          "border-radius:6px;'>" +
+
+          "💬 WhatsApp Customer" +
+
+        "</a>" +
+
+        "<button type='button' " +
+          "onclick=\"deleteLead('" +
+            lead.Id +
+          "')\" " +
+          "style='margin:5px;" +
+          "padding:8px 12px;" +
+          "border:0;" +
+          "border-radius:6px;" +
+          "cursor:pointer;'>" +
+
+          "🗑️ Delete" +
+
+        "</button>";
+
+      leadList.appendChild(enquiry);
+
+    });
+
+  } catch (error) {
+
+    console.error(
+      "Unexpected display error:",
+      error
+    );
+
+    leadList.innerHTML =
+      "Unable to load enquiries: " +
+      error.message;
+  }
+  }
 
 function updateLeadSummary(leads) {
 
@@ -2175,7 +2253,7 @@ async function searchLeads() {
 
   });
 }
-
+<script>
 
 async function updateLeadStatus(id, newStatus) {
 
@@ -2185,7 +2263,7 @@ async function updateLeadStatus(id, newStatus) {
       .update({
         "Status": newStatus
       })
-      .eq("id", id);
+      .eq("Id", id);
 
   if (error) {
 
@@ -2202,9 +2280,7 @@ async function updateLeadStatus(id, newStatus) {
     return;
   }
 
-  alert(
-    "Status updated successfully!"
-  );
+  alert("Status updated successfully!");
 
   displayLeads();
 }
@@ -2212,9 +2288,7 @@ async function updateLeadStatus(id, newStatus) {
 
 async function deleteLead(id) {
 
-  if (!confirm(
-    "Delete this customer enquiry?"
-  )) {
+  if (!confirm("Delete this customer enquiry?")) {
     return;
   }
 
@@ -2222,14 +2296,11 @@ async function deleteLead(id) {
     await supabaseClient
       .from("Leads")
       .delete()
-      .eq("id", id);
+      .eq("Id", id);
 
   if (error) {
 
-    console.error(
-      "DELETE ERROR:",
-      error
-    );
+    console.error("DELETE ERROR:", error);
 
     alert(
       "Unable to delete the enquiry:\n\n" +
@@ -2239,9 +2310,7 @@ async function deleteLead(id) {
     return;
   }
 
-  alert(
-    "Customer enquiry deleted successfully!"
-  );
+  alert("Customer enquiry deleted successfully!");
 
   displayLeads();
 }
@@ -2250,41 +2319,54 @@ async function deleteLead(id) {
 document.addEventListener(
   "DOMContentLoaded",
   function() {
-
     displayLeads();
-
   }
 );
 
 </script>
 
-        <p>📅 Travel Date: ${lead.Travel_date || ""}</p>
+<script>
 
-        <p>
-          Status:
-          <select
-            onchange="updateLeadStatus('${lead.Id}', this.value)"
-            style="padding:6px;border-radius:5px;"
-          >
-            <option value="New" ${lead.Status === "New" ? "selected" : ""}>
-              New
-            </option>
+async function deleteLead(id) {
 
-            <option value="Contacted" ${lead.Status === "Contacted" ? "selected" : ""}>
-              Contacted
-            </option>
+  if (!confirm("Delete this customer enquiry?")) {
+    return;
+  }
 
-            <option value="Confirmed" ${lead.Status === "Confirmed" ? "selected" : ""}>
-              Confirmed
-            </option>
+  const { error } = await supabaseClient
+    .from("Leads")
+    .delete()
+    .eq("Id", id);
 
-            <option value="Completed" ${lead.Status === "Completed" ? "selected" : ""}>
-              Completed
-            </option>
-          </select>
-        </p>
+  if (error) {
+
+    console.error("DELETE ERROR:", error);
+
+    alert(
+      "Unable to delete the enquiry:\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+  alert("Customer enquiry deleted successfully!");
+
+  displayLeads();
+}
+
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+    displayLeads();
+  }
+);
+
+</script>
 
 <script>
+
 async function updateLeadStatus(id, newStatus) {
 
   if (!id) {
@@ -2389,7 +2471,6 @@ async function searchLeads() {
     enquiry.className = "lead-card";
 
     enquiry.innerHTML = `
-
       <h3>${lead.Name || "No name"}</h3>
 
       <p>
@@ -2423,7 +2504,7 @@ async function searchLeads() {
       </p>
 
       <a
-        href="https://wa.me/${(lead.Phone || '').replace(/\D/g, '')}"
+        href="https://wa.me/${(lead.Phone || "").replace(/\D/g, "")}"
         target="_blank"
         style="
           display:inline-block;
@@ -2442,7 +2523,6 @@ async function searchLeads() {
         onclick="deleteLead('${lead.Id}')">
         Delete
       </button>
-
     `;
 
     leadList.appendChild(enquiry);
