@@ -1671,8 +1671,11 @@ async function displayLeads() {
       error.message;
 
   }
-  }
+}
 
+window.addEventListener("load", function() {
+  displayLeads();
+});
 function updateLeadSummary(leads) {
 
   const total =
