@@ -1457,16 +1457,17 @@ async function addLead() {
     document.getElementById("leadPhone").value.trim();
 
   const email =
-    document.getElementById("leadEmail")?.value.trim() || "";
+    document.getElementById("leadEmail").value.trim();
 
   const safari =
-    document.getElementById("leadSafari")?.value.trim() || "";
+    document.getElementById("leadSafari").value.trim();
 
   const travelDate =
-    document.getElementById("leadDate")?.value || "";
+    document.getElementById("leadDate").value;
 
   const message =
-    document.getElementById("leadMessage")?.value.trim() || "";
+    document.getElementById("leadMessage").value.trim();
+
 
   if (!name || !phone) {
 
@@ -1477,53 +1478,71 @@ async function addLead() {
     return;
   }
 
-  const { error } =
-  await supabaseClient
-    .from("Leads")
-    .insert([
-      {
-        "Leads": "Customer Enquiry",
-        "Name": name,
-        "Phone": phone,
-        "Email": email,
-        "Safari": safari,
-        "Travel_date": travelDate || null,
-        "Message": message,
-        "Status": "New"
-      }
-    ]);
 
-  if (error) {
+  try {
+
+    if (!supabaseClient) {
+
+      alert("❌ Supabase connection is missing.");
+
+      return;
+    }
+
+
+    const { data, error } =
+      await supabaseClient
+        .from("Leads")
+        .insert([
+          {
+            "Leads": "Customer Enquiry",
+            "Name": name,
+            "Phone": phone,
+            "Email": email,
+            "Safari": safari,
+            "Travel_date": travelDate || null,
+            "Message": message,
+            "Status": "New"
+          }
+        ])
+        .select();
+
+
+    if (error) {
+
+      console.error("SAVE ERROR:", error);
+
+      alert(
+        "❌ Enquiry was NOT saved.\n\n" +
+        error.message
+      );
+
+      return;
+    }
+
+
+    alert("✅ Customer enquiry saved successfully!");
+
+
+    document.getElementById("leadName").value = "";
+    document.getElementById("leadPhone").value = "";
+    document.getElementById("leadEmail").value = "";
+    document.getElementById("leadSafari").value = "";
+    document.getElementById("leadDate").value = "";
+    document.getElementById("leadMessage").value = "";
+
+
+    displayLeads();
+
+  } catch (error) {
 
     console.error("SAVE ERROR:", error);
 
     alert(
-      "Unable to save enquiry:\n\n" +
+      "❌ Save failed.\n\n" +
       error.message
     );
-
-    return;
   }
-
-  alert("Customer enquiry saved successfully!");
-
-  document.getElementById("leadName").value = "";
-  document.getElementById("leadPhone").value = "";
-
-  if (document.getElementById("leadEmail"))
-    document.getElementById("leadEmail").value = "";
-
-  if (document.getElementById("leadSafari"))
-    document.getElementById("leadSafari").value = "";
-
-  if (document.getElementById("leadDate"))
-    document.getElementById("leadDate").value = "";
-
-  if (document.getElementById("leadMessage"))
-    document.getElementById("leadMessage").value = "";
-
-  displayLeads();
-}
+  }
 async function displayLeads() {
 
   const leadList = document.getElementById("leadList");
