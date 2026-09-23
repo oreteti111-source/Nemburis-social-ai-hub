@@ -1545,40 +1545,41 @@ alert(
 );
   }
 async function displayLeads() {
-  alert("DISPLAY LEADS STARTED");
-
-  const leadList = document.getElementById("leadList");
-
-  if (!leadList) {
-    return;
-  }
-
-  leadList.innerHTML = "⏳ Connecting to customer enquiries...";
 
   try {
 
+    const leadList =
+      document.getElementById("leadList");
+
+    if (!leadList) {
+      return;
+    }
+
     if (!supabaseClient) {
+
       leadList.innerHTML =
         "❌ Supabase connection is missing.";
+
       return;
     }
 
     leadList.innerHTML =
       "⏳ Loading enquiries from Leads table...";
 
-const result =
-  await supabaseClient
-    .from("Leads")
-    .select("*");
+    const result =
+      await supabaseClient
+        .from("Leads")
+        .select("*");
 
-const leads = result.data;
-const error = result.error;
-alert(
-  "LEADS LOADED: " +
-  (leads ? leads.length : "NULL") +
-  "\nERROR: " +
-  (error ? error.message : "NONE")
-);
+    const leads = result.data;
+    const error = result.error;
+
+    alert(
+      "LEADS LOADED: " +
+      (leads ? leads.length : "NULL") +
+      "\nERROR: " +
+      (error ? error.message : "NONE")
+    );
 
     if (error) {
 
@@ -1586,9 +1587,31 @@ alert(
         "❌ Unable to load enquiries:<br><br>" +
         error.message;
 
-  
-  const enquiry =
-    document.createElement("div");
+      return;
+    }
+
+    if (!leads || leads.length === 0) {
+
+      leadList.innerHTML =
+        "📭 No enquiries found in the Leads table.";
+
+      if (typeof updateLeadSummary === "function") {
+        updateLeadSummary([]);
+      }
+
+      return;
+    }
+
+    if (typeof updateLeadSummary === "function") {
+      updateLeadSummary(leads);
+    }
+
+    leadList.innerHTML = "";
+
+    leads.forEach(function(lead) {
+
+      const enquiry =
+        document.createElement("div");
 
       enquiry.style.cssText =
         "padding:15px;" +
@@ -1676,20 +1699,19 @@ alert(
 
   } catch (error) {
 
-    leadList.innerHTML =
-      "❌ Loading failed:<br><br>" +
-      error.message;
+    const leadList =
+      document.getElementById("leadList");
+
+    if (leadList) {
+
+      leadList.innerHTML =
+        "❌ Loading failed:<br><br>" +
+        error.message;
+
+    }
 
   }
-}
-
-window.addEventListener("load", function() {
-
-  alert("NEMBURIS PAGE LOADED");
-
-  displayLeads();
-
-});
+  }
 function updateLeadSummary(leads) {
 
   const total =
