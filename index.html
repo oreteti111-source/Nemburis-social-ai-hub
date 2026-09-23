@@ -1944,66 +1944,6 @@ function updateLeadStatusChart(
 
     <div style="margin:10px 0;">
       <strong>🆕 New</strong>
-      <div style="background:#ddd;border-radius:6px;overflow:hidden;">
-        <div style="
-          width:${(newCount / total) * 100}%;
-          background:#173d2a;
-          color:white;
-          padding:8px;
-          box-sizing:border-box;
-        ">
-          ${newCount}
-        </div>
-      </div>
-    </div>
-
-    <div style="margin:10px 0;">
-      <strong>📞 Contacted</strong>
-      <div style="background:#ddd;border-radius:6px;overflow:hidden;">
-        <div style="
-          width:${(contactedCount / total) * 100}%;
-          background:#173d2a;
-          color:white;
-          padding:8px;
-          box-sizing:border-box;
-        ">
-          ${contactedCount}
-        </div>
-      </div>
-    </div>
-
-    <div style="margin:10px 0;">
-      <strong>✅ Confirmed</strong>
-function updateLeadStatusChart(
-  newCount,
-  contactedCount,
-  confirmedCount,
-  completedCount
-) {
-
-  const chart =
-    document.getElementById("leadStatusChart");
-
-  if (!chart) {
-    return;
-  }
-
-  const total =
-    newCount +
-    contactedCount +
-    confirmedCount +
-    completedCount;
-
-  if (total === 0) {
-    chart.innerHTML =
-      "<p>No lead data yet.</p>";
-    return;
-  }
-
-  chart.innerHTML = `
-
-    <div style="margin:10px 0;">
-      <strong>🆕 New</strong>
 
       <div style="
         background:#ddd;
@@ -2021,7 +1961,6 @@ function updateLeadStatusChart(
         </div>
       </div>
     </div>
-
 
     <div style="margin:10px 0;">
       <strong>📞 Contacted</strong>
@@ -2042,7 +1981,6 @@ function updateLeadStatusChart(
         </div>
       </div>
     </div>
-
 
     <div style="margin:10px 0;">
       <strong>✅ Confirmed</strong>
@@ -2063,7 +2001,6 @@ function updateLeadStatusChart(
         </div>
       </div>
     </div>
-
 
     <div style="margin:10px 0;">
       <strong>🏁 Completed</strong>
@@ -2087,6 +2024,7 @@ function updateLeadStatusChart(
 
   `;
   }
+      
 function createLeadCard(lead, leadList) {
 
   const enquiry =
