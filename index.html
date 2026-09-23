@@ -1539,11 +1539,10 @@ async function addLead() {
 
     console.error("SAVE ERROR:", error);
 
-    alert(
-      "❌ Save failed.\n\n" +
-      error.message
-    );
-  }
+alert(
+  "❌ Save failed.\n\n" +
+  error.message
+);
   }
 async function displayLeads() {
   alert("DISPLAY LEADS STARTED");
@@ -1587,24 +1586,7 @@ alert(
         "❌ Unable to load enquiries:<br><br>" +
         error.message;
 
-      return;
-    }
-if (!leads || leads.length === 0) {
-
-  leadList.innerHTML =
-    "📭 No enquiries found in the Leads table.";
-
-  updateLeadSummary([]);
-
-  return;
-}
-
-updateLeadSummary(leads);
-
-leadList.innerHTML = "";
-
-leads.forEach(function(lead) {
-
+  
   const enquiry =
     document.createElement("div");
 
