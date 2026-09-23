@@ -1478,19 +1478,20 @@ async function addLead() {
   }
 
   const { error } =
-    await supabaseClient
-      .from("Leads")
-      .insert([
-        {
-          "Name": name,
-          "Phone": phone,
-          "Email": email,
-          "Safari": safari,
-          "Travel_date": travelDate || null,
-          "Message": message,
-          "Status": "New"
-        }
-      ]);
+  await supabaseClient
+    .from("Leads")
+    .insert([
+      {
+        "Leads": "Customer Enquiry",
+        "Name": name,
+        "Phone": phone,
+        "Email": email,
+        "Safari": safari,
+        "Travel_date": travelDate || null,
+        "Message": message,
+        "Status": "New"
+      }
+    ]);
 
   if (error) {
 
