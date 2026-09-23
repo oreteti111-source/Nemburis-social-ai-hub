@@ -1916,7 +1916,7 @@ async function markLeadContacted(id) {
   displayLeads();
 }
  
-  function updateLeadStatusChart(
+function updateLeadStatusChart(
   newCount,
   contactedCount,
   confirmedCount,
@@ -1927,18 +1927,19 @@ async function markLeadContacted(id) {
     document.getElementById("leadStatusChart");
 
   if (!chart) {
+    console.error("leadStatusChart element not found.");
     return;
   }
 
   const total =
-    newCount +
-    contactedCount +
-    confirmedCount +
-    completedCount;
+    Number(newCount) +
+    Number(contactedCount) +
+    Number(confirmedCount) +
+    Number(completedCount);
 
   if (total === 0) {
     chart.innerHTML =
-      "<p>No lead data yet.</p>";
+      "<p>📭 No lead data yet.</p>";
     return;
   }
 
@@ -1946,14 +1947,9 @@ async function markLeadContacted(id) {
 
     <div style="margin:10px 0;">
       <strong>🆕 New</strong>
-
-      <div style="
-        background:#ddd;
-        border-radius:6px;
-        overflow:hidden;
-      ">
+      <div style="background:#ddd;border-radius:6px;overflow:hidden;">
         <div style="
-          width:${(newCount / total) * 100}%;
+          width:${(Number(newCount) / total) * 100}%;
           background:#173d2a;
           color:white;
           padding:8px;
@@ -1964,17 +1960,11 @@ async function markLeadContacted(id) {
       </div>
     </div>
 
-
     <div style="margin:10px 0;">
       <strong>📞 Contacted</strong>
-
-      <div style="
-        background:#ddd;
-        border-radius:6px;
-        overflow:hidden;
-      ">
+      <div style="background:#ddd;border-radius:6px;overflow:hidden;">
         <div style="
-          width:${(contactedCount / total) * 100}%;
+          width:${(Number(contactedCount) / total) * 100}%;
           background:#173d2a;
           color:white;
           padding:8px;
@@ -1985,17 +1975,11 @@ async function markLeadContacted(id) {
       </div>
     </div>
 
-
     <div style="margin:10px 0;">
       <strong>✅ Confirmed</strong>
-
-      <div style="
-        background:#ddd;
-        border-radius:6px;
-        overflow:hidden;
-      ">
+      <div style="background:#ddd;border-radius:6px;overflow:hidden;">
         <div style="
-          width:${(confirmedCount / total) * 100}%;
+          width:${(Number(confirmedCount) / total) * 100}%;
           background:#173d2a;
           color:white;
           padding:8px;
@@ -2006,17 +1990,11 @@ async function markLeadContacted(id) {
       </div>
     </div>
 
-
     <div style="margin:10px 0;">
       <strong>🏁 Completed</strong>
-
-      <div style="
-        background:#ddd;
-        border-radius:6px;
-        overflow:hidden;
-      ">
+      <div style="background:#ddd;border-radius:6px;overflow:hidden;">
         <div style="
-          width:${(completedCount / total) * 100}%;
+          width:${(Number(completedCount) / total) * 100}%;
           background:#173d2a;
           color:white;
           padding:8px;
@@ -2028,8 +2006,7 @@ async function markLeadContacted(id) {
     </div>
 
   `;
-
-  }  
+            }
 function createLeadCard(lead, leadList) {
 
   const enquiry =
