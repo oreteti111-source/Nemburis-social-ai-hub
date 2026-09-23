@@ -1570,7 +1570,14 @@ async function displayLeads() {
         .select("*");
 
     const leads = result.data;
-    const error = result.error;
+const error = result.error;
+
+alert(
+  "LEADS LOADED: " +
+  (leads ? leads.length : "NULL") +
+  "\nERROR: " +
+  (error ? error.message : "NONE")
+);
 
     if (error) {
 
