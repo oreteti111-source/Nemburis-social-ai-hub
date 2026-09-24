@@ -2200,6 +2200,7 @@ results.forEach(function(lead) {
 });
 }
 </script>
+<script>
 
 async function updateLeadStatus(id, newStatus) {
 
@@ -2246,7 +2247,10 @@ async function deleteLead(id) {
 
   if (error) {
 
-    console.error("DELETE ERROR:", error);
+    console.error(
+      "DELETE ERROR:",
+      error
+    );
 
     alert(
       "Unable to delete the enquiry:\n\n" +
@@ -2256,7 +2260,9 @@ async function deleteLead(id) {
     return;
   }
 
-  alert("Customer enquiry deleted successfully!");
+  alert(
+    "Customer enquiry deleted successfully!"
+  );
 
   displayLeads();
 }
@@ -2265,14 +2271,13 @@ async function deleteLead(id) {
 document.addEventListener(
   "DOMContentLoaded",
   function() {
+
     displayLeads();
+
   }
 );
 
 </script>
-
-<script>
-
 async function deleteLead(id) {
 
   if (!confirm("Delete this customer enquiry?")) {
