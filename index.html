@@ -1576,14 +1576,16 @@ async function displayLeads() {
     if (!leadList) {
       return;
     }
+alert("CHECK SUPABASE CLIENT: " + typeof supabaseClient);
 
-    if (!supabaseClient) {
+if (!supabaseClient) {
 
-      leadList.innerHTML =
-        "❌ Supabase connection is missing.";
+  leadList.innerHTML =
+    "❌ Supabase connection is missing.";
 
-      return;
-    }
+  return;
+  }
+    
 
     leadList.innerHTML =
       "⏳ Loading enquiries from Leads table...";
