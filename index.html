@@ -1452,6 +1452,7 @@ const supabaseClient =
 alert("LEAD CENTER SCRIPT STARTED");
 
 async function addLead() {
+
   const name =
     document.getElementById("leadName").value.trim();
 
@@ -1481,17 +1482,17 @@ async function addLead() {
   }
 
 
+  if (!supabaseClient) {
+
+    alert("❌ Supabase connection is missing.");
+
+    return;
+  }
+
+
   try {
 
-    if (!supabaseClient) {
-
-      alert("❌ Supabase connection is missing.");
-
-      return;
-    }
-
-
-    const { data, error } =
+    const { error } =
       await supabaseClient
         .from("Leads")
         .insert([
@@ -1505,8 +1506,7 @@ async function addLead() {
             "Message": message,
             "Status": "New"
           }
-        ])
-        .select();
+        ]);
 
 
     if (error) {
@@ -1522,7 +1522,9 @@ async function addLead() {
     }
 
 
-    alert("✅ Customer enquiry saved successfully!");
+    alert(
+      "✅ Customer enquiry saved successfully!"
+    );
 
 
     document.getElementById("leadName").value = "";
@@ -1535,36 +1537,18 @@ async function addLead() {
 
     displayLeads();
 
+
   } catch (error) {
 
     console.error("SAVE ERROR:", error);
 
-alert(
-  "❌ Save failed.\n\n" +
-  error.message
-);
+    alert(
+      "❌ Save failed.\n\n" +
+      error.message
+    );
+
   }
-  async function TEST_LEADS_READ() {
 
-  console.log("=== NEMBURIS READ TEST START ===");
-
-  const result = await supabaseClient
-    .from("Leads")
-    .select("*");
-
-  console.log("DATA:", result.data);
-  console.log("ERROR:", result.error);
-
-  alert(
-    "READ TEST\n\n" +
-    "Rows returned: " +
-    (result.data ? result.data.length : "NONE") +
-    "\n\n" +
-    "Error: " +
-    (result.error
-      ? result.error.message
-      : "NO ERROR")
-  );
   }
 async function displayLeads() {
 
