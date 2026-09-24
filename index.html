@@ -1656,31 +1656,31 @@ if (!supabaseClient) {
 
         "<p>Status: " +
 
-        "<select " +
-        "onchange=\"updateLeadStatus('" +
-        lead.Id +
-        "', this.value)\" " +
-        "style='padding:6px;border-radius:5px;'>" +
+"<select " +
+"onchange=\"updateLeadStatus('" +
+lead.Id +
+"', this.value)\" " +
+"style=\"padding:6px;border-radius:5px;\">" +
 
-        "<option value='New' " +
-        (lead.Status === "New" ? "selected" : "") +
-        ">New</option>" +
+"<option value=\"New\" " +
+(lead.Status === "New" ? "selected" : "") +
+">New</option>" +
 
-        "<option value='Contacted' " +
-        (lead.Status === "Contacted" ? "selected" : "") +
-        ">Contacted</option>" +
+"<option value=\"Contacted\" " +
+(lead.Status === "Contacted" ? "selected" : "") +
+">Contacted</option>" +
 
-        "<option value='Confirmed' " +
-        (lead.Status === "Confirmed" ? "selected" : "") +
-        ">Confirmed</option>" +
+"<option value=\"Confirmed\" " +
+(lead.Status === "Confirmed" ? "selected" : "") +
+">Confirmed</option>" +
 
-        "<option value='Completed' " +
-        (lead.Status === "Completed" ? "selected" : "") +
-        ">Completed</option>" +
+"<option value=\"Completed\" " +
+(lead.Status === "Completed" ? "selected" : "") +
+">Completed</option>" +
 
-        "</select>" +
+"</select>" +
 
-        "</p>" +
+"</p>" +
 
         "<a href='https://wa.me/" +
         (lead.Phone || "").replace(/\D/g, "") +
