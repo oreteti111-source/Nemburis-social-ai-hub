@@ -1544,6 +1544,28 @@ alert(
   error.message
 );
   }
+  async function TEST_LEADS_READ() {
+
+  console.log("=== NEMBURIS READ TEST START ===");
+
+  const result = await supabaseClient
+    .from("Leads")
+    .select("*");
+
+  console.log("DATA:", result.data);
+  console.log("ERROR:", result.error);
+
+  alert(
+    "READ TEST\n\n" +
+    "Rows returned: " +
+    (result.data ? result.data.length : "NONE") +
+    "\n\n" +
+    "Error: " +
+    (result.error
+      ? result.error.message
+      : "NO ERROR")
+  );
+  }
 async function displayLeads() {
 
   try {
@@ -1707,18 +1729,20 @@ async function displayLeads() {
       leadList.innerHTML =
         "❌ Loading failed:<br><br>" +
         error.message;
-
     }
 
   }
   }
+
   window.addEventListener("load", function() {
 
-  alert("NEMBURIS PAGE LOADED");
+    alert("NEMBURIS PAGE LOADED");
 
-  displayLeads();
+    TEST_LEADS_READ();
 
-});
+    displayLeads();
+
+  });
 function updateLeadSummary(leads) {
 
   const total =
