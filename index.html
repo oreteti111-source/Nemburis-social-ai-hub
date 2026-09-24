@@ -2253,52 +2253,6 @@ async function updateLeadStatus(id, newStatus) {
 
   displayLeads();
 }
-
-
-async function deleteLead(id) {
-
-  if (!confirm("Delete this customer enquiry?")) {
-    return;
-  }
-
-  const { error } =
-    await supabaseClient
-      .from("Leads")
-      .delete()
-      .eq("Id", id);
-
-  if (error) {
-
-    console.error(
-      "DELETE ERROR:",
-      error
-    );
-
-    alert(
-      "Unable to delete the enquiry:\n\n" +
-      error.message
-    );
-
-    return;
-  }
-
-  alert(
-    "Customer enquiry deleted successfully!"
-  );
-
-  displayLeads();
-}
-
-
-document.addEventListener(
-  "DOMContentLoaded",
-  function() {
-
-    displayLeads();
-
-  }
-);
-
 async function deleteLead(id) {
   if (!confirm("Delete this customer enquiry?")) {
     return;
