@@ -1729,16 +1729,18 @@ async function displayLeads() {
       leadList.innerHTML =
         "❌ Loading failed:<br><br>" +
         error.message;
-}
+    }
   }
 
-  window.addEventListener("load", function() {
+}
 
-    alert("NEMBURIS PAGE LOADED");
+window.addEventListener("load", function() {
 
-    displayLeads();
+  alert("NEMBURIS PAGE LOADED");
 
-  });
+  displayLeads();
+
+});
 function updateLeadSummary(leads) {
 
   const total =
