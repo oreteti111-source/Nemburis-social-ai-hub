@@ -1555,7 +1555,7 @@ async function addLead() {
 
   }
 
-    async function displayLeads() {
+async function displayLeads() {
 
   const leadList =
     document.getElementById("leadList");
@@ -1569,43 +1569,30 @@ async function addLead() {
 
   try {
 
-    alert("DISPLAY LEADS REACHED QUERY");
+    const result =
+      await supabaseClient
+        .from("Leads")
+        .select("*")
+        .order("id", {
+          ascending: false
+        });
 
-const result =
-  await supabaseClient
-    .from("Leads")
-    .select("*")
-    .order("id", {
-      ascending: false
-    });
+    const leads = result.data || [];
+    const error = result.error;
 
-console.log("NEMBURIS LEADS QUERY RESULT:", result);
+    if (error) {
 
-const leads = result.data;
-const error = result.error;
-
-alert(
-  "LEAD TEST\n\nRows found: " +
-  ((leads || []).length) +
-  "\n\nError: " +
-  (error ? error.message : "NONE")
-);
-
-if (result.error) {
-
-  console.error(
-    "DISPLAY LEADS ERROR:",
-    result.error
-  );
+      console.error(
+        "DISPLAY LEADS ERROR:",
+        error
+      );
 
       leadList.innerHTML =
         "❌ Unable to load enquiries:<br><br>" +
-        result.error.message;
+        error.message;
 
       return;
     }
-
-    const leads = result.data || [];
 
     if (typeof updateLeadSummary === "function") {
       updateLeadSummary(leads);
@@ -1702,14 +1689,6 @@ if (result.error) {
   }
 
   }
-
-  window.addEventListener("load", function() {
-
-  alert("NEMBURIS LOAD EVENT IS RUNNING");
-
-  displayLeads();
-
-});
 
 function updateLeadSummary(leads) {
 
