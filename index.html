@@ -1566,7 +1566,9 @@ async function addLead() {
 
   try {
 
-    const result =
+    alert("DISPLAY LEADS REACHED QUERY");
+
+const result =
   await supabaseClient
     .from("Leads")
     .select("*")
