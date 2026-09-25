@@ -1654,11 +1654,11 @@ if (!supabaseClient) {
         (lead.Message || "") +
         "</p>" +
 
-        "<p>Status: " +
+"<p>Status: " +
 
 "<select " +
 "onchange=\"updateLeadStatus('" +
-lead.Id +
+lead.id +
 "', this.value)\" " +
 "style=\"padding:6px;border-radius:5px;\">" +
 
@@ -2217,7 +2217,7 @@ async function updateLeadStatus(id, newStatus) {
       .update({
         "Status": newStatus
       })
-      .eq("Id", id);
+      .eq("id", id);
 
   if (error) {
 
@@ -2237,7 +2237,7 @@ async function updateLeadStatus(id, newStatus) {
   alert("Status updated successfully!");
 
   displayLeads();
-}
+  }
 async function deleteLead(id) {
   if (!confirm("Delete this customer enquiry?")) {
     return;
