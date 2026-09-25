@@ -2175,19 +2175,25 @@ results.forEach(function(lead) {
 });
 }
 
+<script>
 async function deleteLead(id) {
+
   if (!confirm("Delete this customer enquiry?")) {
     return;
   }
 
-  const { error } = await supabaseClient
-    .from("Leads")
-    .delete()
-    .eq("Id", id);
+  const { error } =
+    await supabaseClient
+      .from("Leads")
+      .delete()
+      .eq("id", id);
 
   if (error) {
 
-    console.error("DELETE ERROR:", error);
+    console.error(
+      "DELETE ERROR:",
+      error
+    );
 
     alert(
       "Unable to delete the enquiry:\n\n" +
@@ -2197,7 +2203,9 @@ async function deleteLead(id) {
     return;
   }
 
-  alert("Customer enquiry deleted successfully!");
+  alert(
+    "Customer enquiry deleted successfully!"
+  );
 
   displayLeads();
 }
@@ -2209,7 +2217,8 @@ document.addEventListener(
     displayLeads();
   }
 );
-<script>
+
+</script>
 
 async function updateLeadStatus(id, newStatus) {
 
