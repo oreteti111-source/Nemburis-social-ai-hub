@@ -1578,12 +1578,20 @@ console.log("NEMBURIS LEADS QUERY RESULT:", result);
 
 const leads = result.data;
 const error = result.error;
-    if (result.error) {
 
-      console.error(
-        "DISPLAY LEADS ERROR:",
-        result.error
-      );
+alert(
+  "LEAD TEST\n\nRows found: " +
+  ((leads || []).length) +
+  "\n\nError: " +
+  (error ? error.message : "NONE")
+);
+
+if (result.error) {
+
+  console.error(
+    "DISPLAY LEADS ERROR:",
+    result.error
+  );
 
       leadList.innerHTML =
         "❌ Unable to load enquiries:<br><br>" +
