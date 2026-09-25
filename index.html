@@ -1653,13 +1653,12 @@ async function displayLeads() {
         "', this.value)\">" +
 
         "<option value=\"New\" " +
-        (lead.Status === "New" ? "selected" : "") +
-        ">New</option>" +
+(lead.Status === "New" ? "selected" : "") +
+">New</option>" +
 
-        "<option value=\"Contacted\" " +
-        (lead.Status === "Contacted" ? "selected" : "") +
-        ">Contacted</option>" +
-
+"<option value=\"Contacted\" " +
+(lead.Status === "Contacted" ? "selected" : "") +
+">Contacted</option>" +
         "<option value=\"Confirmed\" " +
         (lead.Status === "Confirmed" ? "selected" : "") +
         ">Confirmed</option>" +
