@@ -2177,35 +2177,6 @@ results.forEach(function(lead) {
 });
 }
 
-async function updateLeadStatus(id, newStatus) {
-
-  const { error } =
-    await supabaseClient
-      .from("Leads")
-      .update({
-        "Status": newStatus
-      })
-      .eq("id", id);
-
-  if (error) {
-
-    console.error(
-      "STATUS UPDATE ERROR:",
-      error
-    );
-
-    alert(
-      "Unable to update status:\n\n" +
-      error.message
-    );
-
-    return;
-  }
-
-  alert("Status updated successfully!");
-
-  displayLeads();
-  }
 async function deleteLead(id) {
   if (!confirm("Delete this customer enquiry?")) {
     return;
@@ -2240,9 +2211,6 @@ document.addEventListener(
     displayLeads();
   }
 );
-
-</script>
-
 <script>
 
 async function updateLeadStatus(id, newStatus) {
@@ -2256,14 +2224,14 @@ async function updateLeadStatus(id, newStatus) {
     await supabaseClient
       .from("Leads")
       .update({
-        Status: newStatus
+        "Status": newStatus
       })
-      .eq("Id", id);
+      .eq("id", id);
 
   if (error) {
 
     console.error(
-      "Status update error:",
+      "STATUS UPDATE ERROR:",
       error
     );
 
@@ -2300,7 +2268,7 @@ async function searchLeads() {
     await supabaseClient
       .from("Leads")
       .select("*")
-      .order("Id", {
+      .order("id", {
         ascending: false
       });
 
@@ -2312,7 +2280,7 @@ async function searchLeads() {
     );
 
     leadList.innerHTML =
-      "Unable to load enquiries: " +
+      "❌ Search failed:<br><br>" +
       error.message;
 
     return;
@@ -2334,7 +2302,7 @@ async function searchLeads() {
   if (results.length === 0) {
 
     leadList.innerHTML =
-      "No enquiries found.";
+      "📭 No enquiries found.";
 
     return;
   }
@@ -2398,15 +2366,17 @@ async function searchLeads() {
 
       <button
         type="button"
-        onclick="deleteLead('${lead.Id}')">
+        onclick="deleteLead('${lead.id}')">
         Delete
       </button>
     `;
+
     leadList.appendChild(enquiry);
 
   });
 
 }
+
 
 async function deleteLead(id) {
 
@@ -2414,10 +2384,11 @@ async function deleteLead(id) {
     return;
   }
 
-  const { error } = await supabaseClient
-    .from("Leads")
-    .delete()
-    .eq("Id", id);
+  const { error } =
+    await supabaseClient
+      .from("Leads")
+      .delete()
+      .eq("id", id);
 
   if (error) {
 
@@ -2434,13 +2405,14 @@ async function deleteLead(id) {
     return;
   }
 
-  alert("Customer enquiry deleted successfully!");
+  alert(
+    "Customer enquiry deleted successfully!"
+  );
 
   displayLeads();
 }
 
 </script>
-
 <footer>
   <h3>NEMBURIS SAFARI TOURS</h3>
 
