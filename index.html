@@ -1446,11 +1446,10 @@ const supabaseClient =
   );
 
 </script>
+
 <!-- LEAD CENTER JAVASCRIPT -->
+
 <script>
-
-alert("LEAD CENTER SCRIPT STARTED");
-
 async function addLead() {
 
   const name =
@@ -1560,16 +1559,14 @@ async function displayLeads() {
     if (!leadList) {
       return;
     }
-alert("CHECK SUPABASE CLIENT: " + typeof supabaseClient);
 
-if (!supabaseClient) {
+    if (!supabaseClient) {
 
-  leadList.innerHTML =
-    "❌ Supabase connection is missing.";
+      leadList.innerHTML =
+        "❌ Supabase connection is missing.";
 
-  return;
-  }
-    
+      return;
+    }
 
     leadList.innerHTML =
       "⏳ Loading enquiries from Leads table...";
@@ -1577,17 +1574,11 @@ if (!supabaseClient) {
     const result =
       await supabaseClient
         .from("Leads")
-        .select("*");
+        .select("*")
+        .order("id", { ascending: false });
 
     const leads = result.data;
     const error = result.error;
-
-    alert(
-      "LEADS LOADED: " +
-      (leads ? leads.length : "NULL") +
-      "\nERROR: " +
-      (error ? error.message : "NONE")
-    );
 
     if (error) {
 
@@ -1654,52 +1645,32 @@ if (!supabaseClient) {
         (lead.Message || "") +
         "</p>" +
 
-"<p>Status: " +
+        "<p>Status: " +
 
-"<select " +
-"onchange=\"updateLeadStatus('" +
-lead.id +
-"', this.value)\" " +
-"style=\"padding:6px;border-radius:5px;\">" +
+        "<select " +
+        "onchange=\"updateLeadStatus('" +
+        lead.id +
+        "', this.value)\">" +
 
-"<option value=\"New\" " +
-(lead.Status === "New" ? "selected" : "") +
-">New</option>" +
+        "<option value=\"New\" " +
+        (lead.Status === "New" ? "selected" : "") +
+        ">New</option>" +
 
-"<option value=\"Contacted\" " +
-(lead.Status === "Contacted" ? "selected" : "") +
-">Contacted</option>" +
+        "<option value=\"Contacted\" " +
+        (lead.Status === "Contacted" ? "selected" : "") +
+        ">Contacted</option>" +
 
-"<option value=\"Confirmed\" " +
-(lead.Status === "Confirmed" ? "selected" : "") +
-">Confirmed</option>" +
+        "<option value=\"Confirmed\" " +
+        (lead.Status === "Confirmed" ? "selected" : "") +
+        ">Confirmed</option>" +
 
-"<option value=\"Completed\" " +
-(lead.Status === "Completed" ? "selected" : "") +
-">Completed</option>" +
+        "<option value=\"Completed\" " +
+        (lead.Status === "Completed" ? "selected" : "") +
+        ">Completed</option>" +
 
-"</select>" +
+        "</select>" +
 
-"</p>" +
-
-        "<a href='https://wa.me/" +
-        (lead.Phone || "").replace(/\D/g, "") +
-        "' target='_blank' " +
-        "style='display:inline-block;margin:5px;padding:8px 12px;background:#25D366;color:white;text-decoration:none;border-radius:6px;'>" +
-
-        "💬 WhatsApp Customer" +
-
-        "</a>" +
-
-        "<button type='button' " +
-        "onclick=\"deleteLead('" +
-        lead.Id +
-        "')\" " +
-        "style='margin:5px;padding:8px 12px;border:0;border-radius:6px;'>" +
-
-        "🗑️ Delete" +
-
-        "</button>";
+        "</p>";
 
       leadList.appendChild(enquiry);
 
@@ -1722,12 +1693,9 @@ lead.id +
 
 window.addEventListener("load", function() {
 
-  alert("NEMBURIS PAGE LOADED");
-
   displayLeads();
 
 });
-  alert("NEMBURIS SCRIPT REACHED THE BOTTOM");
 function updateLeadSummary(leads) {
 
   const total =
