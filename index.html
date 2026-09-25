@@ -1549,60 +1549,55 @@ async function addLead() {
   }
 
   }
-async function displayLeads() {
+
+    async function displayLeads() {
+
+  const leadList =
+    document.getElementById("leadList");
+
+  if (!leadList) {
+    return;
+  }
+
+  leadList.innerHTML =
+    "⏳ Loading enquiries from Leads table...";
 
   try {
-
-    const leadList =
-      document.getElementById("leadList");
-
-    if (!leadList) {
-      return;
-    }
-
-    if (!supabaseClient) {
-
-      leadList.innerHTML =
-        "❌ Supabase connection is missing.";
-
-      return;
-    }
-
-    leadList.innerHTML =
-      "⏳ Loading enquiries from Leads table...";
 
     const result =
       await supabaseClient
         .from("Leads")
         .select("*")
-        .order("id", { ascending: false });
+        .order("id", {
+          ascending: false
+        });
 
-    const leads = result.data;
-    const error = result.error;
+    if (result.error) {
 
-    if (error) {
+      console.error(
+        "DISPLAY LEADS ERROR:",
+        result.error
+      );
 
       leadList.innerHTML =
         "❌ Unable to load enquiries:<br><br>" +
-        error.message;
+        result.error.message;
 
       return;
     }
 
-    if (!leads || leads.length === 0) {
+    const leads = result.data || [];
+
+    if (typeof updateLeadSummary === "function") {
+      updateLeadSummary(leads);
+    }
+
+    if (leads.length === 0) {
 
       leadList.innerHTML =
         "📭 No enquiries found in the Leads table.";
 
-      if (typeof updateLeadSummary === "function") {
-        updateLeadSummary([]);
-      }
-
       return;
-    }
-
-    if (typeof updateLeadSummary === "function") {
-      updateLeadSummary(leads);
     }
 
     leadList.innerHTML = "";
@@ -1620,7 +1615,6 @@ async function displayLeads() {
         "background:#fff;";
 
       enquiry.innerHTML =
-
         "<strong>👤 " +
         (lead.Name || "Customer") +
         "</strong>" +
@@ -1653,12 +1647,13 @@ async function displayLeads() {
         "', this.value)\">" +
 
         "<option value=\"New\" " +
-(lead.Status === "New" ? "selected" : "") +
-">New</option>" +
+        (lead.Status === "New" ? "selected" : "") +
+        ">New</option>" +
 
-"<option value=\"Contacted\" " +
-(lead.Status === "Contacted" ? "selected" : "") +
-">Contacted</option>" +
+        "<option value=\"Contacted\" " +
+        (lead.Status === "Contacted" ? "selected" : "") +
+        ">Contacted</option>" +
+
         "<option value=\"Confirmed\" " +
         (lead.Status === "Confirmed" ? "selected" : "") +
         ">Confirmed</option>" +
@@ -1677,19 +1672,19 @@ async function displayLeads() {
 
   } catch (error) {
 
-    const leadList =
-      document.getElementById("leadList");
+    console.error(
+      "DISPLAY LEADS CRASH:",
+      error
+    );
 
-    if (leadList) {
-
-      leadList.innerHTML =
-        "❌ Loading failed:<br><br>" +
-        error.message;
-    }
+    leadList.innerHTML =
+      "❌ Loading failed:<br><br>" +
+      error.message;
   }
 
-}
+  }
 
+  
 window.addEventListener("load", function() {
 
   displayLeads();
