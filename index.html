@@ -1454,10 +1454,10 @@ console.log("NEMBURIS SUPABASE CONNECTED");
 
 alert("NEMBURIS JAVASCRIPT STARTED");
 
+
 async function addLead() {
 
   const name =
-
     document.getElementById("leadName").value.trim();
 
   const phone =
@@ -1486,14 +1486,6 @@ async function addLead() {
   }
 
 
-  if (!supabaseClient) {
-
-    alert("❌ Supabase connection is missing.");
-
-    return;
-  }
-
-
   try {
 
     const { error } =
@@ -1501,7 +1493,7 @@ async function addLead() {
         .from("Leads")
         .insert([
           {
-            "Leads": "Customer Enquiry",
+            "Lead": "Customer Enquiry",
             "Name": name,
             "Phone": phone,
             "Email": email,
@@ -1541,7 +1533,6 @@ async function addLead() {
 
     displayLeads();
 
-
   } catch (error) {
 
     console.error("SAVE ERROR:", error);
@@ -1553,7 +1544,8 @@ async function addLead() {
 
   }
 
-  }
+}
+
 
 async function displayLeads() {
 
@@ -1567,6 +1559,7 @@ async function displayLeads() {
   leadList.innerHTML =
     "⏳ Loading enquiries from Leads table...";
 
+
   try {
 
     const result =
@@ -1577,8 +1570,13 @@ async function displayLeads() {
           ascending: false
         });
 
-    const leads = result.data || [];
-    const error = result.error;
+
+    const leads =
+      result.data || [];
+
+    const error =
+      result.error;
+
 
     if (error) {
 
@@ -1594,9 +1592,11 @@ async function displayLeads() {
       return;
     }
 
-    if (typeof updateLeadSummary === "function") {
-      updateLeadSummary(leads);
-    }
+
+    updateLeadSummary(leads);
+
+    updateFollowUpList(leads);
+
 
     if (leads.length === 0) {
 
@@ -1606,7 +1606,9 @@ async function displayLeads() {
       return;
     }
 
+
     leadList.innerHTML = "";
+
 
     leads.forEach(function(lead) {
 
@@ -1616,6 +1618,7 @@ async function displayLeads() {
       );
 
     });
+
 
   } catch (error) {
 
@@ -1627,9 +1630,11 @@ async function displayLeads() {
     leadList.innerHTML =
       "❌ Loading failed:<br><br>" +
       error.message;
-  }
 
   }
+
+}
+
 
 function updateLeadSummary(leads) {
 
@@ -1656,6 +1661,7 @@ function updateLeadSummary(leads) {
       return lead.Status === "Completed";
     }).length;
 
+
   document.getElementById("totalLeads").textContent =
     total;
 
@@ -1671,6 +1677,7 @@ function updateLeadSummary(leads) {
   document.getElementById("completedLeads").textContent =
     completedCount;
 
+
   updateLeadStatusChart(
     newCount,
     contactedCount,
@@ -1678,7 +1685,9 @@ function updateLeadSummary(leads) {
     completedCount
   );
 
-  }
+}
+
+
 function updateFollowUpList(leads) {
 
   const followUpCount =
@@ -1687,9 +1696,11 @@ function updateFollowUpList(leads) {
   const followUpList =
     document.getElementById("followUpList");
 
+
   if (!followUpList) {
     return;
   }
+
 
   const followUps =
     leads.filter(function(lead) {
@@ -1701,14 +1712,14 @@ function updateFollowUpList(leads) {
 
     });
 
-  /* UPDATE FOLLOW-UP NUMBER */
 
   if (followUpCount) {
+
     followUpCount.textContent =
       followUps.length;
+
   }
 
-  /* NO FOLLOW-UPS */
 
   if (followUps.length === 0) {
 
@@ -1718,14 +1729,15 @@ function updateFollowUpList(leads) {
     return;
   }
 
-  /* DISPLAY FOLLOW-UPS */
 
   followUpList.innerHTML = "";
+
 
   followUps.forEach(function(lead) {
 
     const item =
       document.createElement("div");
+
 
     item.style.cssText = `
       padding:15px;
@@ -1734,6 +1746,7 @@ function updateFollowUpList(leads) {
       background:#f5f5f5;
       border:1px solid #ddd;
     `;
+
 
     item.innerHTML = `
 
@@ -1778,7 +1791,7 @@ function updateFollowUpList(leads) {
 
       <button
         type="button"
-        onclick="markLeadContacted('${lead.Id}')"
+        onclick="markLeadContacted('${lead.id}')"
         style="
           padding:9px 14px;
           border:none;
@@ -1795,51 +1808,70 @@ function updateFollowUpList(leads) {
 
     `;
 
+
     followUpList.appendChild(item);
 
   });
 
 }
 
+
 function toggleFollowUpPanel() {
 
   const panel =
     document.getElementById("followUpList");
 
+
   if (!panel) {
     return;
   }
+
 
   if (
     panel.style.display === "none" ||
     panel.style.display === ""
   ) {
-    panel.style.display = "block";
+
+    panel.style.display =
+      "block";
+
   } else {
-    panel.style.display = "none";
-  }
+
+    panel.style.display =
+      "none";
 
   }
-  
-/* MARK CUSTOMER AS CONTACTED */
+
+}
+
 
 async function markLeadContacted(id) {
 
   if (!id) {
-    alert("Customer ID is missing.");
+
+    alert(
+      "Customer ID is missing."
+    );
+
     return;
   }
+
 
   const { error } =
     await supabaseClient
       .from("Leads")
       .update({
-        Status: "Contacted"
+        "Status": "Contacted"
       })
-      .eq("Id", id);
+      .eq("id", id);
+
 
   if (error) {
-    console.error("Status update error:", error);
+
+    console.error(
+      "Status update error:",
+      error
+    );
 
     alert(
       "Unable to update customer status: " +
@@ -1849,11 +1881,17 @@ async function markLeadContacted(id) {
     return;
   }
 
-  alert("Customer marked as Contacted.");
+
+  alert(
+    "Customer marked as Contacted."
+  );
+
 
   displayLeads();
+
 }
- 
+
+
 function updateLeadStatusChart(
   newCount,
   contactedCount,
@@ -1864,10 +1902,11 @@ function updateLeadStatusChart(
   const chart =
     document.getElementById("leadStatusChart");
 
+
   if (!chart) {
-    console.error("leadStatusChart element not found.");
     return;
   }
+
 
   const total =
     Number(newCount) +
@@ -1875,17 +1914,24 @@ function updateLeadStatusChart(
     Number(confirmedCount) +
     Number(completedCount);
 
+
   if (total === 0) {
+
     chart.innerHTML =
       "<p>📭 No lead data yet.</p>";
+
     return;
   }
+
 
   chart.innerHTML = `
 
     <div style="margin:10px 0;">
+
       <strong>🆕 New</strong>
+
       <div style="background:#ddd;border-radius:6px;overflow:hidden;">
+
         <div style="
           width:${(Number(newCount) / total) * 100}%;
           background:#173d2a;
@@ -1893,14 +1939,22 @@ function updateLeadStatusChart(
           padding:8px;
           box-sizing:border-box;
         ">
+
           ${newCount}
+
         </div>
+
       </div>
+
     </div>
 
+
     <div style="margin:10px 0;">
+
       <strong>📞 Contacted</strong>
+
       <div style="background:#ddd;border-radius:6px;overflow:hidden;">
+
         <div style="
           width:${(Number(contactedCount) / total) * 100}%;
           background:#173d2a;
@@ -1908,14 +1962,22 @@ function updateLeadStatusChart(
           padding:8px;
           box-sizing:border-box;
         ">
+
           ${contactedCount}
+
         </div>
+
       </div>
+
     </div>
 
+
     <div style="margin:10px 0;">
+
       <strong>✅ Confirmed</strong>
+
       <div style="background:#ddd;border-radius:6px;overflow:hidden;">
+
         <div style="
           width:${(Number(confirmedCount) / total) * 100}%;
           background:#173d2a;
@@ -1923,14 +1985,22 @@ function updateLeadStatusChart(
           padding:8px;
           box-sizing:border-box;
         ">
+
           ${confirmedCount}
+
         </div>
+
       </div>
+
     </div>
 
+
     <div style="margin:10px 0;">
+
       <strong>🏁 Completed</strong>
+
       <div style="background:#ddd;border-radius:6px;overflow:hidden;">
+
         <div style="
           width:${(Number(completedCount) / total) * 100}%;
           background:#173d2a;
@@ -1938,23 +2008,36 @@ function updateLeadStatusChart(
           padding:8px;
           box-sizing:border-box;
         ">
+
           ${completedCount}
+
         </div>
+
       </div>
+
     </div>
 
   `;
-            }
-function createLeadCard(lead, leadList) {
+
+}
+
+
+function createLeadCard(
+  lead,
+  leadList
+) {
 
   const enquiry =
     document.createElement("div");
 
+
   enquiry.className =
     "lead-card";
 
+
   enquiry.style =
     "padding:15px;margin:15px 0;background:white;border-radius:8px;text-align:left;";
+
 
   enquiry.innerHTML = `
 
@@ -1991,9 +2074,9 @@ function createLeadCard(lead, leadList) {
       <strong>Status:</strong>
 
       <select
-  onchange="updateLeadStatus('${lead.Id}', this.value)"
-  style="padding:6px;margin-left:5px;"
->
+        onchange="updateLeadStatus('${lead.id}', this.value)"
+        style="padding:6px;margin-left:5px;"
+      >
 
         <option value="New"
           ${lead.Status === "New" ? "selected" : ""}>
@@ -2011,13 +2094,14 @@ function createLeadCard(lead, leadList) {
         </option>
 
         <option value="Completed"
-  ${lead.Status === "Completed" ? "selected" : ""}>
-  Completed
-</option>
+          ${lead.Status === "Completed" ? "selected" : ""}>
+          Completed
+        </option>
 
       </select>
 
     </p>
+
 
     <a
       href="https://wa.me/${(lead.Phone || "").replace(/\D/g, "")}"
@@ -2035,6 +2119,7 @@ function createLeadCard(lead, leadList) {
       WhatsApp
     </a>
 
+
     <button
       onclick="deleteLead('${lead.id}')"
       style="margin:5px;padding:8px 12px;"
@@ -2044,8 +2129,11 @@ function createLeadCard(lead, leadList) {
 
   `;
 
+
   leadList.appendChild(enquiry);
+
 }
+
 
 async function searchLeads() {
 
@@ -2055,12 +2143,15 @@ async function searchLeads() {
   const leadList =
     document.getElementById("leadList");
 
+
   if (!searchInput || !leadList) {
     return;
   }
 
+
   const search =
     searchInput.value.trim().toLowerCase();
+
 
   const { data: leads, error } =
     await supabaseClient
@@ -2070,101 +2161,88 @@ async function searchLeads() {
         ascending: false
       });
 
+
   if (error) {
 
-    console.error("SEARCH ERROR:", error);
+    console.error(
+      "Search error:",
+      error
+    );
 
     leadList.innerHTML =
-      "Unable to search enquiries: " +
+      "❌ Search failed:<br><br>" +
       error.message;
 
     return;
   }
+
 
   const results =
     search
       ? leads.filter(function(lead) {
 
           return (
-            (lead.Name || "").toLowerCase().includes(search) ||
-            (lead.Phone || "").toLowerCase().includes(search) ||
-            (lead.Email || "").toLowerCase().includes(search) ||
-            (lead.Safari || "").toLowerCase().includes(search)
+
+            (lead.Name || "")
+              .toLowerCase()
+              .includes(search) ||
+
+            (lead.Phone || "")
+              .toLowerCase()
+              .includes(search) ||
+
+            (lead.Email || "")
+              .toLowerCase()
+              .includes(search) ||
+
+            (lead.Safari || "")
+              .toLowerCase()
+              .includes(search)
+
           );
 
         })
       : leads;
 
-leadList.innerHTML = "";
 
-if (results.length === 0) {
+  leadList.innerHTML = "";
 
-  leadList.innerHTML =
-    "No matching enquiries found.";
 
-  return;
-}
+  if (results.length === 0) {
 
-results.forEach(function(lead) {
-
-  createLeadCard(lead, leadList);
-
-});
-}
-
-<script>
-async function deleteLead(id) {
-
-  if (!confirm("Delete this customer enquiry?")) {
-    return;
-  }
-
-  const { error } =
-    await supabaseClient
-      .from("Leads")
-      .delete()
-      .eq("id", id);
-
-  if (error) {
-
-    console.error(
-      "DELETE ERROR:",
-      error
-    );
-
-    alert(
-      "Unable to delete the enquiry:\n\n" +
-      error.message
-    );
+    leadList.innerHTML =
+      "📭 No enquiries found.";
 
     return;
   }
 
-  alert(
-    "Customer enquiry deleted successfully!"
-  );
 
-  displayLeads();
+  results.forEach(function(lead) {
+
+    createLeadCard(
+      lead,
+      leadList
+    );
+
+  });
+
 }
 
 
-document.addEventListener(
-  "DOMContentLoaded",
-  function() {
-    displayLeads();
-  }
-);
-
-</script>
-
-<script>
-
-async function updateLeadStatus(id, newStatus) {
+async function updateLeadStatus(
+  id,
+  newStatus
+) {
 
   if (!id) {
-    alert("Customer ID is missing.");
+
+    alert(
+      "Customer ID is missing."
+    );
+
     return;
   }
+
 
   const { error } =
     await supabaseClient
@@ -2173,6 +2251,7 @@ async function updateLeadStatus(id, newStatus) {
         "Status": newStatus
       })
       .eq("id", id);
+
 
   if (error) {
 
@@ -2189,107 +2268,35 @@ async function updateLeadStatus(id, newStatus) {
     return;
   }
 
-  alert("Status updated successfully!");
+
+  alert(
+    "Status updated successfully!"
+  );
+
 
   displayLeads();
-}
-
-
-async function searchLeads() {
-
-  const searchInput =
-    document.getElementById("leadSearch");
-
-  const leadList =
-    document.getElementById("leadList");
-
-  if (!searchInput || !leadList) {
-    return;
-  }
-
-  const search =
-    searchInput.value.trim().toLowerCase();
-
-  const { data: leads, error } =
-    await supabaseClient
-      .from("Leads")
-      .select("*")
-      .order("id", {
-        ascending: false
-      });
-
-  if (error) {
-
-    console.error(
-      "Search error:",
-      error
-    );
-
-    leadList.innerHTML =
-      "❌ Search failed:<br><br>" +
-      error.message;
-
-    return;
-  }
-
-  const results =
-    search
-      ? leads.filter(function(lead) {
-
-          return (
-            (lead.Name || "")
-              .toLowerCase()
-              .includes(search) ||
-
-            (lead.Phone || "")
-              .toLowerCase()
-              .includes(search) ||
-
-            (lead.Email || "")
-              .toLowerCase()
-              .includes(search) ||
-
-            (lead.Safari || "")
-              .toLowerCase()
-              .includes(search)
-          );
-
-        })
-      : leads;
-
-  leadList.innerHTML = "";
-
-  if (results.length === 0) {
-
-    leadList.innerHTML =
-      "📭 No enquiries found.";
-
-    return;
-  }
-
-  results.forEach(function(lead) {
-
-    createLeadCard(
-      lead,
-      leadList
-    );
-
-  });
 
 }
 
 
 async function deleteLead(id) {
 
-  if (!confirm("Delete this customer enquiry?")) {
+  if (
+    !confirm(
+      "Delete this customer enquiry?"
+    )
+  ) {
+
     return;
   }
+
 
   const { error } =
     await supabaseClient
       .from("Leads")
       .delete()
       .eq("id", id);
+
 
   if (error) {
 
@@ -2306,22 +2313,28 @@ async function deleteLead(id) {
     return;
   }
 
+
   alert(
     "Customer enquiry deleted successfully!"
   );
 
+
   displayLeads();
+
 }
 
 
 document.addEventListener(
   "DOMContentLoaded",
   function() {
+
     displayLeads();
+
   }
 );
 
 </script>
+
 <footer>
   <h3>NEMBURIS SAFARI TOURS</h3>
 
