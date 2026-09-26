@@ -1863,49 +1863,58 @@ function toggleFollowUpPanel() {
 
 async function markLeadContacted(id) {
 
+  console.log("MARK CONTACTED ID:", id);
+
   if (!id) {
-
-    alert(
-      "Customer ID is missing."
-    );
-
+    alert("Customer ID is missing.");
     return;
   }
 
-
-  const { error } =
+  const { data, error } =
     await supabaseClient
       .from("Leads")
       .update({
-        "Status": "Contacted"
+        Status: "Contacted"
       })
-      .eq("id", id);
-
+      .eq("id", id)
+      .select();
 
   if (error) {
 
     console.error(
-      "Status update error:",
+      "MARK CONTACTED ERROR:",
       error
     );
 
     alert(
-      "Unable to update customer status: " +
+      "Unable to update customer status:\n\n" +
       error.message
     );
 
     return;
   }
 
-
-  alert(
-    "Customer marked as Contacted."
+  console.log(
+    "MARK CONTACTED RESULT:",
+    data
   );
 
+  if (!data || data.length === 0) {
+
+    alert(
+      "⚠️ No customer record was updated."
+    );
+
+    return;
+  }
+
+  alert(
+    "✅ Customer marked as Contacted."
+  );
 
   displayLeads();
 
-}
+  }
 
 
 function updateLeadStatusChart(
