@@ -1505,35 +1505,31 @@ async function addLead() {
   try {
 
     const { error } =
-      await supabaseClient
-        .from("Leads")
-        .insert([
-          {
-            "Lead": "Customer Enquiry",
-            "Name": name,
-            "Phone": phone,
-            "Email": email,
-            "Safari": safari,
-            "Travel_date": travelDate || null,
-            "Message": message,
-            "Status": "New"
-          }
-        ]);
+  await supabaseClient
+    .from("Leads")
+    .insert([
+      {
+        "Name": name,
+        "Phone": phone,
+        "Email": email,
+        "Safari": safari,
+        "Travel_date": travelDate || null,
+        "Message": message,
+        "Status": "New"
+      }
+    ]);
 
+if (error) {
 
-    if (error) {
+  console.error("SAVE ERROR:", error);
 
-      console.error("SAVE ERROR:", error);
+  alert(
+    "❌ Enquiry was NOT saved.\n\n" +
+    error.message
+  );
 
-      alert(
-        "❌ Enquiry was NOT saved.\n\n" +
-        error.message
-      );
-
-      return;
-    }
-
-
+  return;
+  }
     alert(
       "✅ Customer enquiry saved successfully!"
     );
