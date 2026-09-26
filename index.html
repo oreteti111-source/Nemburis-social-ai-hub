@@ -2157,6 +2157,8 @@ document.addEventListener(
 
 </script>
 
+<script>
+
 async function updateLeadStatus(id, newStatus) {
 
   if (!id) {
@@ -2230,18 +2232,32 @@ async function searchLeads() {
     return;
   }
 
-  const results = search
-    ? leads.filter(function(lead) {
+  const results =
+    search
+      ? leads.filter(function(lead) {
 
-        return (
-          (lead.Name || "").toLowerCase().includes(search) ||
-          (lead.Phone || "").toLowerCase().includes(search) ||
-          (lead.Email || "").toLowerCase().includes(search) ||
-          (lead.Safari || "").toLowerCase().includes(search)
-        );
+          return (
+            (lead.Name || "")
+              .toLowerCase()
+              .includes(search) ||
 
-      })
-    : leads;
+            (lead.Phone || "")
+              .toLowerCase()
+              .includes(search) ||
+
+            (lead.Email || "")
+              .toLowerCase()
+              .includes(search) ||
+
+            (lead.Safari || "")
+              .toLowerCase()
+              .includes(search)
+          );
+
+        })
+      : leads;
+
+  leadList.innerHTML = "";
 
   if (results.length === 0) {
 
@@ -2251,71 +2267,12 @@ async function searchLeads() {
     return;
   }
 
-  leadList.innerHTML = "";
-
   results.forEach(function(lead) {
 
-    const enquiry =
-      document.createElement("div");
-
-    enquiry.className = "lead-card";
-
-    enquiry.innerHTML = `
-      <h3>${lead.Name || "No name"}</h3>
-
-      <p>
-        <strong>Phone:</strong>
-        ${lead.Phone || "Not provided"}
-      </p>
-
-      <p>
-        <strong>Email:</strong>
-        ${lead.Email || "Not provided"}
-      </p>
-
-      <p>
-        <strong>Safari:</strong>
-        ${lead.Safari || "Not provided"}
-      </p>
-
-      <p>
-        <strong>Travel Date:</strong>
-        ${lead.Travel_date || "Not provided"}
-      </p>
-
-      <p>
-        <strong>Message:</strong>
-        ${lead.Message || "No message"}
-      </p>
-
-      <p>
-        <strong>Status:</strong>
-        ${lead.Status || "New"}
-      </p>
-
-      <a
-        href="https://wa.me/${(lead.Phone || "").replace(/\D/g, "")}"
-        target="_blank"
-        style="
-          display:inline-block;
-          margin-right:10px;
-          padding:8px 12px;
-          background:#25D366;
-          color:white;
-          text-decoration:none;
-          border-radius:6px;
-        ">
-        WhatsApp
-      </a>
-
-      <button
-        type="button"
-        onclick="deleteLead('${lead.id}')">
-        Delete
-      </button>
-    `;
-
-    leadList.appendChild(enquiry);
+    createLeadCard(
+      lead,
+      leadList
+    );
 
   });
 
@@ -2337,7 +2294,7 @@ async function deleteLead(id) {
   if (error) {
 
     console.error(
-      "Delete error:",
+      "DELETE ERROR:",
       error
     );
 
@@ -2355,6 +2312,14 @@ async function deleteLead(id) {
 
   displayLeads();
 }
+
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+    displayLeads();
+  }
+);
 
 </script>
 <footer>
