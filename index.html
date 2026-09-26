@@ -928,6 +928,7 @@ destination with abundant animals and dramatic volcanic scenery.
 
   <button
     class="btn"
+    type="button"
     onclick="window.location.href='https://wa.me/255767809050?text=Hello%20Nemburis%20Safari%20Tours.%20I%20would%20like%20to%20plan%20a%20Tanzania%20trip.'">
     Chat with us on WhatsApp
   </button>
@@ -958,21 +959,21 @@ destination with abundant animals and dramatic volcanic scenery.
 
     <br>
 
-<button
-  class="btn"
-  type="button"
-  onclick="alert('SEND BUTTON IS WORKING')">
-  Send Enquiry
-</button>
+    <button
+      class="btn"
+      type="submit">
+      Send Enquiry
+    </button>
 
   </form>
 
+  <p id="bookingResult"></p>
+
 </section>
+
 <script>
 
 document.getElementById("bookingForm").addEventListener("submit", async function(e) {
-
-  alert("PUBLIC FORM HANDLER IS RUNNING");
 
   e.preventDefault();
 
@@ -984,6 +985,11 @@ document.getElementById("bookingForm").addEventListener("submit", async function
 
   const message =
     document.getElementById("message").value.trim();
+
+  const result =
+    document.getElementById("bookingResult");
+
+  result.innerHTML = "⏳ Sending enquiry...";
 
   const { error } =
     await supabaseClient
@@ -1004,17 +1010,15 @@ document.getElementById("bookingForm").addEventListener("submit", async function
 
     console.error("PUBLIC FORM SAVE ERROR:", error);
 
-    alert(
-      "❌ Enquiry was not saved.\n\n" +
-      error.message
-    );
+    result.innerHTML =
+      "❌ Your enquiry could not be saved.<br><br>" +
+      error.message;
 
     return;
   }
 
-  alert(
-    "✅ Thank you! Your enquiry has been received by Nemburis Safari Tours."
-  );
+  result.innerHTML =
+    "✅ Your enquiry has been received by Nemburis Safari Tours.";
 
   const whatsapp =
     "https://wa.me/255767809050?text=" +
@@ -1025,7 +1029,9 @@ document.getElementById("bookingForm").addEventListener("submit", async function
       "Enquiry: " + message
     );
 
-  window.location.href = whatsapp;
+  setTimeout(function() {
+    window.location.href = whatsapp;
+  }, 1000);
 
 });
 
