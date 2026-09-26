@@ -965,20 +965,53 @@ destination with abundant animals and dramatic volcanic scenery.
   </form>
 
 </section>
-
 <script>
 
-<script>
-
-document.getElementById("bookingForm").addEventListener("submit", function(e) {
+document.getElementById("bookingForm").addEventListener("submit", async function(e) {
 
   e.preventDefault();
 
-  let name = document.getElementById("name").value;
-  let email = document.getElementById("email").value;
-  let message = document.getElementById("message").value;
+  const name =
+    document.getElementById("name").value.trim();
 
-  let whatsapp =
+  const email =
+    document.getElementById("email").value.trim();
+
+  const message =
+    document.getElementById("message").value.trim();
+
+  const { error } =
+    await supabaseClient
+      .from("Leads")
+      .insert([
+        {
+          "Name": name,
+          "Phone": "",
+          "Email": email,
+          "Safari": "Website Enquiry",
+          "Travel_date": null,
+          "Message": message,
+          "Status": "New"
+        }
+      ]);
+
+  if (error) {
+
+    console.error("PUBLIC FORM SAVE ERROR:", error);
+
+    alert(
+      "❌ Enquiry was not saved.\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+  alert(
+    "✅ Thank you! Your enquiry has been received by Nemburis Safari Tours."
+  );
+
+  const whatsapp =
     "https://wa.me/255767809050?text=" +
     encodeURIComponent(
       "Hello Nemburis Safari Tours.\n\n" +
@@ -992,7 +1025,6 @@ document.getElementById("bookingForm").addEventListener("submit", function(e) {
 });
 
 </script>
-
 
 <section id="hub" style="padding:40px 20px;text-align:center;">
 
