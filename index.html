@@ -1610,69 +1610,10 @@ async function displayLeads() {
 
     leads.forEach(function(lead) {
 
-      const enquiry =
-        document.createElement("div");
-
-      enquiry.style.cssText =
-        "padding:15px;" +
-        "margin-bottom:12px;" +
-        "border:1px solid #ddd;" +
-        "border-radius:10px;" +
-        "background:#fff;";
-
-      enquiry.innerHTML =
-        "<strong>👤 " +
-        (lead.Name || "Customer") +
-        "</strong>" +
-
-        "<p>📞 " +
-        (lead.Phone || "") +
-        "</p>" +
-
-        "<p>📧 " +
-        (lead.Email || "") +
-        "</p>" +
-
-        "<p>🦁 Safari: " +
-        (lead.Safari || "") +
-        "</p>" +
-
-        "<p>📅 Travel Date: " +
-        (lead.Travel_date || "") +
-        "</p>" +
-
-        "<p>💬 Message: " +
-        (lead.Message || "") +
-        "</p>" +
-
-        "<p>Status: " +
-
-        "<select " +
-        "onchange=\"updateLeadStatus('" +
-        lead.id +
-        "', this.value)\">" +
-
-        "<option value=\"New\" " +
-        (lead.Status === "New" ? "selected" : "") +
-        ">New</option>" +
-
-        "<option value=\"Contacted\" " +
-        (lead.Status === "Contacted" ? "selected" : "") +
-        ">Contacted</option>" +
-
-        "<option value=\"Confirmed\" " +
-        (lead.Status === "Confirmed" ? "selected" : "") +
-        ">Confirmed</option>" +
-
-        "<option value=\"Completed\" " +
-        (lead.Status === "Completed" ? "selected" : "") +
-        ">Completed</option>" +
-
-        "</select>" +
-
-        "</p>";
-
-      leadList.appendChild(enquiry);
+      createLeadCard(
+        lead,
+        leadList
+      );
 
     });
 
@@ -1689,11 +1630,7 @@ async function displayLeads() {
   }
 
   }
-window.addEventListener("load", function() {
 
-  displayLeads();
-
-});
 function updateLeadSummary(leads) {
 
   const total =
