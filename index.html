@@ -1143,8 +1143,6 @@ document.getElementById("bookingForm").addEventListener("submit", async function
   </div>
 </section>
 
-<script>
-
 function createMarketingContent() {
 
   const topic =
@@ -1157,113 +1155,232 @@ function createMarketingContent() {
     document.getElementById("contentResult");
 
   if (topic === "") {
-
     result.innerHTML =
       "⚠️ Please enter a topic first.";
-
     return;
   }
 
-  let hook = "";
-  let caption = "";
-  let script = "";
-  let visual = "";
-  let title = "";
+  const t = topic.toLowerCase();
 
-  if (platform === "Facebook") {
+  let destination = topic;
+  let focus = "wildlife, beautiful landscapes and authentic Tanzania";
+  let hook = "";
+  let title = "";
+  let script = "";
+  let caption = "";
+  let visual = "";
+
+  /* DESTINATION-SPECIFIC CONTENT */
+
+  if (t.includes("serengeti") || t.includes("migration")) {
+
+    destination = "Serengeti Great Migration";
+
+    focus =
+      "millions of wildebeest and other wildlife moving across the Serengeti";
 
     hook =
-      "🦁 Discover the magic of " + topic + " in Tanzania!";
-
-    caption =
-      "Tanzania is more than a destination — it is an experience. " +
-      topic +
-      " offers incredible landscapes, wildlife and authentic moments that stay with you long after your journey. " +
-      "Let Nemburis Safari Tours help you experience Tanzania in a personal and unforgettable way.";
-
-    visual =
-      "Use a strong photo or short video showing the destination, wildlife, landscape or travelers enjoying the experience.";
+      "🦁 Imagine standing in the Serengeti as one of nature's greatest wildlife spectacles unfolds around you.";
 
     title =
-      topic + " — Experience Tanzania with Nemburis Safari Tours";
+      "Serengeti Great Migration | Experience Tanzania";
+
+    visual =
+      "Show wildebeest crossing the plains, dramatic wildlife scenes, wide Serengeti landscapes and a safari vehicle approaching a viewing area.";
+
+  }
+
+  else if (t.includes("ngorongoro")) {
+
+    destination = "Ngorongoro Crater";
+
+    focus =
+      "spectacular crater scenery, abundant wildlife and unforgettable game viewing";
+
+    hook =
+      "🌍 One of Tanzania's most extraordinary wildlife experiences is waiting inside the Ngorongoro Crater.";
+
+    title =
+      "Ngorongoro Crater | Tanzania Safari Experience";
+
+    visual =
+      "Show the crater from above, descending into the crater, lions or elephants, and wide views of the crater floor.";
+
+  }
+
+  else if (t.includes("tarangire") || t.includes("elephant")) {
+
+    destination = "Tarangire National Park";
+
+    focus =
+      "large elephant herds, ancient baobab trees and peaceful wildlife encounters";
+
+    hook =
+      "🐘 If you love elephants and dramatic African landscapes, Tarangire deserves a place on your Tanzania itinerary.";
+
+    title =
+      "Tarangire National Park | Land of Elephants";
+
+    visual =
+      "Show elephants walking beneath baobab trees, wildlife near water and wide golden Tarangire landscapes.";
+
+  }
+
+  else if (t.includes("zanzibar") || t.includes("beach")) {
+
+    destination = "Zanzibar Beach";
+
+    focus =
+      "white sandy beaches, turquoise Indian Ocean waters and relaxing island experiences";
+
+    hook =
+      "🏝️ What if your Tanzania adventure ended with turquoise water, white sand and unforgettable island sunsets?";
+
+    title =
+      "Zanzibar Beach | The Perfect Tanzania Escape";
+
+    visual =
+      "Show turquoise ocean water, white beaches, palm trees, sunset scenes and relaxing Zanzibar experiences.";
+
+  }
+
+  else if (t.includes("maasai") || t.includes("culture")) {
+
+    destination = "Maasai Culture in Tanzania";
+
+    focus =
+      "authentic cultural traditions, Maasai community life, stories, music and heritage";
+
+    hook =
+      "❤️ Travel is not only about places — it is also about the people, traditions and stories that make Tanzania unique.";
+
+    title =
+      "Maasai Culture | Discover Authentic Tanzania";
+
+    visual =
+      "Show Maasai people, traditional clothing, beadwork, cultural activities and respectful community interactions.";
+
+  }
+
+  /* PLATFORM CONTENT */
+
+  if (platform === "TikTok") {
+
+    script =
+      "Scene 1: Open with a powerful view of " +
+      destination +
+      ".\n\n" +
+
+      "Voice-over: \"Would you believe this incredible experience is waiting for you in Tanzania?\"\n\n" +
+
+      "Scene 2: Show " +
+      focus +
+      ".\n\n" +
+
+      "Voice-over: \"" +
+      destination +
+      " gives you an experience you will remember long after your journey ends.\"\n\n" +
+
+      "Scene 3: Show another exciting moment.\n\n" +
+
+      "Voice-over: \"Ready to experience Tanzania? Travel with Nemburis Safari Tours.\"";
+
+    caption =
+      "This is Tanzania. 🌍🦁\n\n" +
+      destination +
+      " offers " +
+      focus +
+      ".\n\n" +
+      "Plan your journey with Nemburis Safari Tours.";
 
   }
 
   else if (platform === "Instagram") {
 
-    hook =
-      "✨ This is your sign to experience " + topic + "!";
-
     caption =
-      "Imagine waking up surrounded by the beauty of Tanzania. 🌍🦁\n\n" +
-      topic +
-      " is waiting for you.\n\n" +
-      "From unforgettable wildlife encounters to breathtaking landscapes, " +
-      "Nemburis Safari Tours helps you discover authentic Tanzania.";
-
-    visual =
-      "Use a high-quality destination photo, wildlife moment, or cinematic Reel.";
-
-    title =
-      topic + " 🌍🦁";
+      "✨ Your Tanzania adventure starts here.\n\n" +
+      destination +
+      " is an unforgettable experience filled with " +
+      focus +
+      ".\n\n" +
+      "Let Nemburis Safari Tours help you discover authentic Tanzania. 🌍🦁\n\n" +
+      "Save this post for your Tanzania travel plans.";
 
   }
 
-  else if (platform === "TikTok") {
-
-    hook =
-      "🎬 STOP SCROLLING! Here's why you should experience " +
-      topic +
-      " in Tanzania.";
-
-    script =
-      "Scene 1: Show the destination or wildlife.\n\n" +
-      "Voice-over: \"Have you ever dreamed of experiencing Tanzania like this?\"\n\n" +
-      "Scene 2: Show the main attraction.\n\n" +
-      "Voice-over: \"" +
-      topic +
-      " is one of the experiences you should not miss.\"\n\n" +
-      "Scene 3: Show another beautiful moment.\n\n" +
-      "Voice-over: \"Ready for your Tanzania adventure? Travel with Nemburis Safari Tours.\"";
+  else if (platform === "Facebook") {
 
     caption =
-      "Your Tanzania adventure starts here. 🌍🦁 " +
-      topic +
-      " with Nemburis Safari Tours.";
-
-    visual =
-      "Use 3–5 short vertical clips with quick transitions and natural destination sounds or music.";
-
-    title =
-      "Why you should experience " + topic;
+      "🌍 Discover Tanzania with Nemburis Safari Tours.\n\n" +
+      destination +
+      " offers " +
+      focus +
+      ".\n\n" +
+      "Whether you are planning your first Tanzania safari or returning for another adventure, we can help create a personalized journey for you.\n\n" +
+      "Contact Nemburis Safari Tours and start planning your adventure.";
 
   }
 
   else if (platform === "YouTube") {
 
-    title =
-      topic + " | Tanzania Safari Experience | Nemburis Safari Tours";
-
-    hook =
-      "Discover " + topic + " and see why Tanzania belongs on your travel list.";
-
     script =
       "Welcome to Nemburis Safari Tours.\n\n" +
-      "Today we are discovering " +
-      topic +
-      " in Tanzania.\n\n" +
-      "From incredible scenery and wildlife to authentic local experiences, " +
-      "Tanzania offers unforgettable journeys.\n\n" +
-      "If you are planning a Tanzania safari or holiday, " +
-      "contact Nemburis Safari Tours and let us help you plan your journey.";
+
+      "Today we are exploring " +
+      destination +
+      ".\n\n" +
+
+      "This incredible Tanzania experience is known for " +
+      focus +
+      ".\n\n" +
+
+      "In this video, discover what makes this destination special and why it belongs on your Tanzania travel list.\n\n" +
+
+      "Ready to plan your journey? Contact Nemburis Safari Tours.";
 
     caption =
-      "Discover Tanzania with Nemburis Safari Tours. " +
-      topic +
-      " is just one of the incredible experiences waiting for you.";
+      "Discover " +
+      destination +
+      " with Nemburis Safari Tours and experience authentic Tanzania.";
+
+  }
+
+  /* DEFAULT CONTENT */
+
+  if (hook === "") {
+
+    hook =
+      "🌍 Discover an unforgettable Tanzania experience: " +
+      destination +
+      ".";
+
+    title =
+      destination +
+      " | Experience Tanzania with Nemburis Safari Tours";
+
+    caption =
+      "Discover Tanzania through " +
+      destination +
+      ".\n\n" +
+      "Experience " +
+      focus +
+      " with Nemburis Safari Tours.";
 
     visual =
-      "Create a cinematic video using destination footage, wildlife, landscapes and authentic cultural experiences.";
+      "Use high-quality photos or short videos showing the destination, wildlife, landscapes or authentic experiences.";
+
+  }
+
+  if (script === "" && platform === "TikTok") {
+
+    script =
+      "Scene 1: Show " + destination + ".\n\n" +
+      "Voice-over: \"Have you ever dreamed of experiencing Tanzania like this?\"\n\n" +
+      "Scene 2: Show the main experience.\n\n" +
+      "Voice-over: \"" + destination +
+      " is waiting for you.\"\n\n" +
+      "Scene 3: End with a beautiful Tanzania view.\n\n" +
+      "Voice-over: \"Plan your adventure with Nemburis Safari Tours.\"";
 
   }
 
@@ -1275,11 +1392,9 @@ function createMarketingContent() {
     hook +
     "</p>" +
 
-    (title
-      ? "<p><strong>🎯 TITLE</strong><br>" +
-        title +
-        "</p>"
-      : "") +
+    "<p><strong>🎯 TITLE</strong><br>" +
+    title +
+    "</p>" +
 
     (script
       ? "<p><strong>🎬 SCRIPT</strong><br>" +
@@ -1296,8 +1411,7 @@ function createMarketingContent() {
     "</p>" +
 
     "<p><strong>📣 CALL TO ACTION</strong><br>" +
-    "Ready to explore Tanzania? " +
-    "Contact Nemburis Safari Tours and start planning your journey today." +
+    "Ready to explore Tanzania? Contact Nemburis Safari Tours and start planning your journey today." +
     "</p>" +
 
     "<p><strong>💬 WHATSAPP</strong><br>" +
@@ -1311,12 +1425,11 @@ function createMarketingContent() {
     "<p><strong>🏷️ HASHTAGS</strong><br>" +
     "#NemburisSafariTours #TanzaniaSafari #VisitTanzania " +
     "#AfricanSafari #TanzaniaTravel #" +
-    topic.replace(/\s+/g, "") +
+    destination.replace(/\s+/g, "") +
     "</p>";
 
 }
 
-</script>
 
 
 <section id="marketing-planner" style="padding:40px 20px;text-align:center;">
