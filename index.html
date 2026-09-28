@@ -1992,14 +1992,15 @@ async function displayLeads() {
     }
 
 
-    updateLeadSummary(leads);
+updateLeadSummary(leads);
 
 updateLeadSourcePerformance(leads);
 
 updateLeadConversionOverview(leads);
 
-updateFollowUpList(leads);
+updateLeadConversionFunnel(leads);
 
+updateFollowUpList(leads);
     if (leads.length === 0) {
 
       leadList.innerHTML =
