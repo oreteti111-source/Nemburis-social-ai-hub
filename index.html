@@ -1579,8 +1579,13 @@ function addMarketingPlan() {
       <strong>🏁 Completed</strong>
       <div id="completedLeads">0</div>
     </div>
-      
-</div>
+
+    <div class="tour-card" style="margin:0;min-width:200px;">
+      <strong>📣 Lead Sources</strong>
+      <div id="leadSourceSummary">
+        Loading...
+      </div>
+    </div>
 <!-- LEAD STATUS CHART -->
 
 <div class="tour-card">
@@ -2028,14 +2033,55 @@ function updateLeadSummary(leads) {
     completedCount;
 
 
-  updateLeadStatusChart(
+    updateLeadStatusChart(
     newCount,
     contactedCount,
     confirmedCount,
     completedCount
   );
 
-}
+
+  const sourceCounts = {};
+
+  leads.forEach(function(lead) {
+
+    const source =
+      lead.Lead_Source || "Not provided";
+
+    sourceCounts[source] =
+      (sourceCounts[source] || 0) + 1;
+
+  });
+
+
+  const sourceSummary =
+    document.getElementById("leadSourceSummary");
+
+  if (sourceSummary) {
+
+    sourceSummary.innerHTML = "";
+
+    Object.keys(sourceCounts).forEach(function(source) {
+
+      const row =
+        document.createElement("div");
+
+      row.style =
+        "margin:5px 0;";
+
+      row.innerHTML =
+        "<strong>" +
+        source +
+        ":</strong> " +
+        sourceCounts[source];
+
+      sourceSummary.appendChild(row);
+
+    });
+
+  }
+
+  }
 
 
 function updateFollowUpList(leads) {
