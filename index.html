@@ -1827,7 +1827,8 @@ async function addLead() {
   const message =
     document.getElementById("leadMessage").value.trim();
 
-
+const leadSource =
+  document.getElementById("leadSource").value;
   if (!name || !phone) {
 
     alert(
@@ -1843,17 +1844,18 @@ async function addLead() {
     const { error } =
   await supabaseClient
     .from("Leads")
-    .insert([
-      {
-        "Name": name,
-        "Phone": phone,
-        "Email": email,
-        "Safari": safari,
-        "Travel_date": travelDate || null,
-        "Message": message,
-        "Status": "New"
-      }
-    ]);
+ .insert([
+  {
+    "Name": name,
+    "Phone": phone,
+    "Email": email,
+    "Safari": safari,
+    "Travel_date": travelDate || null,
+    "Message": message,
+    "Lead_Source": leadSource,
+    "Status": "New"
+  }
+]);
 
 if (error) {
 
