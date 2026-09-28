@@ -2680,6 +2680,9 @@ function updateLeadConversionOverview(leads) {
     return;
   }
 
+  const total =
+    leads.length;
+
   const newCount =
     leads.filter(function(lead) {
       return lead.Status === "New";
@@ -2701,6 +2704,22 @@ function updateLeadConversionOverview(leads) {
     }).length;
 
 
+  const contactedRate =
+    total > 0
+      ? Math.round((contactedCount / total) * 100)
+      : 0;
+
+  const confirmedRate =
+    total > 0
+      ? Math.round((confirmedCount / total) * 100)
+      : 0;
+
+  const completedRate =
+    total > 0
+      ? Math.round((completedCount / total) * 100)
+      : 0;
+
+
   container.innerHTML =
 
     "<div style='margin:10px 0;'>" +
@@ -2711,19 +2730,23 @@ function updateLeadConversionOverview(leads) {
     "<div style='margin:10px 0;'>" +
     "<strong>📞 Contacted</strong><br>" +
     contactedCount +
+    " (" + contactedRate + "% of total)" +
     "</div>" +
 
     "<div style='margin:10px 0;'>" +
     "<strong>✅ Confirmed</strong><br>" +
     confirmedCount +
+    " (" + confirmedRate + "% of total)" +
     "</div>" +
 
     "<div style='margin:10px 0;'>" +
     "<strong>🏁 Completed</strong><br>" +
     completedCount +
+    " (" + completedRate + "% of total)" +
     "</div>";
 
   }
+  
 async function searchLeads() {
 
   const searchInput =
