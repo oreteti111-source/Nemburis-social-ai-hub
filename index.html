@@ -2061,7 +2061,6 @@ function updateLeadSummary(leads) {
 
   const sourceCounts = {};
 
-
   leads.forEach(function(lead) {
 
     const source =
@@ -2075,7 +2074,6 @@ function updateLeadSummary(leads) {
 
   const sourceSummary =
     document.getElementById("leadSourceSummary");
-
 
   if (sourceSummary) {
 
@@ -2096,89 +2094,6 @@ function updateLeadSummary(leads) {
         sourceCounts[source];
 
       sourceSummary.appendChild(row);
-
-    });
-
-  }
-
-
-  const performance =
-    document.getElementById("leadSourcePerformance");
-
-
-  if (performance) {
-
-    performance.innerHTML = "";
-
-    Object.keys(sourceCounts).forEach(function(source) {
-
-      const sourceLeads =
-        leads.filter(function(lead) {
-
-          return (
-            lead.Lead_Source ||
-            "Not provided"
-          ) === source;
-
-        });
-
-
-      const sourceNew =
-        sourceLeads.filter(function(lead) {
-          return lead.Status === "New";
-        }).length;
-
-
-      const sourceContacted =
-        sourceLeads.filter(function(lead) {
-          return lead.Status === "Contacted";
-        }).length;
-
-
-      const sourceConfirmed =
-        sourceLeads.filter(function(lead) {
-          return lead.Status === "Confirmed";
-        }).length;
-
-
-      const sourceCompleted =
-        sourceLeads.filter(function(lead) {
-          return lead.Status === "Completed";
-        }).length;
-
-
-      const box =
-        document.createElement("div");
-
-
-      box.style =
-        "margin:15px 0;padding:12px;background:#f5f5f5;border-radius:8px;";
-
-
-      box.innerHTML = `
-
-        <strong>📣 ${source}</strong>
-
-        <div style="margin-top:8px;">
-          🆕 New: ${sourceNew}
-        </div>
-
-        <div>
-          📞 Contacted: ${sourceContacted}
-        </div>
-
-        <div>
-          ✅ Confirmed: ${sourceConfirmed}
-        </div>
-
-        <div>
-          🏁 Completed: ${sourceCompleted}
-        </div>
-
-      `;
-
-
-      performance.appendChild(box);
 
     });
 
