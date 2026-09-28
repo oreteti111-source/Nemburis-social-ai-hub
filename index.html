@@ -2662,7 +2662,67 @@ function createLeadCard(
 
 }
 
+function updateLeadConversionOverview(leads) {
 
+  const container =
+    document.getElementById("leadConversionOverview");
+
+  if (!container) {
+    return;
+  }
+
+  if (!leads || leads.length === 0) {
+
+    container.innerHTML =
+      "<p>📭 No lead conversion data yet.</p>";
+
+    return;
+  }
+
+  const newCount =
+    leads.filter(function(lead) {
+      return lead.Status === "New";
+    }).length;
+
+  const contactedCount =
+    leads.filter(function(lead) {
+      return lead.Status === "Contacted";
+    }).length;
+
+  const confirmedCount =
+    leads.filter(function(lead) {
+      return lead.Status === "Confirmed";
+    }).length;
+
+  const completedCount =
+    leads.filter(function(lead) {
+      return lead.Status === "Completed";
+    }).length;
+
+
+  container.innerHTML =
+
+    "<div style='margin:10px 0;'>" +
+    "<strong>🆕 New</strong><br>" +
+    newCount +
+    "</div>" +
+
+    "<div style='margin:10px 0;'>" +
+    "<strong>📞 Contacted</strong><br>" +
+    contactedCount +
+    "</div>" +
+
+    "<div style='margin:10px 0;'>" +
+    "<strong>✅ Confirmed</strong><br>" +
+    confirmedCount +
+    "</div>" +
+
+    "<div style='margin:10px 0;'>" +
+    "<strong>🏁 Completed</strong><br>" +
+    completedCount +
+    "</div>";
+
+  }
 async function searchLeads() {
 
   const searchInput =
