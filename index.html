@@ -2067,7 +2067,20 @@ updateLeadSourcePerformance(leads);
 
 updateCampaignPerformance(leads);
 
-updateLeadActivity(leads);
+try {
+
+  updateLeadActivity(leads);
+
+} catch (error) {
+
+  console.error("LEAD ACTIVITY ERROR:", error);
+
+  document.getElementById("leadActivity").innerHTML =
+    "<p>⚠️ Lead Activity error: " +
+    error.message +
+    "</p>";
+
+}
 
 updateLeadConversionOverview(leads);
 
