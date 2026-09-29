@@ -3245,12 +3245,11 @@ function updateLeadConversionFunnel(leads) {
 
   }
   
-  function updateFollowUpSummary(leads) {
+function updateFollowUpSummary(leads) {
 
   const container =
     document.getElementById("followUpSummary");
 
-  
   if (!container) {
     return;
   }
@@ -3263,11 +3262,49 @@ function updateLeadConversionFunnel(leads) {
     return;
   }
 
+  const followUps =
+    leads.filter(function(lead) {
+
+      return (
+        lead.Status === "New" ||
+        lead.Status === "Contacted"
+      );
+
+    });
+
+
+  if (followUps.length === 0) {
+
+    container.innerHTML =
+
+      "<div style='margin:8px 0;'>" +
+      "🔴 <strong>Overdue:</strong> 0" +
+      "</div>" +
+
+      "<div style='margin:8px 0;'>" +
+      "⏰ <strong>Due Today:</strong> 0" +
+      "</div>" +
+
+      "<div style='margin:8px 0;'>" +
+      "📅 <strong>Upcoming:</strong> 0" +
+      "</div>" +
+
+      "<div style='margin:8px 0;'>" +
+      "📭 <strong>No Date:</strong> 0" +
+      "</div>";
+
+    return;
+  }
+
+
   const today =
     new Date();
 
   today.setHours(
-    0, 0, 0, 0
+    0,
+    0,
+    0,
+    0
   );
 
 
@@ -3277,7 +3314,7 @@ function updateLeadConversionFunnel(leads) {
   let noDate = 0;
 
 
-  leads.forEach(function(lead) {
+  followUps.forEach(function(lead) {
 
     if (!lead.Travel_date) {
 
@@ -3290,6 +3327,7 @@ function updateLeadConversionFunnel(leads) {
     const date =
       new Date(lead.Travel_date);
 
+
     if (isNaN(date.getTime())) {
 
       noDate++;
@@ -3299,7 +3337,10 @@ function updateLeadConversionFunnel(leads) {
 
 
     date.setHours(
-      0, 0, 0, 0
+      0,
+      0,
+      0,
+      0
     );
 
 
@@ -3345,6 +3386,7 @@ function updateLeadConversionFunnel(leads) {
     "</div>";
 
   }
+  
   
 async function searchLeads() {
 
