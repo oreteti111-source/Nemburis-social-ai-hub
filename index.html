@@ -2763,6 +2763,110 @@ function updateLeadConversionOverview(leads) {
 
   }
   
+function updateLeadConversionFunnel(leads) {
+
+  const container =
+    document.getElementById("leadConversionFunnel");
+
+  if (!container) {
+    return;
+  }
+
+  if (!leads || leads.length === 0) {
+
+    container.innerHTML =
+      "<p>📭 No conversion funnel data yet.</p>";
+
+    return;
+  }
+
+  const newCount =
+    leads.filter(function(lead) {
+      return lead.Status === "New";
+    }).length;
+
+  const contactedCount =
+    leads.filter(function(lead) {
+      return lead.Status === "Contacted";
+    }).length;
+
+  const confirmedCount =
+    leads.filter(function(lead) {
+      return lead.Status === "Confirmed";
+    }).length;
+
+  const completedCount =
+    leads.filter(function(lead) {
+      return lead.Status === "Completed";
+    }).length;
+
+
+  const total =
+    leads.length;
+
+
+  function bar(count) {
+
+    if (total === 0) {
+      return "";
+    }
+
+    const width =
+      Math.round((count / total) * 100);
+
+    return (
+      "<div style='" +
+      "height:12px;" +
+      "background:#ddd;" +
+      "border-radius:6px;" +
+      "margin-top:5px;" +
+      "overflow:hidden;" +
+      "'>" +
+
+      "<div style='" +
+      "width:" + width + "%;" +
+      "height:100%;" +
+      "background:#777;" +
+      "'></div>" +
+
+      "</div>"
+    );
+
+  }
+
+
+  container.innerHTML =
+
+    "<div style='margin:15px 0;'>" +
+    "<strong>🆕 New — " +
+    newCount +
+    "</strong>" +
+    bar(newCount) +
+    "</div>" +
+
+    "<div style='margin:15px 0;'>" +
+    "<strong>📞 Contacted — " +
+    contactedCount +
+    "</strong>" +
+    bar(contactedCount) +
+    "</div>" +
+
+    "<div style='margin:15px 0;'>" +
+    "<strong>✅ Confirmed — " +
+    confirmedCount +
+    "</strong>" +
+    bar(confirmedCount) +
+    "</div>" +
+
+    "<div style='margin:15px 0;'>" +
+    "<strong>🏁 Completed — " +
+    completedCount +
+    "</strong>" +
+    bar(completedCount) +
+    "</div>";
+
+  }
+  
 async function searchLeads() {
 
   const searchInput =
