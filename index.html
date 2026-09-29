@@ -2025,7 +2025,7 @@ updateLeadConversionOverview(leads);
 updateLeadConversionFunnel(leads);
 
 updateLeadConversionRate(leads);
-alert("REACHED FOLLOW-UP SECTION");
+
 updateFollowUpSummary(leads);
 
 updateFollowUpList(leads);
@@ -2965,8 +2965,7 @@ function updateLeadConversionFunnel(leads) {
   const container =
     document.getElementById("followUpSummary");
 
-  alert("FOLLOW-UP SUMMARY FUNCTION RUNNING");
-
+  
   if (!container) {
     return;
   }
