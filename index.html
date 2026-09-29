@@ -2005,7 +2005,6 @@ async function displayLeads() {
       return;
     }
 
-
 updateLeadSummary(leads);
 
 updateLeadSourcePerformance(leads);
@@ -2014,7 +2013,10 @@ updateLeadConversionOverview(leads);
 
 updateLeadConversionFunnel(leads);
 
+updateLeadConversionRate(leads);
+
 updateFollowUpList(leads);
+
     if (leads.length === 0) {
 
       leadList.innerHTML =
