@@ -2119,9 +2119,31 @@ updateLeadConversionFunnel(leads);
 
 updateLeadConversionRate(leads);
 
-updateFollowUpSummary(leads);
+try {
 
-updateFollowUpList(leads);
+  updateFollowUpSummary(leads);
+
+} catch (error) {
+
+  console.error(
+    "FOLLOW-UP SUMMARY ERROR:",
+    error
+  );
+
+}
+
+try {
+
+  updateFollowUpList(leads);
+
+} catch (error) {
+
+  console.error(
+    "FOLLOW-UP LIST ERROR:",
+    error
+  );
+
+  }
     if (leads.length === 0) {
 
       leadList.innerHTML =
