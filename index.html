@@ -2612,6 +2612,109 @@ function updateLeadSourcePerformance(leads) {
   });
 
   }
+function updateCampaignPerformance(leads) {
+
+  const container =
+    document.getElementById("campaignPerformance");
+
+  if (!container) {
+    return;
+  }
+
+  if (!leads || leads.length === 0) {
+
+    container.innerHTML =
+      "<p>📭 No campaign data yet.</p>";
+
+    return;
+  }
+
+  const campaigns = {};
+
+  leads.forEach(function(lead) {
+
+    const source =
+      lead.Lead_Source ||
+      "Not provided";
+
+    if (!campaigns[source]) {
+
+      campaigns[source] = {
+        total: 0,
+        newLeads: 0,
+        contacted: 0,
+        confirmed: 0,
+        completed: 0
+      };
+
+    }
+
+    campaigns[source].total++;
+
+    if (lead.Status === "New") {
+      campaigns[source].newLeads++;
+    }
+
+    if (lead.Status === "Contacted") {
+      campaigns[source].contacted++;
+    }
+
+    if (lead.Status === "Confirmed") {
+      campaigns[source].confirmed++;
+    }
+
+    if (lead.Status === "Completed") {
+      campaigns[source].completed++;
+    }
+
+  });
+
+
+  let html = "";
+
+  Object.keys(campaigns).forEach(function(source) {
+
+    const campaign =
+      campaigns[source];
+
+    html +=
+
+      "<div style='margin-bottom:18px; padding:12px; background:white; border-radius:8px;'>" +
+
+      "<strong>📣 " +
+      source +
+      "</strong>" +
+
+      "<div style='margin-top:8px;'>" +
+      "👥 Leads: " +
+      campaign.total +
+      "</div>" +
+
+      "<div>🆕 New: " +
+      campaign.newLeads +
+      "</div>" +
+
+      "<div>📞 Contacted: " +
+      campaign.contacted +
+      "</div>" +
+
+      "<div>✅ Confirmed: " +
+      campaign.confirmed +
+      "</div>" +
+
+      "<div>🏁 Completed: " +
+      campaign.completed +
+      "</div>" +
+
+      "</div>";
+
+  });
+
+
+  container.innerHTML = html;
+
+  }
+  
 function createLeadCard(
   lead,
   leadList
