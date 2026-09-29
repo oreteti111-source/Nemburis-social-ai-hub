@@ -2067,6 +2067,8 @@ updateLeadSourcePerformance(leads);
 
 updateCampaignPerformance(leads);
 
+updateLeadActivity(leads);
+
 updateLeadConversionOverview(leads);
 
 updateLeadConversionFunnel(leads);
@@ -2739,7 +2741,74 @@ function updateCampaignPerformance(leads) {
   container.innerHTML = html;
 
   }
-  
+
+  function updateLeadActivity(leads) {
+
+  const container =
+    document.getElementById("leadActivity");
+
+  if (!container) {
+    return;
+  }
+
+  if (!leads || leads.length === 0) {
+
+    container.innerHTML =
+      "<p>📭 No lead activity yet.</p>";
+
+    return;
+  }
+
+  let html = "";
+
+  leads.forEach(function(lead) {
+
+    const name =
+      lead.Name || "Unknown customer";
+
+    const phone =
+      lead.Phone || "No phone";
+
+    const source =
+      lead.Lead_Source || "Not provided";
+
+    const status =
+      lead.Status || "New";
+
+    const safari =
+      lead.Safari || "Not specified";
+
+    html +=
+
+      "<div style='margin-bottom:18px; padding:12px; background:white; border-radius:8px;'>" +
+
+      "<strong>👤 " +
+      name +
+      "</strong>" +
+
+      "<div>📞 " +
+      phone +
+      "</div>" +
+
+      "<div>🦁 " +
+      safari +
+      "</div>" +
+
+      "<div>📣 Source: " +
+      source +
+      "</div>" +
+
+      "<div>📌 Status: " +
+      status +
+      "</div>" +
+
+      "</div>";
+
+  });
+
+  container.innerHTML = html;
+
+  }
 function createLeadCard(
   lead,
   leadList
