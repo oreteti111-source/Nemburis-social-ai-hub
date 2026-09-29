@@ -1946,8 +1946,9 @@ async function addLead() {
   const message =
     document.getElementById("leadMessage").value.trim();
 
-const leadSource =
-  document.getElementById("leadSource").value;
+  const leadSource =
+    document.getElementById("leadSource").value;
+
   if (!name || !phone) {
 
     alert(
@@ -1957,40 +1958,76 @@ const leadSource =
     return;
   }
 
-
   try {
 
-    const { error } =
-  await supabaseClient
-    .from("Leads")
- .insert([
-  {
-    "Name": name,
-    "Phone": phone,
-    "Email": email,
-    "Safari": safari,
-    "Travel_date": travelDate || null,
-    "Message": message,
-    "Lead_Source": leadSource,
-    "Status": "New"
-  }
-]);
+    const { data, error } =
+      await supabaseClient
+        .from("Leads")
+        .insert([
+          {
+            "Name": name,
+            "Phone": phone,
+            "Email": email,
+            "Safari": safari,
+            "Travel_date": travelDate || null,
+            "Message": message,
+            "Lead_Source": leadSource,
+            "Status": "New"
+          }
+        ])
+        .select("id")
+        .single();
 
-if (error) {
+    if (error) {
 
-  console.error("SAVE ERROR:", error);
+      console.error("SAVE ERROR:", error);
 
-  alert(
-    "❌ Enquiry was NOT saved.\n\n" +
-    error.message
-  );
+      alert(
+        "❌ Enquiry was NOT saved.\n\n" +
+        error.message
+      );
 
-  return;
-  }
+      return;
+    }
+
+    const leadId = data.id;
+
+    const { error: activityError } =
+      await supabaseClient
+        .from("Lead_Activity")
+        .insert([
+          {
+            "lead_id": leadId,
+            "activity": "Lead Created",
+            "details": "New customer enquiry created."
+          }
+        ]);
+
+    if (activityError) {
+
+      console.error(
+        "ACTIVITY SAVE ERROR:",
+        activityError
+      );
+
+      alert(
+        "⚠️ Customer enquiry was saved, " +
+        "but the activity record could not be saved.\n\n" +
+        activityError.message
+      );
+
+    } else {
+
+      console.log(
+        "LEAD ACTIVITY SAVED:",
+        leadId
+      );
+
+    }
+
     alert(
       "✅ Customer enquiry saved successfully!"
     );
-
 
     document.getElementById("leadName").value = "";
     document.getElementById("leadPhone").value = "";
@@ -1998,7 +2035,6 @@ if (error) {
     document.getElementById("leadSafari").value = "";
     document.getElementById("leadDate").value = "";
     document.getElementById("leadMessage").value = "";
-
 
     displayLeads();
 
@@ -2013,9 +2049,7 @@ if (error) {
 
   }
 
-}
-
-
+  }
 async function displayLeads() {
 
   const leadList =
