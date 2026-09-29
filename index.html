@@ -2026,8 +2026,9 @@ updateLeadConversionFunnel(leads);
 
 updateLeadConversionRate(leads);
 
-updateFollowUpList(leads);
+updateFollowUpSummary(leads);
 
+updateFollowUpList(leads);
     if (leads.length === 0) {
 
       leadList.innerHTML =
@@ -2956,6 +2957,106 @@ function updateLeadConversionFunnel(leads) {
     "<strong>🏁 Completed Rate</strong><br>" +
     completedRate +
     "%</div>";
+
+  }
+  
+  function updateFollowUpSummary(leads) {
+
+  const container =
+    document.getElementById("followUpSummary");
+
+  if (!container) {
+    return;
+  }
+
+  if (!leads || leads.length === 0) {
+
+    container.innerHTML =
+      "<p>📭 No follow-up data yet.</p>";
+
+    return;
+  }
+
+  const today =
+    new Date();
+
+  today.setHours(
+    0, 0, 0, 0
+  );
+
+
+  let overdue = 0;
+  let todayCount = 0;
+  let upcoming = 0;
+  let noDate = 0;
+
+
+  leads.forEach(function(lead) {
+
+    if (!lead.Travel_date) {
+
+      noDate++;
+
+      return;
+    }
+
+
+    const date =
+      new Date(lead.Travel_date);
+
+    if (isNaN(date.getTime())) {
+
+      noDate++;
+
+      return;
+    }
+
+
+    date.setHours(
+      0, 0, 0, 0
+    );
+
+
+    if (date < today) {
+
+      overdue++;
+
+    } else if (
+      date.getTime() === today.getTime()
+    ) {
+
+      todayCount++;
+
+    } else {
+
+      upcoming++;
+
+    }
+
+  });
+
+
+  container.innerHTML =
+
+    "<div style='margin:8px 0;'>" +
+    "🔴 <strong>Overdue:</strong> " +
+    overdue +
+    "</div>" +
+
+    "<div style='margin:8px 0;'>" +
+    "⏰ <strong>Due Today:</strong> " +
+    todayCount +
+    "</div>" +
+
+    "<div style='margin:8px 0;'>" +
+    "📅 <strong>Upcoming:</strong> " +
+    upcoming +
+    "</div>" +
+
+    "<div style='margin:8px 0;'>" +
+    "📭 <strong>No Date:</strong> " +
+    noDate +
+    "</div>";
 
   }
   
