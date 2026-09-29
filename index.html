@@ -2883,6 +2883,71 @@ function updateLeadConversionFunnel(leads) {
 
   }
   
+  function updateLeadConversionRate(leads) {
+
+  const container =
+    document.getElementById("leadConversionRate");
+
+  if (!container) {
+    return;
+  }
+
+  if (!leads || leads.length === 0) {
+
+    container.innerHTML =
+      "<p>📭 No conversion rate data yet.</p>";
+
+    return;
+  }
+
+  const total =
+    leads.length;
+
+  const contactedCount =
+    leads.filter(function(lead) {
+      return lead.Status === "Contacted";
+    }).length;
+
+  const confirmedCount =
+    leads.filter(function(lead) {
+      return lead.Status === "Confirmed";
+    }).length;
+
+  const completedCount =
+    leads.filter(function(lead) {
+      return lead.Status === "Completed";
+    }).length;
+
+
+  const contactedRate =
+    Math.round((contactedCount / total) * 100);
+
+  const confirmedRate =
+    Math.round((confirmedCount / total) * 100);
+
+  const completedRate =
+    Math.round((completedCount / total) * 100);
+
+
+  container.innerHTML =
+
+    "<div style='margin:12px 0;'>" +
+    "<strong>📞 Contacted Rate</strong><br>" +
+    contactedRate +
+    "%</div>" +
+
+    "<div style='margin:12px 0;'>" +
+    "<strong>✅ Confirmed Rate</strong><br>" +
+    confirmedRate +
+    "%</div>" +
+
+    "<div style='margin:12px 0;'>" +
+    "<strong>🏁 Completed Rate</strong><br>" +
+    completedRate +
+    "%</div>";
+
+  }
+  
 async function searchLeads() {
 
   const searchInput =
