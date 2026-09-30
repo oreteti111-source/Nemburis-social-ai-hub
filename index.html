@@ -2072,16 +2072,17 @@ async function displayLeads() {
       {
         method: "GET",
 
-        headers: {
-          "apikey":
-            window.NEMBURIS_SUPABASE_KEY,
+      headers: {
+  "apikey":
+    window.NEMBURIS_SUPABASE_KEY,
 
-          "Authorization":
-            "Bearer " +
-            window.NEMBURIS_SUPABASE_KEY
-        }
-      }
-    );
+  "Authorization":
+    "Bearer " +
+    window.NEMBURIS_SUPABASE_KEY,
+
+  "Accept-Profile":
+    "public"
+  }  
 
     console.log(
       "NEMBURIS REST STATUS:",
