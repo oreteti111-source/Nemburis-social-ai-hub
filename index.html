@@ -2153,11 +2153,7 @@ async function displayLeads() {
 
     });
 
-    if (typeof updateLeadSummary === "function") {
-      updateLeadSummary(leads);
-    }
-
-    console.log("NEMBURIS: Lead Center display completed.");
+   console.log("NEMBURIS: Lead records rendered successfully.");
 
   } catch (err) {
 
@@ -2166,7 +2162,7 @@ async function displayLeads() {
     leadList.innerHTML =
       "<p style='color:red;'>Lead Center encountered an error.</p>";
   }
-  }
+  } 
 
 
     
