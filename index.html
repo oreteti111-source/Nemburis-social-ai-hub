@@ -2047,141 +2047,129 @@ if (activityError) {
   }
 
   }
+
 async function displayLeads() {
 
-  const leadList =
-    document.getElementById("leadList");
+  const leadList = document.getElementById("leadList");
 
   if (!leadList) {
+    console.error("NEMBURIS: leadList element not found");
     return;
   }
 
-  leadList.innerHTML =
-    "⏳ Loading enquiries from Leads table...";
-
-
   try {
 
-    const result =
-      await supabaseClient
-        .from("Leads")
-        .select("*")
-        .order("id", {
-          ascending: false
-        });
+    console.log("NEMBURIS: Loading Leads from Supabase...");
 
-
-    const leads =
-      result.data || [];
-
-    const error =
-      result.error;
-
+    const { data: leads, error } = await supabase
+      .from("Leads")
+      .select("*")
+      .order("id", { ascending: false });
 
     if (error) {
-
-      console.error(
-        "DISPLAY LEADS ERROR:",
-        error
-      );
-
+      console.error("NEMBURIS: displayLeads error:", error);
       leadList.innerHTML =
-        "❌ Unable to load enquiries:<br><br>" +
-        error.message;
-
+        "<p style='color:red;'>Unable to load enquiries.</p>";
       return;
     }
 
-updateLeadSummary(leads);
+    console.log("NEMBURIS: Leads loaded:", leads);
 
-updateLeadSourcePerformance(leads);
-
-updateCampaignPerformance(leads);
-
-try {
-
-  updateLeadActivity(leads);
-
-} catch (error) {
-
-  console.error("LEAD ACTIVITY ERROR:", error);
-
-  document.getElementById("leadActivity").innerHTML =
-    "<p>⚠️ Lead Activity error: " +
-    error.message +
-    "</p>";
-
-}
-
-updateLeadConversionOverview(leads);
-
-updateLeadConversionFunnel(leads);
-
-updateLeadConversionRate(leads);
-
-try {
-
-  updateFollowUpSummary(leads);
-
-} catch (error) {
-
-  console.error(
-    "FOLLOW-UP SUMMARY ERROR:",
-    error
-  );
-
-}
-
-try {
-
-  updateFollowUpList(leads);
-
-} catch (error) {
-
-  console.error(
-    "FOLLOW-UP LIST ERROR:",
-    error
-  );
-
-  }
-    if (leads.length === 0) {
+    if (!leads || leads.length === 0) {
 
       leadList.innerHTML =
-        "📭 No enquiries found in the Leads table.";
+        "<p>No enquiries found.</p>";
+
+      if (typeof updateLeadSummary === "function") {
+        updateLeadSummary([]);
+      }
 
       return;
     }
-
 
     leadList.innerHTML = "";
 
+    leads.forEach(function (lead) {
 
-    leads.forEach(function(lead) {
+      const card = document.createElement("div");
 
-      createLeadCard(
-        lead,
-        leadList
-      );
+      card.className = "lead-card";
+
+      card.innerHTML = `
+        <div>
+          <strong>${lead.Name || "Unnamed Customer"}</strong>
+        </div>
+
+        <div>
+          📞 ${lead.Phone || "No phone"}
+        </div>
+
+        <div>
+          ✉️ ${lead.Email || "No email"}
+        </div>
+
+        <div>
+          🦁 ${lead.Safari || "No safari selected"}
+        </div>
+
+        <div>
+          📅 ${lead.Travel_date || "No travel date"}
+        </div>
+
+        <div>
+          💬 ${lead.Message || "No message"}
+        </div>
+
+        <div>
+          Status:
+          <select
+            onchange="updateLeadStatus(${lead.id}, this.value)">
+            <option value="New" ${lead.Status === "New" ? "selected" : ""}>
+              New
+            </option>
+
+            <option value="Contacted" ${lead.Status === "Contacted" ? "selected" : ""}>
+              Contacted
+            </option>
+
+            <option value="Confirmed" ${lead.Status === "Confirmed" ? "selected" : ""}>
+              Confirmed
+            </option>
+
+            <option value="Completed" ${lead.Status === "Completed" ? "selected" : ""}>
+              Completed
+            </option>
+          </select>
+        </div>
+
+        <div style="margin-top:10px;">
+          <button onclick="deleteLead(${lead.id})">
+            🗑️ Delete
+          </button>
+        </div>
+      `;
+
+      leadList.appendChild(card);
 
     });
 
+    if (typeof updateLeadSummary === "function") {
+      updateLeadSummary(leads);
+    }
 
-  } catch (error) {
+    console.log("NEMBURIS: Lead Center display completed.");
 
-    console.error(
-      "DISPLAY LEADS CRASH:",
-      error
-    );
+  } catch (err) {
+
+    console.error("NEMBURIS: displayLeads unexpected error:", err);
 
     leadList.innerHTML =
-      "❌ Loading failed:<br><br>" +
-      error.message;
-
+      "<p style='color:red;'>Lead Center encountered an error.</p>";
+  }
   }
 
-}
 
-
+    
 function updateLeadSummary(leads) {
 
   const total =
