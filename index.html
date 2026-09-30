@@ -2053,117 +2053,80 @@ async function displayLeads() {
   const leadList = document.getElementById("leadList");
 
   if (!leadList) {
-    console.error("NEMBURIS: leadList element not found");
+    console.error("NEMBURIS: leadList not found");
     return;
   }
 
-  try {
+  leadList.innerHTML = "<p>Loading customer enquiries...</p>";
 
-    console.log("NEMBURIS: Loading Leads from Supabase...");
+  console.log("NEMBURIS: displayLeads started");
 
-    const { data: leads, error } = await supabase
-      .from("Leads")
-      .select("*")
-      .order("id", { ascending: false });
+  const result = await supabase
+    .from("Leads")
+    .select("id, Name, Status")
+    .order("id", { ascending: false });
 
-    if (error) {
-      console.error("NEMBURIS: displayLeads error:", error);
-      leadList.innerHTML =
-        "<p style='color:red;'>Unable to load enquiries.</p>";
-      return;
-    }
+  console.log("NEMBURIS: Supabase result:", result);
 
-    console.log("NEMBURIS: Leads loaded:", leads);
+  if (result.error) {
 
-    if (!leads || leads.length === 0) {
-
-      leadList.innerHTML =
-        "<p>No enquiries found.</p>";
-
-      if (typeof updateLeadSummary === "function") {
-        updateLeadSummary([]);
-      }
-
-      return;
-    }
-
-    leadList.innerHTML = "";
-
-    leads.forEach(function (lead) {
-
-      const card = document.createElement("div");
-
-      card.className = "lead-card";
-
-      card.innerHTML = `
-        <div>
-          <strong>${lead.Name || "Unnamed Customer"}</strong>
-        </div>
-
-        <div>
-          📞 ${lead.Phone || "No phone"}
-        </div>
-
-        <div>
-          ✉️ ${lead.Email || "No email"}
-        </div>
-
-        <div>
-          🦁 ${lead.Safari || "No safari selected"}
-        </div>
-
-        <div>
-          📅 ${lead.Travel_date || "No travel date"}
-        </div>
-
-        <div>
-          💬 ${lead.Message || "No message"}
-        </div>
-
-        <div>
-          Status:
-          <select
-            onchange="updateLeadStatus(${lead.id}, this.value)">
-            <option value="New" ${lead.Status === "New" ? "selected" : ""}>
-              New
-            </option>
-
-            <option value="Contacted" ${lead.Status === "Contacted" ? "selected" : ""}>
-              Contacted
-            </option>
-
-            <option value="Confirmed" ${lead.Status === "Confirmed" ? "selected" : ""}>
-              Confirmed
-            </option>
-
-            <option value="Completed" ${lead.Status === "Completed" ? "selected" : ""}>
-              Completed
-            </option>
-          </select>
-        </div>
-
-        <div style="margin-top:10px;">
-          <button onclick="deleteLead(${lead.id})">
-            🗑️ Delete
-          </button>
-        </div>
-      `;
-
-      leadList.appendChild(card);
-
-    });
-
-   console.log("NEMBURIS: Lead records rendered successfully.");
-
-  } catch (err) {
-
-    console.error("NEMBURIS: displayLeads unexpected error:", err);
+    console.error(
+      "NEMBURIS: Supabase read error:",
+      result.error
+    );
 
     leadList.innerHTML =
-      "<p style='color:red;'>Lead Center encountered an error.</p>";
-  }
-  } 
+      "<p style='color:red;'>Supabase error: " +
+      result.error.message +
+      "</p>";
 
+    return;
+  }
+
+  const leads = result.data || [];
+
+  console.log(
+    "NEMBURIS: Number of leads:",
+    leads.length
+  );
+
+  if (leads.length === 0) {
+
+    leadList.innerHTML =
+      "<p>No enquiries found.</p>";
+
+    return;
+  }
+
+  leadList.innerHTML = "";
+
+  leads.forEach(function (lead) {
+
+    const item = document.createElement("div");
+
+    item.style.padding = "12px";
+    item.style.marginBottom = "10px";
+    item.style.border = "1px solid #ccc";
+    item.style.borderRadius = "8px";
+
+    item.innerHTML =
+      "<strong>" +
+      (lead.Name || "Unnamed Customer") +
+      "</strong><br>" +
+      "ID: " +
+      lead.id +
+      "<br>" +
+      "Status: " +
+      (lead.Status || "No Status");
+
+    leadList.appendChild(item);
+
+  });
+
+  console.log(
+    "NEMBURIS: Leads displayed successfully"
+  );
+  }
 
     
 function updateLeadSummary(leads) {
