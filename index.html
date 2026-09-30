@@ -2057,89 +2057,87 @@ async function displayLeads() {
     return;
   }
 
-  leadList.innerHTML = "<p>Loading customer enquiries...</p>";
+  leadList.innerHTML = "<p>Testing Supabase connection...</p>";
 
-  console.log("NEMBURIS: displayLeads started");
+  try {
 
-  const result = await Promise.race([
-  supabase
-    .from("Leads")
-    .select("id, Name, Status")
-    .order("id", { ascending: false }),
-
-  new Promise(function(resolve) {
-    setTimeout(function() {
-      resolve({
-        data: null,
-        error: {
-          message: "Supabase request timed out after 10 seconds"
+    const response = await fetch(
+      supabaseUrl + "/rest/v1/Leads?select=id,Name,Status&order=id.desc",
+      {
+        method: "GET",
+        headers: {
+          "apikey": supabaseKey,
+          "Authorization": "Bearer " + supabaseKey
         }
-      });
-    }, 10000);
-  })
-]);
-  console.log("NEMBURIS: Supabase result:", result);
-
-  if (result.error) {
-
-    console.error(
-      "NEMBURIS: Supabase read error:",
-      result.error
+      }
     );
 
+    console.log("NEMBURIS REST STATUS:", response.status);
+
+    const text = await response.text();
+
+    console.log("NEMBURIS REST RESPONSE:", text);
+
+    if (!response.ok) {
+
+      leadList.innerHTML =
+        "<p style='color:red;'>Supabase REST error: " +
+        response.status +
+        " - " +
+        text +
+        "</p>";
+
+      return;
+    }
+
+    const leads = JSON.parse(text);
+
+    if (!leads.length) {
+
+      leadList.innerHTML =
+        "<p>No enquiries found.</p>";
+
+      return;
+    }
+
+    leadList.innerHTML = "";
+
+    leads.forEach(function(lead) {
+
+      const item = document.createElement("div");
+
+      item.style.padding = "12px";
+      item.style.marginBottom = "10px";
+      item.style.border = "1px solid #ccc";
+      item.style.borderRadius = "8px";
+
+      item.innerHTML =
+        "<strong>" +
+        (lead.Name || "Unnamed Customer") +
+        "</strong><br>" +
+        "ID: " +
+        lead.id +
+        "<br>" +
+        "Status: " +
+        (lead.Status || "No Status");
+
+      leadList.appendChild(item);
+
+    });
+
+    console.log("NEMBURIS REST: Leads displayed successfully");
+
+  } catch (error) {
+
+    console.error("NEMBURIS REST ERROR:", error);
+
     leadList.innerHTML =
-      "<p style='color:red;'>Supabase error: " +
-      result.error.message +
+      "<p style='color:red;'>Connection error: " +
+      error.message +
       "</p>";
-
-    return;
   }
-
-  const leads = result.data || [];
-
-  console.log(
-    "NEMBURIS: Number of leads:",
-    leads.length
-  );
-
-  if (leads.length === 0) {
-
-    leadList.innerHTML =
-      "<p>No enquiries found.</p>";
-
-    return;
   }
-
-  leadList.innerHTML = "";
-
-  leads.forEach(function (lead) {
-
-    const item = document.createElement("div");
-
-    item.style.padding = "12px";
-    item.style.marginBottom = "10px";
-    item.style.border = "1px solid #ccc";
-    item.style.borderRadius = "8px";
-
-    item.innerHTML =
-      "<strong>" +
-      (lead.Name || "Unnamed Customer") +
-      "</strong><br>" +
-      "ID: " +
-      lead.id +
-      "<br>" +
-      "Status: " +
-      (lead.Status || "No Status");
-
-    leadList.appendChild(item);
-
-  });
-
-  console.log(
-    "NEMBURIS: Leads displayed successfully"
-  );
-  }
-
+  
     
 function updateLeadSummary(leads) {
 
