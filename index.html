@@ -2053,7 +2053,8 @@ if (activityError) {
 
 async function displayLeads() {
 
-  const leadList = document.getElementById("leadList");
+  const leadList =
+    document.getElementById("leadList");
 
   if (!leadList) {
     console.error("NEMBURIS: leadList not found");
@@ -2061,19 +2062,23 @@ async function displayLeads() {
   }
 
   leadList.innerHTML =
-    "<p>Testing Supabase connection...</p>";
+    "<p>Loading customer enquiries...</p>";
 
   try {
 
     const response = await fetch(
       window.NEMBURIS_SUPABASE_URL +
-      "/rest/v1/Leads?select=id,Name,Status&order=id.desc",
+      "/rest/v1/Leads?select=id,Name,Phone,Email,Safari,Travel_date,Message,Status&order=id.desc",
       {
         method: "GET",
+
         headers: {
-          "apikey": window.NEMBURIS_SUPABASE_KEY,
+          "apikey":
+            window.NEMBURIS_SUPABASE_KEY,
+
           "Authorization":
-            "Bearer " + window.NEMBURIS_SUPABASE_KEY
+            "Bearer " +
+            window.NEMBURIS_SUPABASE_KEY
         }
       }
     );
@@ -2083,7 +2088,8 @@ async function displayLeads() {
       response.status
     );
 
-    const text = await response.text();
+    const text =
+      await response.text();
 
     console.log(
       "NEMBURIS REST RESPONSE:",
@@ -2096,24 +2102,25 @@ async function displayLeads() {
         "<p style='color:red;'>" +
         "Supabase REST error: " +
         response.status +
-        " - " +
+        "<br>" +
         text +
         "</p>";
 
       return;
     }
 
-    const leads = JSON.parse(text);
+    const leads =
+      JSON.parse(text);
 
-    if (!leads.length) {
+    leadList.innerHTML = "";
+
+    if (!leads || leads.length === 0) {
 
       leadList.innerHTML =
-        "<p>No enquiries found.</p>";
+        "<p>No customer enquiries found.</p>";
 
       return;
     }
-
-    leadList.innerHTML = "";
 
     leads.forEach(function(lead) {
 
@@ -2127,13 +2134,36 @@ async function displayLeads() {
 
       item.innerHTML =
         "<strong>" +
-        (lead.Name || "Unnamed Customer") +
+        (lead.Name ||
+          "Unnamed Customer") +
         "</strong><br>" +
+
         "ID: " +
-        lead.id +
+        (lead.id || "") +
         "<br>" +
+
+        "Phone: " +
+        (lead.Phone || "") +
+        "<br>" +
+
+        "Email: " +
+        (lead.Email || "") +
+        "<br>" +
+
+        "Safari: " +
+        (lead.Safari || "") +
+        "<br>" +
+
+        "Travel Date: " +
+        (lead.Travel_date || "") +
+        "<br>" +
+
         "Status: " +
-        (lead.Status || "No Status");
+        (lead.Status || "New") +
+        "<br>" +
+
+        "Message: " +
+        (lead.Message || "");
 
       leadList.appendChild(item);
 
@@ -2156,8 +2186,9 @@ async function displayLeads() {
       error.message +
       "</p>";
   }
+
   }
-      
+
     
 function updateLeadSummary(leads) {
 
