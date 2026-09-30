@@ -1931,6 +1931,8 @@ alert("LEAD CENTER SCRIPT IS RUNNING");
 
 async function addLead() {
 
+  alert("ADDLEAD FUNCTION STARTED");
+
   const name =
     document.getElementById("leadName").value.trim();
 
@@ -1949,9 +1951,6 @@ async function addLead() {
   const message =
     document.getElementById("leadMessage").value.trim();
 
-  const leadSource =
-    document.getElementById("leadSource").value;
-
   if (!name || !phone) {
 
     alert(
@@ -1962,6 +1961,8 @@ async function addLead() {
   }
 
   try {
+
+    alert("ABOUT TO SAVE TO SUPABASE");
 
     const { data, error } =
       await supabaseClient
@@ -1974,7 +1975,6 @@ async function addLead() {
             "Safari": safari,
             "Travel_date": travelDate || null,
             "Message": message,
-            "Lead_Source": leadSource,
             "Status": "New"
           }
         ])
@@ -1986,47 +1986,19 @@ async function addLead() {
       console.error("SAVE ERROR:", error);
 
       alert(
-        "❌ Enquiry was NOT saved.\n\n" +
+        "❌ SUPABASE SAVE ERROR\n\n" +
         error.message
       );
 
       return;
     }
 
-const leadId = data.id;
-
-const { error: activityError } =
-  await supabaseClient
-    .from("Lead_Activity")
-    .insert([
-      {
-        "lead_id": leadId,
-        "activity": "Lead Created"
-      }
-    ]);
-
-if (activityError) {
-
-  console.error(
-    "Lead Activity error:",
-    activityError
-  );
-
-  alert(
-    "Customer enquiry was saved, but the activity record could not be saved.\n\n" +
-    activityError.message
-  );
-
-} else {
-
-  console.log(
-    "Lead activity recorded successfully."
-  );
-
-  }
+    console.log("LEAD SAVED:", data);
 
     alert(
-      "✅ Customer enquiry saved successfully!"
+      "✅ CUSTOMER ENQUIRY SAVED!\n\n" +
+      "Lead ID: " +
+      data.id
     );
 
     document.getElementById("leadName").value = "";
@@ -2043,13 +2015,14 @@ if (activityError) {
     console.error("SAVE ERROR:", error);
 
     alert(
-      "❌ Save failed.\n\n" +
+      "❌ JAVASCRIPT SAVE ERROR\n\n" +
       error.message
     );
 
   }
-
   }
+
+
 
 async function displayLeads() {
 alert("DISPLAY LEADS STARTED");
