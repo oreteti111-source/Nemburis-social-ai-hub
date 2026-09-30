@@ -2875,6 +2875,7 @@ function updateCampaignPerformance(leads) {
   container.innerHTML = html;
 
   }
+
 function createLeadCard(
   lead,
   leadList
@@ -2888,10 +2889,8 @@ function createLeadCard(
   enquiry.className =
     "lead-card";
 
-
   enquiry.style =
     "padding:15px;margin:15px 0;background:white;border-radius:8px;text-align:left;";
-
 
   enquiry.innerHTML = `
 
@@ -2914,10 +2913,11 @@ function createLeadCard(
       ${lead.Safari || "Not provided"}
     </p>
 
-<p>
-  <strong>Lead Source:</strong>
-  ${lead.Lead_Source || "Not provided"}
-</p>
+    <p>
+      <strong>Lead Source:</strong>
+      ${lead.Lead_Source || "Not provided"}
+    </p>
+
     <p>
       <strong>Travel Date:</strong>
       ${lead.Travel_date || "Not provided"}
@@ -2960,7 +2960,6 @@ function createLeadCard(
 
     </p>
 
-
     <a
       href="https://wa.me/${(lead.Phone || "").replace(/\D/g, "")}"
       target="_blank"
@@ -2977,7 +2976,6 @@ function createLeadCard(
       WhatsApp
     </a>
 
-
     <button
       onclick="deleteLead('${lead.id}')"
       style="margin:5px;padding:8px 12px;"
@@ -2985,13 +2983,128 @@ function createLeadCard(
       Delete
     </button>
 
-  `;
+    <div
+      id="activity-${lead.id}"
+      style="
+        margin-top:15px;
+        padding:12px;
+        background:#f7f7f7;
+        border-radius:8px;
+        border:1px solid #ddd;
+      "
+    >
+      <strong>📋 Lead Activity</strong>
 
+      <p>
+        Loading activity...
+      </p>
+
+    </div>
+
+  `;
 
   leadList.appendChild(enquiry);
 
-}
+  loadLeadActivity(lead.id);
 
+  }
+
+async function loadLeadActivity(leadId) {
+
+  const container =
+    document.getElementById("activity-" + leadId);
+
+  if (!container) {
+    return;
+  }
+
+  const { data, error } =
+    await supabaseClient
+      .from("Lead_Activity")
+      .select("id, created_at, activity, details")
+      .eq("lead_id", leadId)
+      .order("id", {
+        ascending: false
+      });
+
+  if (error) {
+
+    console.error(
+      "LEAD ACTIVITY ERROR:",
+      error
+    );
+
+    container.innerHTML =
+      "<strong>📋 Lead Activity</strong>" +
+      "<p>Unable to load activity.</p>";
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+
+    container.innerHTML =
+      "<strong>📋 Lead Activity</strong>" +
+      "<p>No activity recorded yet.</p>";
+
+    return;
+  }
+
+  let html =
+    "<strong>📋 Lead Activity</strong>";
+
+  data.forEach(function(activity) {
+
+    const date =
+      activity.created_at
+        ? new Date(
+            activity.created_at
+          ).toLocaleString()
+        : "";
+
+    html += `
+
+      <div
+        style="
+          margin-top:10px;
+          padding:10px;
+          background:white;
+          border-radius:6px;
+          border-left:4px solid #1f6f43;
+        "
+      >
+
+        <strong>
+          ${activity.activity || "Activity"}
+        </strong>
+
+        <br>
+
+        <small>
+          ${date}
+        </small>
+
+        ${
+          activity.details
+            ? `
+              <p style="margin:5px 0 0;">
+                ${activity.details}
+              </p>
+            `
+            : ""
+        }
+
+      </div>
+
+    `;
+
+  });
+
+  container.innerHTML =
+    html;
+
+  }
+  
 function updateLeadConversionOverview(leads) {
 
   const container =
