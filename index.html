@@ -2061,11 +2061,23 @@ async function displayLeads() {
 
   console.log("NEMBURIS: displayLeads started");
 
-  const result = await supabase
+  const result = await Promise.race([
+  supabase
     .from("Leads")
     .select("id, Name, Status")
-    .order("id", { ascending: false });
+    .order("id", { ascending: false }),
 
+  new Promise(function(resolve) {
+    setTimeout(function() {
+      resolve({
+        data: null,
+        error: {
+          message: "Supabase request timed out after 10 seconds"
+        }
+      });
+    }, 10000);
+  })
+]);
   console.log("NEMBURIS: Supabase result:", result);
 
   if (result.error) {
