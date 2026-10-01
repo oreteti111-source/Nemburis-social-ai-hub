@@ -3807,22 +3807,39 @@ async function deleteLead(id) {
 
 }
 
-
 document.addEventListener(
   "DOMContentLoaded",
-  function() {
+  async function() {
 
     alert("LEAD CENTER CALLER RUNNING");
 
-    displayLeads();
+    try {
 
-    alert("ABOUT TO LOAD MAIN LEAD ACTIVITY");
+      await displayLeads();
 
-    loadMainLeadActivity();
+      alert("DISPLAY LEADS FINISHED");
+
+      await loadMainLeadActivity();
+
+      alert("MAIN LEAD ACTIVITY FINISHED");
+
+    } catch (error) {
+
+      console.error(
+        "LEAD CENTER STARTUP ERROR:",
+        error
+      );
+
+      alert(
+        "LEAD CENTER STARTUP ERROR:\n\n" +
+        error.message
+      );
+
+    }
 
   }
 );
-
+</script>
 <footer>
   <h3>NEMBURIS SAFARI TOURS</h3>
 
