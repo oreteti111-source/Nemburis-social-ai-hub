@@ -2905,10 +2905,91 @@ function updateCampaignPerformance(leads) {
 
       "</div>";
 
+    "</div>";
+
   });
 
   container.innerHTML = html;
 
+  }
+
+
+async function loadMainLeadActivity() {
+
+  const container =
+    document.getElementById("leadActivity");
+
+  if (!container) {
+    return;
+  }
+
+  container.innerHTML =
+    "<p>Loading lead activity...</p>";
+
+  const { data, error } =
+    await supabaseClient
+      .from("Lead_Activity")
+      .select("id, created_at, lead_id, activity, details")
+      .order("id", {
+        ascending: false
+      });
+
+  if (error) {
+
+    console.error(
+      "MAIN LEAD ACTIVITY ERROR:",
+      error
+    );
+
+    container.innerHTML =
+      "<p>Unable to load lead activity.</p>";
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+
+    container.innerHTML =
+      "<p>📭 No lead activity yet.</p>";
+
+    return;
+  }
+
+  let html = "";
+
+  data.forEach(function(activity) {
+
+    const date =
+      activity.created_at
+        ? new Date(
+            activity.created_at
+          ).toLocaleString()
+        : "";
+
+    html +=
+      "<div style='margin-bottom:12px;padding:12px;background:white;border-radius:8px;'>" +
+
+      "<strong>📌 " +
+      (activity.activity || "Activity") +
+      "</strong>" +
+
+      "<div>Lead ID: " +
+      (activity.lead_id || "") +
+      "</div>" +
+
+      "<div>📝 " +
+      (activity.details || "") +
+      "</div>" +
+
+      "<div>🕒 " +
+      date +
+      "</div>" +
+
+      "</div>";
+
+  });
+
+  container.innerHTML = html;
   }
 
 function createLeadCard(
