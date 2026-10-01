@@ -1983,16 +1983,18 @@ async function addLead() {
 
     if (error) {
 
-      console.error("SAVE ERROR:", error);
+  console.error("SAVE ERROR:", error);
 
-      alert(
-        "❌ SUPABASE SAVE ERROR\n\n" +
-        error.message
-      );
+  alert(
+    "❌ SUPABASE SAVE ERROR\n\n" +
+    "Message: " + error.message +
+    "\n\nCode: " + (error.code || "none") +
+    "\n\nDetails: " + (error.details || "none") +
+    "\n\nHint: " + (error.hint || "none")
+  );
 
-      return;
-    }
-
+  return;
+  }
     console.log("LEAD SAVED:", data);
 
     alert(
