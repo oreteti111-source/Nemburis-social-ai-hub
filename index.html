@@ -1958,7 +1958,7 @@ const message =
 
   try {
 
-    alert("ABOUT TO SAVE TO SUPABASE");
+    
 
 const { data, error } =
   await supabaseClient
@@ -2071,7 +2071,7 @@ if (activityError) {
 
 
 async function displayLeads() {
-alert("DISPLAY LEADS STARTED");
+
   const leadList =
     document.getElementById("leadList");
 
@@ -2117,7 +2117,7 @@ const response = await fetch(
       "NEMBURIS REST RESPONSE:",
       text
     );
-alert("REST RESPONSE: " + text);
+
     if (!response.ok) {
 
       leadList.innerHTML =
