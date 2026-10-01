@@ -1999,11 +1999,58 @@ const { data, error } =
   }
     console.log("LEAD SAVED:", data);
 
-    alert(
-      "✅ CUSTOMER ENQUIRY SAVED!\n\n" +
-      "Lead ID: " +
-      data.id
-    );
+
+/* ================================
+   RECORD LEAD ACTIVITY
+================================ */
+
+const { error: activityError } =
+  await supabaseClient
+    .from("Lead_Activity")
+    .insert([
+      {
+        "lead_id": data.id,
+        "activity": "Lead Created",
+        "details":
+          "Customer enquiry created for " +
+          name +
+          " - " +
+          safari
+      }
+    ]);
+
+
+if (activityError) {
+
+  console.error(
+    "LEAD ACTIVITY ERROR:",
+    activityError
+  );
+
+  alert(
+    "⚠️ CUSTOMER ENQUIRY SAVED\n\n" +
+    "Lead ID: " +
+    data.id +
+    "\n\n" +
+    "But Lead Activity could not be recorded:\n\n" +
+    activityError.message
+  );
+
+} else {
+
+  console.log(
+    "LEAD ACTIVITY RECORDED:",
+    data.id
+  );
+
+  alert(
+    "✅ CUSTOMER ENQUIRY SAVED!\n\n" +
+    "Lead ID: " +
+    data.id +
+    "\n\n" +
+    "Lead Activity recorded successfully."
+  );
+  }
 
     document.getElementById("leadName").value = "";
     document.getElementById("leadPhone").value = "";
