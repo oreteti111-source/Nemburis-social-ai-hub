@@ -2929,12 +2929,19 @@ async function loadMainLeadActivity() {
     "<p>Loading lead activity...</p>";
 
   const { data, error } =
-    await supabaseClient
-      .from("Lead_Activity")
-      .select("id, created_at, lead_id, activity, details")
-      .order("id", {
-        ascending: false
-      });
+  await supabaseClient
+    .from("Lead_Activity")
+    .select("id, created_at, lead_id, activity, details")
+    .order("id", {
+      ascending: false
+    });
+
+alert(
+  "ACTIVITY RESULT:\n\n" +
+  JSON.stringify(data) +
+  "\n\nERROR:\n" +
+  JSON.stringify(error)
+);
 
   if (error) {
 
