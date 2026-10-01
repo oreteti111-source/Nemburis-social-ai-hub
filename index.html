@@ -3620,8 +3620,7 @@ function updateFollowUpSummary(leads) {
 
   }
   
-  
-async function searchLeads() {
+  async function searchLeads() {
 
   const searchInput =
     document.getElementById("leadSearch");
@@ -3699,6 +3698,8 @@ async function searchLeads() {
     leadList.innerHTML =
       "📭 No enquiries found.";
 
+    updateLeadSummary(leads);
+
     return;
   }
 
@@ -3712,7 +3713,10 @@ async function searchLeads() {
 
   });
 
-}
+
+  updateLeadSummary(leads);
+
+  }
 
 
 async function updateLeadStatus(
