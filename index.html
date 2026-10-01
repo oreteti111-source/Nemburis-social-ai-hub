@@ -1947,12 +1947,13 @@ async function addLead() {
 
   const travelDate =
     document.getElementById("leadDate").value;
-
-  const message =
+const message =
     document.getElementById("leadMessage").value.trim();
 
-  if (!name || !phone) {
+  const leadSource =
+    document.getElementById("leadSource").value;
 
+  if (!name || !phone) {
     alert(
       "Please enter the customer's name and phone number."
     );
@@ -1964,22 +1965,23 @@ async function addLead() {
 
     alert("ABOUT TO SAVE TO SUPABASE");
 
-    const { data, error } =
-      await supabaseClient
-        .from("Leads")
-        .insert([
-          {
-            "Name": name,
-            "Phone": phone,
-            "Email": email,
-            "Safari": safari,
-            "Travel_date": travelDate || null,
-            "Message": message,
-            "Status": "New"
-          }
-        ])
-        .select("id")
-        .single();
+const { data, error } =
+  await supabaseClient
+    .from("Leads")
+    .insert([
+      {
+        "Name": name,
+        "Phone": phone,
+        "Email": email,
+        "Safari": safari,
+        "Travel_date": travelDate || null,
+        "Message": message,
+        "Lead_Source": leadSource,
+        "Status": "New"
+      }
+    ])
+    .select("id")
+    .single();
 
     if (error) {
 
