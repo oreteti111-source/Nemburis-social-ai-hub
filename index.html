@@ -2068,8 +2068,6 @@ if (activityError) {
   }
   }
 
-
-
 async function displayLeads() {
 
   const leadList =
@@ -2085,25 +2083,25 @@ async function displayLeads() {
 
   try {
 
-const response = await fetch(
-  window.NEMBURIS_SUPABASE_URL +
-  "/rest/v1/Leads?select=id,Name,Phone,Email,Safari,Travel_date,Message,Status&order=id.desc",
-  {
-    method: "GET",
+    const response = await fetch(
+      window.NEMBURIS_SUPABASE_URL +
+      "/rest/v1/Leads?select=id,Name,Phone,Email,Safari,Travel_date,Message,Status&order=id.desc",
+      {
+        method: "GET",
 
-    headers: {
-      "apikey":
-        window.NEMBURIS_SUPABASE_KEY,
+        headers: {
+          "apikey":
+            window.NEMBURIS_SUPABASE_KEY,
 
-      "Authorization":
-        "Bearer " +
-        window.NEMBURIS_SUPABASE_KEY,
+          "Authorization":
+            "Bearer " +
+            window.NEMBURIS_SUPABASE_KEY,
 
-      "Accept-Profile":
-        "public"
-    }
-  }
-);
+          "Accept-Profile":
+            "public"
+        }
+      }
+    );
 
     console.log(
       "NEMBURIS REST STATUS:",
@@ -2133,6 +2131,9 @@ const response = await fetch(
 
     const leads =
       JSON.parse(text);
+
+    /* UPDATE DASHBOARD SUMMARY */
+    updateLeadSummary(leads);
 
     leadList.innerHTML = "";
 
@@ -2211,7 +2212,10 @@ const response = await fetch(
 
   }
 
+
+
     
+
 function updateLeadSummary(leads) {
 
   const total =
