@@ -2690,7 +2690,7 @@ function updateLeadStatusChart(
 
 }
 
-function updateLeadSourcePerformance(leads) {
+async function updateLeadSourcePerformance(leads) {
 
   const container =
     document.getElementById("leadSourcePerformance");
@@ -2699,84 +2699,117 @@ function updateLeadSourcePerformance(leads) {
     return;
   }
 
-  if (!leads || leads.length === 0) {
+  container.innerHTML = "Loading...";
+
+  try {
+
+    const { data: sourceRows, error } =
+      await supabaseClient
+        .from("Leads")
+        .select("Leads,Status");
+
+    if (error) {
+      console.error(
+        "LEAD SOURCE PERFORMANCE ERROR:",
+        error
+      );
+
+      container.innerHTML =
+        "❌ Unable to load lead source performance.";
+
+      return;
+    }
+
+    if (!sourceRows || sourceRows.length === 0) {
+      container.innerHTML =
+        "<p>📭 No lead source data yet.</p>";
+      return;
+    }
+
+    const sourceStats = {};
+
+    sourceRows.forEach(function(lead) {
+
+      const source =
+        lead.Leads || "Not provided";
+
+      if (!sourceStats[source]) {
+
+        sourceStats[source] = {
+          total: 0,
+          new: 0,
+          contacted: 0,
+          confirmed: 0,
+          completed: 0
+        };
+
+      }
+
+      sourceStats[source].total++;
+
+      if (lead.Status === "New") {
+        sourceStats[source].new++;
+      }
+
+      if (lead.Status === "Contacted") {
+        sourceStats[source].contacted++;
+      }
+
+      if (lead.Status === "Confirmed") {
+        sourceStats[source].confirmed++;
+      }
+
+      if (lead.Status === "Completed") {
+        sourceStats[source].completed++;
+      }
+
+    });
+
+    container.innerHTML = "";
+
+    Object.keys(sourceStats).forEach(function(source) {
+
+      const stats =
+        sourceStats[source];
+
+      const row =
+        document.createElement("div");
+
+      row.style =
+        "margin:12px 0;padding:12px;border:1px solid #ddd;border-radius:8px;";
+
+      row.innerHTML =
+        "<strong>📍 " +
+        source +
+        "</strong>" +
+
+        "<div style='margin-top:6px;'>" +
+        "Total: " + stats.total +
+        " | 🆕 New: " + stats.new +
+        " | 📞 Contacted: " + stats.contacted +
+        " | ✅ Confirmed: " + stats.confirmed +
+        " | 🏁 Completed: " + stats.completed +
+        "</div>";
+
+      container.appendChild(row);
+
+    });
+
+  } catch (error) {
+
+    console.error(
+      "LEAD SOURCE PERFORMANCE ERROR:",
+      error
+    );
 
     container.innerHTML =
-      "<p>📭 No lead source data yet.</p>";
-
-    return;
-  }
-
-  const sourceStats = {};
-
-  leads.forEach(function(lead) {
-
-    const source =
-  lead.Leads || "Not provided";
-    if (!sourceStats[source]) {
-
-      sourceStats[source] = {
-        total: 0,
-        new: 0,
-        contacted: 0,
-        confirmed: 0,
-        completed: 0
-      };
-
-    }
-
-    sourceStats[source].total++;
-
-    if (lead.Status === "New") {
-      sourceStats[source].new++;
-    }
-
-    if (lead.Status === "Contacted") {
-      sourceStats[source].contacted++;
-    }
-
-    if (lead.Status === "Confirmed") {
-      sourceStats[source].confirmed++;
-    }
-
-    if (lead.Status === "Completed") {
-      sourceStats[source].completed++;
-    }
-
-  });
-
-  container.innerHTML = "";
-
-  Object.keys(sourceStats).forEach(function(source) {
-
-    const stats =
-      sourceStats[source];
-
-    const row =
-      document.createElement("div");
-
-    row.style =
-      "margin:12px 0;padding:12px;border:1px solid #ddd;border-radius:8px;";
-
-    row.innerHTML =
-
-      "<strong>📍 " +
-      source +
-      "</strong>" +
-
-      "<div style='margin-top:6px;'>" +
-      "Total: " + stats.total +
-      " | 🆕 New: " + stats.new +
-      " | 📞 Contacted: " + stats.contacted +
-      " | ✅ Confirmed: " + stats.confirmed +
-      " | 🏁 Completed: " + stats.completed +
-      "</div>";
-
-    container.appendChild(row);
-
-  });
+      "❌ Unable to load lead source performance.";
 
   }
+
+  }
+
+
 function updateCampaignPerformance(leads) {
 
   const container =
