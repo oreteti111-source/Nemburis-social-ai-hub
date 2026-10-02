@@ -3715,8 +3715,10 @@ function updateFollowUpSummary(leads) {
     noDate;
 
   if (countElement) {
+
     countElement.textContent =
-      total;
+      String(total);
+
   }
 
   container.innerHTML =
@@ -3744,6 +3746,7 @@ function updateFollowUpSummary(leads) {
     "</div>" +
 
     "</div>";
+
   }
 
 
