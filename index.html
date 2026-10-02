@@ -1960,20 +1960,20 @@ async function addLead() {
   try {
 
     const { data, error } =
-      await supabaseClient
-        .from("Leads")
-        .insert([
-          {
-            "Name": name,
-            "Phone": phone,
-            "Email": email,
-            "Safari": safari,
-            "Travel_date": travelDate || null,
-            "Message": message,
-            "Lead": leadSource,
-            "Status": "New"
-          }
-        ])
+  await supabaseClient
+    .from("Leads")
+    .insert([
+      {
+        "Name": name,
+        "Phone": phone,
+        "Email": email,
+        "Safari": safari,
+        "Travel_date": travelDate || null,
+        "Message": message,
+        "Leads": leadSource,
+        "Status": "New"
+      }
+    ])
         .select("id")
         .single();
 
@@ -2102,7 +2102,7 @@ async function displayLeads() {
 
     const response = await fetch(
       window.NEMBURIS_SUPABASE_URL +
-      "/rest/v1/Leads?select=id,Name,Phone,Email,Safari,Travel_date,Message,Status,Lead&order=id.desc",
+      "/rest/v1/Leads?select=id,Name,Phone,Email,Safari,Travel_date,Message,Status,Leads&order=id.desc",
   {
         method: "GET",
 
