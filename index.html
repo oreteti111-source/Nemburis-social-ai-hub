@@ -2366,6 +2366,9 @@ function updateFollowUpList(leads) {
   const panel =
     document.getElementById("followUpList");
 
+  const countElement =
+    document.getElementById("followUpCount");
+
   if (!panel) {
     return;
   }
@@ -2454,6 +2457,14 @@ function updateFollowUpList(leads) {
 
   }
 
+  /* UPDATE FOLLOW-UP COUNTER */
+  if (countElement) {
+
+    countElement.textContent =
+      String(followUps.length);
+
+  }
+
   followUps.sort(function(a, b) {
 
     const order = {
@@ -2470,108 +2481,106 @@ function updateFollowUpList(leads) {
 
   });
 
+  if (followUps.length === 0) {
+
+    panel.innerHTML =
+      "<p>📭 No customers needing follow-up.</p>";
+
+    return;
+  }
+
   let html =
     "";
 
-  if (followUps.length === 0) {
+  followUps.forEach(function(item) {
 
-    html =
-      "<p>📭 No customers needing follow-up.</p>";
+    const lead =
+      item.lead;
 
-  } else {
+    const name =
+      lead.Name ||
+      "Unnamed Customer";
 
-    followUps.forEach(function(item) {
+    const phone =
+      lead.Phone ||
+      "";
 
-      const lead =
-        item.lead;
+    const safari =
+      lead.Safari ||
+      "Safari not specified";
 
-      const name =
-        lead.Name ||
-        "Unnamed Customer";
+    const travelDate =
+      lead.Travel_date ||
+      "Not provided";
 
-      const phone =
-        lead.Phone ||
-        "";
+    const status =
+      lead.Status ||
+      "New";
 
-      const safari =
-        lead.Safari ||
-        "Safari not specified";
+    const whatsappNumber =
+      phone.replace(
+        /[^0-9]/g,
+        ""
+      );
 
-      const travelDate =
-        lead.Travel_date ||
-        "Not provided";
+    let whatsappButton =
+      "";
 
-      const status =
-        lead.Status ||
-        "New";
+    if (whatsappNumber) {
 
-      const whatsappNumber =
-        phone.replace(
-          /[^0-9]/g,
-          ""
-        );
+      whatsappButton =
+        "<a href='https://wa.me/" +
+        whatsappNumber +
+        "' target='_blank' " +
+        "style='display:inline-block;margin-top:8px;padding:8px 12px;background:#25D366;color:white;text-decoration:none;border-radius:6px;'>" +
+        "💬 WhatsApp Customer" +
+        "</a>";
 
-      let whatsappButton =
-        "";
+    }
 
-      if (whatsappNumber) {
+    html +=
 
-        whatsappButton =
-          "<a href='https://wa.me/" +
-          whatsappNumber +
-          "' target='_blank' " +
-          "style='display:inline-block;margin-top:8px;padding:8px 12px;background:#25D366;color:white;text-decoration:none;border-radius:6px;'>" +
-          "💬 WhatsApp Customer" +
-          "</a>";
+      "<div style='margin:12px 0;padding:14px;background:white;border:1px solid #ddd;border-radius:8px;'>" +
 
-      }
+      "<div style='font-size:17px;font-weight:bold;'>" +
+      item.icon +
+      " " +
+      name +
+      "</div>" +
 
-      html +=
+      "<div style='margin-top:6px;'>📞 " +
+      (phone || "No phone") +
+      "</div>" +
 
-        "<div style='margin:12px 0;padding:14px;background:white;border:1px solid #ddd;border-radius:8px;'>" +
+      "<div>🦁 " +
+      safari +
+      "</div>" +
 
-        "<div style='font-size:17px;font-weight:bold;'>" +
-        item.icon +
-        " " +
-        name +
-        "</div>" +
+      "<div>📅 Travel Date: " +
+      travelDate +
+      "</div>" +
 
-        "<div style='margin-top:6px;'>📞 " +
-        (phone || "No phone") +
-        "</div>" +
+      "<div>📌 Status: " +
+      status +
+      "</div>" +
 
-        "<div>🦁 " +
-        safari +
-        "</div>" +
+      "<div style='margin-top:6px;font-weight:bold;'>" +
+      item.category +
+      "</div>" +
 
-        "<div>📅 Travel Date: " +
-        travelDate +
-        "</div>" +
+      whatsappButton +
 
-        "<div>📌 Status: " +
-        status +
-        "</div>" +
+      "</div>";
 
-        "<div style='margin-top:6px;font-weight:bold;'>" +
-        item.category +
-        "</div>" +
-
-        whatsappButton +
-
-        "</div>";
-
-    });
-
-  }
+  });
 
   panel.innerHTML =
     html;
 
   }
+
         
 
-  
-      
 function toggleFollowUpPanel() {
 
   const panel =
