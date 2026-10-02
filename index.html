@@ -2165,6 +2165,29 @@ updateLeadConversionRate(leads);
 updateFollowUpSummary(leads);
 
 updateFollowUpList(leads);
+
+
+/* DEFINITIVE FOLLOW-UP COUNT */
+
+const followUpCountElement =
+  document.getElementById("followUpCount");
+
+if (followUpCountElement) {
+
+  const activeFollowUps =
+    leads.filter(function(lead) {
+
+      return (
+        lead.Status === "New" ||
+        lead.Status === "Contacted"
+      );
+
+    });
+
+  followUpCountElement.textContent =
+    String(activeFollowUps.length);
+
+  }
     leadList.innerHTML = "";
 
     if (!leads || leads.length === 0) {
