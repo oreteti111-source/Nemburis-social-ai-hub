@@ -2370,14 +2370,6 @@ function updateFollowUpList(leads) {
     return;
   }
 
-  if (!leads || leads.length === 0) {
-
-    panel.innerHTML =
-      "<p>📭 No customers needing follow-up.</p>";
-
-    return;
-  }
-
   const today =
     new Date();
 
@@ -2390,80 +2382,76 @@ function updateFollowUpList(leads) {
 
   const followUps = [];
 
-  leads.forEach(function(lead) {
+  if (leads && leads.length > 0) {
 
-    if (
-      lead.Status !== "New" &&
-      lead.Status !== "Contacted"
-    ) {
-      return;
-    }
+    leads.forEach(function(lead) {
 
-    let category =
-      "No travel date";
+      if (
+        lead.Status !== "New" &&
+        lead.Status !== "Contacted"
+      ) {
+        return;
+      }
 
-    let icon =
-      "⚪";
+      let category =
+        "No travel date";
 
-    if (lead.Travel_date) {
+      let icon =
+        "⚪";
 
-      const travelDate =
-        new Date(
-          lead.Travel_date
+      if (lead.Travel_date) {
+
+        const travelDate =
+          new Date(
+            lead.Travel_date
+          );
+
+        travelDate.setHours(
+          0,
+          0,
+          0,
+          0
         );
 
-      travelDate.setHours(
-        0,
-        0,
-        0,
-        0
-      );
+        if (travelDate < today) {
 
-      if (travelDate < today) {
+          category =
+            "Overdue";
 
-        category =
-          "Overdue";
+          icon =
+            "🔴";
 
-        icon =
-          "🔴";
+        } else if (
+          travelDate.getTime() ===
+          today.getTime()
+        ) {
 
-      } else if (
-        travelDate.getTime() ===
-        today.getTime()
-      ) {
+          category =
+            "Due Today";
 
-        category =
-          "Due Today";
+          icon =
+            "🟠";
 
-        icon =
-          "🟠";
+        } else {
 
-      } else {
+          category =
+            "Upcoming";
 
-        category =
-          "Upcoming";
+          icon =
+            "🟢";
 
-        icon =
-          "🟢";
+        }
 
       }
 
-    }
+      followUps.push({
+        lead: lead,
+        category: category,
+        icon: icon
+      });
 
-    followUps.push({
-      lead: lead,
-      category: category,
-      icon: icon
     });
 
-  });
-
-  if (followUps.length === 0) {
-
-    panel.innerHTML =
-      "<p>📭 No customers needing follow-up.</p>";
-
-    return;
   }
 
   followUps.sort(function(a, b) {
@@ -2485,92 +2473,105 @@ function updateFollowUpList(leads) {
   let html =
     "";
 
-  followUps.forEach(function(item) {
+  if (followUps.length === 0) {
 
-    const lead =
-      item.lead;
+    html =
+      "<p>📭 No customers needing follow-up.</p>";
 
-    const name =
-      lead.Name ||
-      "Unnamed Customer";
+  } else {
 
-    const phone =
-      lead.Phone ||
-      "";
+    followUps.forEach(function(item) {
 
-    const safari =
-      lead.Safari ||
-      "Safari not specified";
+      const lead =
+        item.lead;
 
-    const travelDate =
-      lead.Travel_date ||
-      "Not provided";
+      const name =
+        lead.Name ||
+        "Unnamed Customer";
 
-    const status =
-      lead.Status ||
-      "New";
+      const phone =
+        lead.Phone ||
+        "";
 
-    const whatsappNumber =
-      phone.replace(
-        /[^0-9]/g,
-        ""
-      );
+      const safari =
+        lead.Safari ||
+        "Safari not specified";
 
-    let whatsappButton =
-      "";
+      const travelDate =
+        lead.Travel_date ||
+        "Not provided";
 
-    if (whatsappNumber) {
+      const status =
+        lead.Status ||
+        "New";
 
-      whatsappButton =
-        "<a href='https://wa.me/" +
-        whatsappNumber +
-        "' target='_blank' " +
-        "style='display:inline-block;margin-top:8px;padding:8px 12px;background:#25D366;color:white;text-decoration:none;border-radius:6px;'>" +
-        "💬 WhatsApp Customer" +
-        "</a>";
+      const whatsappNumber =
+        phone.replace(
+          /[^0-9]/g,
+          ""
+        );
 
-    }
+      let whatsappButton =
+        "";
 
-    html +=
-      "<div style='margin:12px 0;padding:14px;background:white;border:1px solid #ddd;border-radius:8px;'>" +
+      if (whatsappNumber) {
 
-      "<div style='font-size:17px;font-weight:bold;'>" +
-      item.icon +
-      " " +
-      name +
-      "</div>" +
+        whatsappButton =
+          "<a href='https://wa.me/" +
+          whatsappNumber +
+          "' target='_blank' " +
+          "style='display:inline-block;margin-top:8px;padding:8px 12px;background:#25D366;color:white;text-decoration:none;border-radius:6px;'>" +
+          "💬 WhatsApp Customer" +
+          "</a>";
 
-      "<div style='margin-top:6px;'>📞 " +
-      (phone || "No phone") +
-      "</div>" +
+      }
 
-      "<div>🦁 " +
-      safari +
-      "</div>" +
+      html +=
 
-      "<div>📅 Travel Date: " +
-      travelDate +
-      "</div>" +
+        "<div style='margin:12px 0;padding:14px;background:white;border:1px solid #ddd;border-radius:8px;'>" +
 
-      "<div>📌 Status: " +
-      status +
-      "</div>" +
+        "<div style='font-size:17px;font-weight:bold;'>" +
+        item.icon +
+        " " +
+        name +
+        "</div>" +
 
-      "<div style='margin-top:6px;font-weight:bold;'>" +
-      item.category +
-      "</div>" +
+        "<div style='margin-top:6px;'>📞 " +
+        (phone || "No phone") +
+        "</div>" +
 
-      whatsappButton +
+        "<div>🦁 " +
+        safari +
+        "</div>" +
 
-      "</div>";
+        "<div>📅 Travel Date: " +
+        travelDate +
+        "</div>" +
 
-  });
+        "<div>📌 Status: " +
+        status +
+        "</div>" +
+
+        "<div style='margin-top:6px;font-weight:bold;'>" +
+        item.category +
+        "</div>" +
+
+        whatsappButton +
+
+        "</div>";
+
+    });
+
+  }
 
   panel.innerHTML =
     html;
 
   }
-    
+        
+
+  
+      
 function toggleFollowUpPanel() {
 
   const panel =
@@ -3621,7 +3622,6 @@ function updateLeadConversionFunnel(leads) {
     "</div>";
 
   }
-  
 function updateFollowUpSummary(leads) {
 
   const container =
@@ -3634,17 +3634,10 @@ function updateFollowUpSummary(leads) {
     return;
   }
 
-  if (!leads || leads.length === 0) {
-
-    container.innerHTML =
-      "<p>📭 No customers needing follow-up.</p>";
-
-    if (countElement) {
-      countElement.textContent = "0";
-    }
-
-    return;
-  }
+  let overdue = 0;
+  let dueToday = 0;
+  let upcoming = 0;
+  let noDate = 0;
 
   const today =
     new Date();
@@ -3656,63 +3649,64 @@ function updateFollowUpSummary(leads) {
     0
   );
 
-  let overdue = 0;
-  let dueToday = 0;
-  let upcoming = 0;
-  let noDate = 0;
+  if (leads && leads.length > 0) {
 
-  leads.forEach(function(lead) {
+    leads.forEach(function(lead) {
 
-    if (
-      lead.Status !== "New" &&
-      lead.Status !== "Contacted"
-    ) {
-      return;
-    }
+      if (
+        lead.Status !== "New" &&
+        lead.Status !== "Contacted"
+      ) {
+        return;
+      }
 
-    if (!lead.Travel_date) {
+      if (!lead.Travel_date) {
 
-      noDate++;
+        noDate++;
 
-      return;
-    }
+        return;
+      }
 
-    const travelDate =
-      new Date(
-        lead.Travel_date
+      const travelDate =
+        new Date(
+          lead.Travel_date
+        );
+
+      travelDate.setHours(
+        0,
+        0,
+        0,
+        0
       );
 
-    travelDate.setHours(
-      0,
-      0,
-      0,
-      0
-    );
+      if (travelDate < today) {
 
-    if (travelDate < today) {
+        overdue++;
 
-      overdue++;
+      } else if (
+        travelDate.getTime() ===
+        today.getTime()
+      ) {
 
-    } else if (
-      travelDate.getTime() ===
-      today.getTime()
-    ) {
+        dueToday++;
 
-      dueToday++;
+      } else {
 
-    } else {
+        upcoming++;
 
-      upcoming++;
+      }
 
-    }
+    });
 
-  });
+  }
 
   const total =
     overdue +
     dueToday +
     upcoming +
     noDate;
+
+  /* UPDATE THE HEADING COUNT */
 
   if (countElement) {
 
@@ -3721,7 +3715,10 @@ function updateFollowUpSummary(leads) {
 
   }
 
+  /* UPDATE THE SUMMARY */
+
   container.innerHTML =
+
     "<div style='padding:12px;background:white;border-radius:8px;'>" +
 
     "<div>🔴 Overdue: <strong>" +
@@ -3748,8 +3745,6 @@ function updateFollowUpSummary(leads) {
     "</div>";
 
   }
-
-
   async function searchLeads() {
 
   const searchInput =
