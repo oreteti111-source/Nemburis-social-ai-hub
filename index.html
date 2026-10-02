@@ -2288,12 +2288,12 @@ function updateLeadSummary(leads) {
   leads.forEach(function(lead) {
 
     const source =
-  lead.Lead || "Not provided";
-    sourceCounts[source] =
-      (sourceCounts[source] || 0) + 1;
+  lead.Leads || "Not provided";
 
-  });
+sourceCounts[source] =
+  (sourceCounts[source] || 0) + 1;
 
+});
 
   const sourceSummary =
     document.getElementById("leadSourceSummary");
