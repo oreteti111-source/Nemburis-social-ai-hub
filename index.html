@@ -2148,11 +2148,21 @@ async function displayLeads() {
 
     const leads =
       JSON.parse(text);
-/* UPDATE DASHBOARD SUMMARY */
+/* UPDATE DASHBOARD ANALYTICS */
+
 await updateLeadSummary(leads);
+
 await updateLeadSourcePerformance(leads);
+
 updateCampaignPerformance(leads);
 
+updateLeadConversionOverview(leads);
+
+updateLeadConversionFunnel(leads);
+
+updateLeadConversionRate(leads);
+
+updateFollowUpSummary(leads);
     leadList.innerHTML = "";
 
     if (!leads || leads.length === 0) {
@@ -2819,101 +2829,114 @@ function updateCampaignPerformance(leads) {
     return;
   }
 
-  if (!leads || leads.length === 0) {
+  try {
+
+    if (!leads || leads.length === 0) {
+
+      container.innerHTML =
+        "<p>📭 No campaign data yet.</p>";
+
+      return;
+    }
+
+    const campaigns = {};
+
+    leads.forEach(function(lead) {
+
+      const source =
+        lead.Leads ||
+        "Not provided";
+
+      if (!campaigns[source]) {
+
+        campaigns[source] = {
+          total: 0,
+          newLeads: 0,
+          contacted: 0,
+          confirmed: 0,
+          completed: 0
+        };
+
+      }
+
+      campaigns[source].total++;
+
+      if (lead.Status === "New") {
+        campaigns[source].newLeads++;
+      }
+
+      if (lead.Status === "Contacted") {
+        campaigns[source].contacted++;
+      }
+
+      if (lead.Status === "Confirmed") {
+        campaigns[source].confirmed++;
+      }
+
+      if (lead.Status === "Completed") {
+        campaigns[source].completed++;
+      }
+
+    });
+
+
+    let html = "";
+
+
+    Object.keys(campaigns).forEach(function(source) {
+
+      const campaign =
+        campaigns[source];
+
+      html +=
+
+        "<div style='margin-bottom:18px;padding:12px;background:white;border-radius:8px;'>" +
+
+        "<strong>📣 " +
+        source +
+        "</strong>" +
+
+        "<div style='margin-top:8px;'>👥 Leads: " +
+        campaign.total +
+        "</div>" +
+
+        "<div>🆕 New: " +
+        campaign.newLeads +
+        "</div>" +
+
+        "<div>📞 Contacted: " +
+        campaign.contacted +
+        "</div>" +
+
+        "<div>✅ Confirmed: " +
+        campaign.confirmed +
+        "</div>" +
+
+        "<div>🏁 Completed: " +
+        campaign.completed +
+        "</div>" +
+
+        "</div>";
+
+    });
+
 
     container.innerHTML =
-      "<p>📭 No campaign data yet.</p>";
+      html;
 
-    return;
-  }
+  } catch (error) {
 
-  const campaigns = {};
+    console.error(
+      "CAMPAIGN PERFORMANCE ERROR:",
+      error
+    );
 
-  leads.forEach(function(lead) {
-
-    const source =
-  lead.Leads ||
-  "Not provided";
-    if (!campaigns[source]) {
-
-      campaigns[source] = {
-        total: 0,
-        newLeads: 0,
-        contacted: 0,
-        confirmed: 0,
-        completed: 0
-      };
-
-    }
-
-    campaigns[source].total++;
-
-    if (lead.Status === "New") {
-      campaigns[source].newLeads++;
-    }
-
-    if (lead.Status === "Contacted") {
-      campaigns[source].contacted++;
-    }
-
-    if (lead.Status === "Confirmed") {
-      campaigns[source].confirmed++;
-    }
-
-    if (lead.Status === "Completed") {
-      campaigns[source].completed++;
-    }
-
-  });
-
-
-  let html = "";
-
-
-  Object.keys(campaigns).forEach(function(source) {
-
-    const campaign =
-      campaigns[source];
-
-    html +=
-
-      "<div style='margin-bottom:18px; padding:12px; background:white; border-radius:8px;'>" +
-
-      "<strong>📣 " +
-      source +
-      "</strong>" +
-
-      "<div style='margin-top:8px;'>" +
-      "👥 Leads: " +
-      campaign.total +
-      "</div>" +
-
-      "<div>🆕 New: " +
-      campaign.newLeads +
-      "</div>" +
-
-      "<div>📞 Contacted: " +
-      campaign.contacted +
-      "</div>" +
-
-      "<div>✅ Confirmed: " +
-      campaign.confirmed +
-      "</div>" +
-
-      "<div>🏁 Completed: " +
-      campaign.completed +
-      "</div>" +
-
-      "</div>";
-
-  });
-
-
-  container.innerHTML =
-    html;
+    container.innerHTML =
+      "❌ Unable to load campaign performance.";
 
   }
 
+  }
   function updateLeadActivity(leads) {
 
   const container =
@@ -3300,8 +3323,8 @@ async function loadLeadActivity(leadId) {
     html;
 
   }
-  
-function updateLeadConversionOverview(leads) {
+
+  function updateLeadConversionOverview(leads) {
 
   const container =
     document.getElementById("leadConversionOverview");
@@ -3313,10 +3336,11 @@ function updateLeadConversionOverview(leads) {
   if (!leads || leads.length === 0) {
 
     container.innerHTML =
-      "<p>📭 No lead conversion data yet.</p>";
+      "<p>📭 No conversion data yet.</p>";
 
     return;
   }
+
 
   const total =
     leads.length;
@@ -3342,49 +3366,57 @@ function updateLeadConversionOverview(leads) {
     }).length;
 
 
-  const contactedRate =
-    total > 0
-      ? Math.round((contactedCount / total) * 100)
-      : 0;
+  const active =
+    contactedCount +
+    confirmedCount;
 
-  const confirmedRate =
-    total > 0
-      ? Math.round((confirmedCount / total) * 100)
-      : 0;
+  const converted =
+    confirmedCount +
+    completedCount;
 
-  const completedRate =
+
+  const conversionRate =
     total > 0
-      ? Math.round((completedCount / total) * 100)
-      : 0;
+      ? ((converted / total) * 100).toFixed(1)
+      : "0.0";
 
 
   container.innerHTML =
 
-    "<div style='margin:10px 0;'>" +
-    "<strong>🆕 New</strong><br>" +
+    "<div style='padding:12px;background:white;border-radius:8px;'>" +
+
+    "<div>👥 Total Leads: <strong>" +
+    total +
+    "</strong></div>" +
+
+    "<div>🆕 New: <strong>" +
     newCount +
-    "</div>" +
+    "</strong></div>" +
 
-    "<div style='margin:10px 0;'>" +
-    "<strong>📞 Contacted</strong><br>" +
+    "<div>📞 Contacted: <strong>" +
     contactedCount +
-    " (" + contactedRate + "% of total)" +
-    "</div>" +
+    "</strong></div>" +
 
-    "<div style='margin:10px 0;'>" +
-    "<strong>✅ Confirmed</strong><br>" +
+    "<div>✅ Confirmed: <strong>" +
     confirmedCount +
-    " (" + confirmedRate + "% of total)" +
-    "</div>" +
+    "</strong></div>" +
 
-    "<div style='margin:10px 0;'>" +
-    "<strong>🏁 Completed</strong><br>" +
+    "<div>🏁 Completed: <strong>" +
     completedCount +
-    " (" + completedRate + "% of total)" +
+    "</strong></div>" +
+
+    "<div style='margin-top:8px;'>📈 Converted: <strong>" +
+    converted +
+    "</strong></div>" +
+
+    "<div>📊 Conversion Rate: <strong>" +
+    conversionRate +
+    "%</strong></div>" +
+
     "</div>";
 
   }
-  
+
 function updateLeadConversionFunnel(leads) {
 
   const container =
@@ -3397,10 +3429,11 @@ function updateLeadConversionFunnel(leads) {
   if (!leads || leads.length === 0) {
 
     container.innerHTML =
-      "<p>📭 No conversion funnel data yet.</p>";
+      "<p>📭 No funnel data yet.</p>";
 
     return;
   }
+
 
   const newCount =
     leads.filter(function(lead) {
@@ -3423,72 +3456,29 @@ function updateLeadConversionFunnel(leads) {
     }).length;
 
 
-  const total =
-    leads.length;
-
-
-  function bar(count) {
-
-    if (total === 0) {
-      return "";
-    }
-
-    const width =
-      Math.round((count / total) * 100);
-
-    return (
-      "<div style='" +
-      "height:12px;" +
-      "background:#ddd;" +
-      "border-radius:6px;" +
-      "margin-top:5px;" +
-      "overflow:hidden;" +
-      "'>" +
-
-      "<div style='" +
-      "width:" + width + "%;" +
-      "height:100%;" +
-      "background:#777;" +
-      "'></div>" +
-
-      "</div>"
-    );
-
-  }
-
-
   container.innerHTML =
 
-    "<div style='margin:15px 0;'>" +
-    "<strong>🆕 New — " +
+    "<div style='padding:12px;background:white;border-radius:8px;'>" +
+
+    "<div style='margin:8px 0;'>🆕 New → <strong>" +
     newCount +
-    "</strong>" +
-    bar(newCount) +
-    "</div>" +
+    "</strong></div>" +
 
-    "<div style='margin:15px 0;'>" +
-    "<strong>📞 Contacted — " +
+    "<div style='margin:8px 0;'>📞 Contacted → <strong>" +
     contactedCount +
-    "</strong>" +
-    bar(contactedCount) +
-    "</div>" +
+    "</strong></div>" +
 
-    "<div style='margin:15px 0;'>" +
-    "<strong>✅ Confirmed — " +
+    "<div style='margin:8px 0;'>✅ Confirmed → <strong>" +
     confirmedCount +
-    "</strong>" +
-    bar(confirmedCount) +
-    "</div>" +
+    "</strong></div>" +
 
-    "<div style='margin:15px 0;'>" +
-    "<strong>🏁 Completed — " +
+    "<div style='margin:8px 0;'>🏁 Completed → <strong>" +
     completedCount +
-    "</strong>" +
-    bar(completedCount) +
+    "</strong></div>" +
+
     "</div>";
 
   }
-  
   function updateLeadConversionRate(leads) {
 
   const container =
@@ -3501,56 +3491,50 @@ function updateLeadConversionFunnel(leads) {
   if (!leads || leads.length === 0) {
 
     container.innerHTML =
-      "<p>📭 No conversion rate data yet.</p>";
+      "<p>📭 No conversion data yet.</p>";
 
     return;
   }
 
+
   const total =
     leads.length;
 
-  const contactedCount =
+  const converted =
     leads.filter(function(lead) {
-      return lead.Status === "Contacted";
-    }).length;
 
-  const confirmedCount =
-    leads.filter(function(lead) {
-      return lead.Status === "Confirmed";
-    }).length;
+      return (
+        lead.Status === "Confirmed" ||
+        lead.Status === "Completed"
+      );
 
-  const completedCount =
-    leads.filter(function(lead) {
-      return lead.Status === "Completed";
     }).length;
 
 
-  const contactedRate =
-    Math.round((contactedCount / total) * 100);
-
-  const confirmedRate =
-    Math.round((confirmedCount / total) * 100);
-
-  const completedRate =
-    Math.round((completedCount / total) * 100);
+  const rate =
+    total > 0
+      ? ((converted / total) * 100).toFixed(1)
+      : "0.0";
 
 
   container.innerHTML =
 
-    "<div style='margin:12px 0;'>" +
-    "<strong>📞 Contacted Rate</strong><br>" +
-    contactedRate +
+    "<div style='padding:15px;background:white;border-radius:8px;text-align:center;'>" +
+
+    "<div style='font-size:28px;font-weight:bold;'>" +
+    rate +
     "%</div>" +
 
-    "<div style='margin:12px 0;'>" +
-    "<strong>✅ Confirmed Rate</strong><br>" +
-    confirmedRate +
-    "%</div>" +
+    "<div>📈 Lead Conversion Rate</div>" +
 
-    "<div style='margin:12px 0;'>" +
-    "<strong>🏁 Completed Rate</strong><br>" +
-    completedRate +
-    "%</div>";
+    "<div style='margin-top:6px;'>" +
+    converted +
+    " converted from " +
+    total +
+    " leads" +
+    "</div>" +
+
+    "</div>";
 
   }
   
@@ -3563,44 +3547,11 @@ function updateFollowUpSummary(leads) {
     return;
   }
 
+
   if (!leads || leads.length === 0) {
 
     container.innerHTML =
-      "<p>📭 No follow-up data yet.</p>";
-
-    return;
-  }
-
-  const followUps =
-    leads.filter(function(lead) {
-
-      return (
-        lead.Status === "New" ||
-        lead.Status === "Contacted"
-      );
-
-    });
-
-
-  if (followUps.length === 0) {
-
-    container.innerHTML =
-
-      "<div style='margin:8px 0;'>" +
-      "🔴 <strong>Overdue:</strong> 0" +
-      "</div>" +
-
-      "<div style='margin:8px 0;'>" +
-      "⏰ <strong>Due Today:</strong> 0" +
-      "</div>" +
-
-      "<div style='margin:8px 0;'>" +
-      "📅 <strong>Upcoming:</strong> 0" +
-      "</div>" +
-
-      "<div style='margin:8px 0;'>" +
-      "📭 <strong>No Date:</strong> 0" +
-      "</div>";
+      "<p>📭 No customers needing follow-up.</p>";
 
     return;
   }
@@ -3618,12 +3569,20 @@ function updateFollowUpSummary(leads) {
 
 
   let overdue = 0;
-  let todayCount = 0;
+  let dueToday = 0;
   let upcoming = 0;
   let noDate = 0;
 
 
-  followUps.forEach(function(lead) {
+  leads.forEach(function(lead) {
+
+    if (
+      lead.Status !== "New" &&
+      lead.Status !== "Contacted"
+    ) {
+      return;
+    }
+
 
     if (!lead.Travel_date) {
 
@@ -3633,19 +3592,12 @@ function updateFollowUpSummary(leads) {
     }
 
 
-    const date =
-      new Date(lead.Travel_date);
+    const travelDate =
+      new Date(
+        lead.Travel_date
+      );
 
-
-    if (isNaN(date.getTime())) {
-
-      noDate++;
-
-      return;
-    }
-
-
-    date.setHours(
+    travelDate.setHours(
       0,
       0,
       0,
@@ -3653,15 +3605,16 @@ function updateFollowUpSummary(leads) {
     );
 
 
-    if (date < today) {
+    if (travelDate < today) {
 
       overdue++;
 
     } else if (
-      date.getTime() === today.getTime()
+      travelDate.getTime() ===
+      today.getTime()
     ) {
 
-      todayCount++;
+      dueToday++;
 
     } else {
 
@@ -3672,29 +3625,43 @@ function updateFollowUpSummary(leads) {
   });
 
 
+  const total =
+    overdue +
+    dueToday +
+    upcoming +
+    noDate;
+
+
   container.innerHTML =
 
-    "<div style='margin:8px 0;'>" +
-    "🔴 <strong>Overdue:</strong> " +
+    "<div style='padding:12px;background:white;border-radius:8px;'>" +
+
+    "<div>🔴 Overdue: <strong>" +
     overdue +
-    "</div>" +
+    "</strong></div>" +
 
-    "<div style='margin:8px 0;'>" +
-    "⏰ <strong>Due Today:</strong> " +
-    todayCount +
-    "</div>" +
+    "<div>🟠 Due Today: <strong>" +
+    dueToday +
+    "</strong></div>" +
 
-    "<div style='margin:8px 0;'>" +
-    "📅 <strong>Upcoming:</strong> " +
+    "<div>🟢 Upcoming: <strong>" +
     upcoming +
+    "</strong></div>" +
+
+    "<div>⚪ No Travel Date: <strong>" +
+    noDate +
+    "</strong></div>" +
+
+    "<div style='margin-top:8px;font-weight:bold;'>" +
+    "📌 Total Needing Follow-Up: " +
+    total +
     "</div>" +
 
-    "<div style='margin:8px 0;'>" +
-    "📭 <strong>No Date:</strong> " +
-    noDate +
     "</div>";
 
   }
+
+  
   
   async function searchLeads() {
 
