@@ -2712,8 +2712,7 @@ function updateLeadSourcePerformance(leads) {
   leads.forEach(function(lead) {
 
     const source =
-      lead.Lead_Source || "Not provided";
-
+  lead.Leads || "Not provided";
     if (!sourceStats[source]) {
 
       sourceStats[source] = {
