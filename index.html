@@ -2148,10 +2148,10 @@ async function displayLeads() {
 
     const leads =
       JSON.parse(text);
-
 /* UPDATE DASHBOARD SUMMARY */
 await updateLeadSummary(leads);
 await updateLeadSourcePerformance(leads);
+updateCampaignPerformance(leads);
 
     leadList.innerHTML = "";
 
