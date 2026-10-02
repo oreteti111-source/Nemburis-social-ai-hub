@@ -2361,7 +2361,6 @@ async function updateLeadSummary(leads) {
 
   }
 
-
 function updateFollowUpList(leads) {
 
   const panel =
@@ -2371,7 +2370,6 @@ function updateFollowUpList(leads) {
     return;
   }
 
-
   if (!leads || leads.length === 0) {
 
     panel.innerHTML =
@@ -2379,7 +2377,6 @@ function updateFollowUpList(leads) {
 
     return;
   }
-
 
   const today =
     new Date();
@@ -2391,9 +2388,7 @@ function updateFollowUpList(leads) {
     0
   );
 
-
   const followUps = [];
-
 
   leads.forEach(function(lead) {
 
@@ -2404,13 +2399,11 @@ function updateFollowUpList(leads) {
       return;
     }
 
-
     let category =
       "No travel date";
 
     let icon =
       "⚪";
-
 
     if (lead.Travel_date) {
 
@@ -2425,7 +2418,6 @@ function updateFollowUpList(leads) {
         0,
         0
       );
-
 
       if (travelDate < today) {
 
@@ -2458,22 +2450,13 @@ function updateFollowUpList(leads) {
 
     }
 
-
     followUps.push({
-
-      lead:
-        lead,
-
-      category:
-        category,
-
-      icon:
-        icon
-
+      lead: lead,
+      category: category,
+      icon: icon
     });
 
   });
-
 
   if (followUps.length === 0) {
 
@@ -2483,21 +2466,14 @@ function updateFollowUpList(leads) {
     return;
   }
 
-
   followUps.sort(function(a, b) {
 
     const order = {
-
       "Overdue": 1,
-
       "Due Today": 2,
-
       "Upcoming": 3,
-
       "No travel date": 4
-
     };
-
 
     return (
       order[a.category] -
@@ -2506,41 +2482,33 @@ function updateFollowUpList(leads) {
 
   });
 
-
   let html =
     "";
-
 
   followUps.forEach(function(item) {
 
     const lead =
       item.lead;
 
-
     const name =
       lead.Name ||
       "Unnamed Customer";
-
 
     const phone =
       lead.Phone ||
       "";
 
-
     const safari =
       lead.Safari ||
       "Safari not specified";
-
 
     const travelDate =
       lead.Travel_date ||
       "Not provided";
 
-
     const status =
       lead.Status ||
       "New";
-
 
     const whatsappNumber =
       phone.replace(
@@ -2548,38 +2516,28 @@ function updateFollowUpList(leads) {
         ""
       );
 
-
     let whatsappButton =
       "";
-
 
     if (whatsappNumber) {
 
       whatsappButton =
-
         "<a href='https://wa.me/" +
         whatsappNumber +
         "' target='_blank' " +
-
         "style='display:inline-block;margin-top:8px;padding:8px 12px;background:#25D366;color:white;text-decoration:none;border-radius:6px;'>" +
-
         "💬 WhatsApp Customer" +
-
         "</a>";
 
     }
 
-
     html +=
-
       "<div style='margin:12px 0;padding:14px;background:white;border:1px solid #ddd;border-radius:8px;'>" +
 
       "<div style='font-size:17px;font-weight:bold;'>" +
-
       item.icon +
       " " +
       name +
-
       "</div>" +
 
       "<div style='margin-top:6px;'>📞 " +
@@ -2607,7 +2565,6 @@ function updateFollowUpList(leads) {
       "</div>";
 
   });
-
 
   panel.innerHTML =
     html;
