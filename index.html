@@ -1925,7 +1925,6 @@ console.log("NEMBURIS SUPABASE CONNECTED");
 <!-- LEAD CENTER JAVASCRIPT -->
 
 <script>
-
 async function addLead() {
 
   const name =
@@ -1942,13 +1941,15 @@ async function addLead() {
 
   const travelDate =
     document.getElementById("leadDate").value;
-const message =
+
+  const message =
     document.getElementById("leadMessage").value.trim();
 
   const leadSource =
     document.getElementById("leadSource").value;
 
   if (!name || !phone) {
+
     alert(
       "Please enter the customer's name and phone number."
     );
@@ -1958,94 +1959,104 @@ const message =
 
   try {
 
-    
-
-const { data, error } =
-  await supabaseClient
-    .from("Leads")
-    .insert([
-      {
-        "Name": name,
-        "Phone": phone,
-        "Email": email,
-        "Safari": safari,
-        "Travel_date": travelDate || null,
-        "Message": message,
-        "Lead_Source": leadSource,
-        "Status": "New"
-      }
-    ])
-    .select("id")
-    .single();
+    const { data, error } =
+      await supabaseClient
+        .from("Leads")
+        .insert([
+          {
+            "Name": name,
+            "Phone": phone,
+            "Email": email,
+            "Safari": safari,
+            "Travel_date": travelDate || null,
+            "Message": message,
+            "Lead": leadSource,
+            "Status": "New"
+          }
+        ])
+        .select("id")
+        .single();
 
     if (error) {
 
-  console.error("SAVE ERROR:", error);
+      console.error(
+        "SAVE ERROR:",
+        error
+      );
 
-  alert(
-    "❌ SUPABASE SAVE ERROR\n\n" +
-    "Message: " + error.message +
-    "\n\nCode: " + (error.code || "none") +
-    "\n\nDetails: " + (error.details || "none") +
-    "\n\nHint: " + (error.hint || "none")
-  );
+      alert(
+        "❌ SUPABASE SAVE ERROR\n\n" +
+        "Message: " +
+        error.message +
+        "\n\nCode: " +
+        (error.code || "none") +
+        "\n\nDetails: " +
+        (error.details || "none") +
+        "\n\nHint: " +
+        (error.hint || "none")
+      );
 
-  return;
-  }
-    console.log("LEAD SAVED:", data);
+      return;
+    }
 
-
-/* ================================
-   RECORD LEAD ACTIVITY
-================================ */
-
-const { error: activityError } =
-  await supabaseClient
-    .from("Lead_Activity")
-    .insert([
-      {
-        "lead_id": data.id,
-        "activity": "Lead Created",
-        "details":
-          "Customer enquiry created for " +
-          name +
-          " - " +
-          safari
-      }
-    ]);
+    console.log(
+      "LEAD SAVED:",
+      data
+    );
 
 
-if (activityError) {
+    /* ================================
+       RECORD LEAD ACTIVITY
+    ================================= */
 
-  console.error(
-    "LEAD ACTIVITY ERROR:",
-    activityError
-  );
+    const { error: activityError } =
+      await supabaseClient
+        .from("Lead_Activity")
+        .insert([
+          {
+            "lead_id": data.id,
+            "activity": "Lead Created",
+            "details":
+              "Customer enquiry created for " +
+              name +
+              " - " +
+              safari
+          }
+        ]);
 
-  alert(
-    "⚠️ CUSTOMER ENQUIRY SAVED\n\n" +
-    "Lead ID: " +
-    data.id +
-    "\n\n" +
-    "But Lead Activity could not be recorded:\n\n" +
-    activityError.message
-  );
 
-} else {
+    if (activityError) {
 
-  console.log(
-    "LEAD ACTIVITY RECORDED:",
-    data.id
-  );
+      console.error(
+        "LEAD ACTIVITY ERROR:",
+        activityError
+      );
 
-  alert(
-    "✅ CUSTOMER ENQUIRY SAVED!\n\n" +
-    "Lead ID: " +
-    data.id +
-    "\n\n" +
-    "Lead Activity recorded successfully."
-  );
-  }
+      alert(
+        "⚠️ CUSTOMER ENQUIRY SAVED\n\n" +
+        "Lead ID: " +
+        data.id +
+        "\n\n" +
+        "But Lead Activity could not be recorded:\n\n" +
+        activityError.message
+      );
+
+    } else {
+
+      console.log(
+        "LEAD ACTIVITY RECORDED:",
+        data.id
+      );
+
+      alert(
+        "✅ CUSTOMER ENQUIRY SAVED!\n\n" +
+        "Lead ID: " +
+        data.id +
+        "\n\n" +
+        "Lead Activity recorded successfully."
+      );
+    }
+
 
     document.getElementById("leadName").value = "";
     document.getElementById("leadPhone").value = "";
@@ -2053,12 +2064,17 @@ if (activityError) {
     document.getElementById("leadSafari").value = "";
     document.getElementById("leadDate").value = "";
     document.getElementById("leadMessage").value = "";
+    document.getElementById("leadSource").value = "";
 
-    displayLeads();
+
+    await displayLeads();
 
   } catch (error) {
 
-    console.error("SAVE ERROR:", error);
+    console.error(
+      "SAVE ERROR:",
+      error
+    );
 
     alert(
       "❌ JAVASCRIPT SAVE ERROR\n\n" +
@@ -2066,6 +2082,7 @@ if (activityError) {
     );
 
   }
+
   }
 
 async function displayLeads() {
@@ -2085,8 +2102,8 @@ async function displayLeads() {
 
     const response = await fetch(
       window.NEMBURIS_SUPABASE_URL +
-      "/rest/v1/Leads?select=id,Name,Phone,Email,Safari,Travel_date,Message,Status&order=id.desc",
-      {
+      "/rest/v1/Leads?select=id,Name,Phone,Email,Safari,Travel_date,Message,Status,Lead&order=id.desc",
+  {
         method: "GET",
 
         headers: {
@@ -2271,8 +2288,7 @@ function updateLeadSummary(leads) {
   leads.forEach(function(lead) {
 
     const source =
-      lead.Lead_Source || "Not provided";
-
+  lead.Lead || "Not provided";
     sourceCounts[source] =
       (sourceCounts[source] || 0) + 1;
 
