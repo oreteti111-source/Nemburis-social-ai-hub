@@ -2149,8 +2149,8 @@ async function displayLeads() {
     const leads =
       JSON.parse(text);
 
-    /* UPDATE DASHBOARD SUMMARY */
-    updateLeadSummary(leads);
+/* UPDATE DASHBOARD SUMMARY */
+await updateLeadSummary(leads);
 
     leadList.innerHTML = "";
 
@@ -2229,11 +2229,7 @@ async function displayLeads() {
 
   }
 
-
-
-    
-
-function updateLeadSummary(leads) {
+async function updateLeadSummary(leads) {
 
   const total =
     leads.length;
@@ -2283,47 +2279,74 @@ function updateLeadSummary(leads) {
   );
 
 
-  const sourceCounts = {};
-
-  leads.forEach(function(lead) {
-
-    const source =
-  lead.Leads || "Not provided";
-
-sourceCounts[source] =
-  (sourceCounts[source] || 0) + 1;
-
-});
-
   const sourceSummary =
     document.getElementById("leadSourceSummary");
 
-  if (sourceSummary) {
-
-    sourceSummary.innerHTML = "";
-
-    Object.keys(sourceCounts).forEach(function(source) {
-
-      const row =
-        document.createElement("div");
-
-      row.style =
-        "margin:5px 0;";
-
-      row.innerHTML =
-        "<strong>" +
-        source +
-        ":</strong> " +
-        sourceCounts[source];
-
-      sourceSummary.appendChild(row);
-
-    });
-
+  if (!sourceSummary) {
+    return;
   }
 
+
+  sourceSummary.innerHTML =
+    "Loading...";
+
+
+  const { data: sourceRows, error: sourceError } =
+    await supabaseClient
+      .from("Leads")
+      .select("Leads");
+
+
+  if (sourceError) {
+
+    console.error(
+      "LEAD SOURCE ERROR:",
+      sourceError
+    );
+
+    sourceSummary.innerHTML =
+      "❌ Unable to load lead sources.";
+
+    return;
   }
 
+
+  const sourceCounts = {};
+
+
+  sourceRows.forEach(function(lead) {
+
+    const source =
+      lead.Leads || "Not provided";
+
+    sourceCounts[source] =
+      (sourceCounts[source] || 0) + 1;
+
+  });
+
+
+  sourceSummary.innerHTML = "";
+
+
+  Object.keys(sourceCounts).forEach(function(source) {
+
+    const row =
+      document.createElement("div");
+
+    row.style =
+      "margin:5px 0;";
+
+    row.innerHTML =
+      "<strong>" +
+      source +
+      ":</strong> " +
+      sourceCounts[source];
+
+    sourceSummary.appendChild(row);
+
+  });
+
+  }
 
 function updateFollowUpList(leads) {
 
