@@ -2810,7 +2810,6 @@ async function updateLeadSourcePerformance(leads) {
 
   }
 
-
 function updateCampaignPerformance(leads) {
 
   const container =
@@ -2833,9 +2832,8 @@ function updateCampaignPerformance(leads) {
   leads.forEach(function(lead) {
 
     const source =
-      lead.Lead_Source ||
-      "Not provided";
-
+  lead.Leads ||
+  "Not provided";
     if (!campaigns[source]) {
 
       campaigns[source] = {
@@ -2870,6 +2868,7 @@ function updateCampaignPerformance(leads) {
 
 
   let html = "";
+
 
   Object.keys(campaigns).forEach(function(source) {
 
@@ -2910,7 +2909,8 @@ function updateCampaignPerformance(leads) {
   });
 
 
-  container.innerHTML = html;
+  container.innerHTML =
+    html;
 
   }
 
