@@ -1925,6 +1925,7 @@ console.log("NEMBURIS SUPABASE CONNECTED");
 <!-- LEAD CENTER JAVASCRIPT -->
 
 <script>
+
 async function addLead() {
 
   const name =
@@ -1957,24 +1958,46 @@ async function addLead() {
     return;
   }
 
+  if (!leadSource) {
+
+    alert(
+      "Please select a Lead Source."
+    );
+
+    return;
+  }
+
+  console.log(
+    "NEMBURIS SAVE TEST:",
+    {
+      name: name,
+      phone: phone,
+      email: email,
+      safari: safari,
+      travelDate: travelDate,
+      leadSource: leadSource
+    }
+  );
+
   try {
-const { data, error } =
-  await supabaseClient
-    .from("Leads")
-    .insert([
-      {
-        "Name": name,
-        "Phone": phone,
-        "Email": email,
-        "Safari": safari,
-        "Travel_date": travelDate || null,
-        "Message": message,
-        "Lead_Source": leadSource,
-        "Status": "New"
-      }
-    ])
-    .select("id")
-    .single();
+
+    const { data, error } =
+      await supabaseClient
+        .from("Leads")
+        .insert([
+          {
+            "Name": name,
+            "Phone": phone,
+            "Email": email,
+            "Safari": safari,
+            "Travel_date": travelDate || null,
+            "Message": message,
+            "Lead_Source": leadSource,
+            "Status": "New"
+          }
+        ])
+        .select("id")
+        .single();
 
     if (error) {
 
@@ -1985,14 +2008,7 @@ const { data, error } =
 
       alert(
         "❌ SUPABASE SAVE ERROR\n\n" +
-        "Message: " +
-        error.message +
-        "\n\nCode: " +
-        (error.code || "none") +
-        "\n\nDetails: " +
-        (error.details || "none") +
-        "\n\nHint: " +
-        (error.hint || "none")
+        error.message
       );
 
       return;
@@ -2004,9 +2020,7 @@ const { data, error } =
     );
 
 
-    /* ================================
-       RECORD LEAD ACTIVITY
-    ================================= */
+    /* RECORD LEAD ACTIVITY */
 
     const { error: activityError } =
       await supabaseClient
@@ -2031,31 +2045,20 @@ const { data, error } =
         activityError
       );
 
-      alert(
-        "⚠️ CUSTOMER ENQUIRY SAVED\n\n" +
-        "Lead ID: " +
-        data.id +
-        "\n\n" +
-        "But Lead Activity could not be recorded:\n\n" +
-        activityError.message
-      );
-
-    } else {
-
-      console.log(
-        "LEAD ACTIVITY RECORDED:",
-        data.id
-      );
-
-      alert(
-        "✅ CUSTOMER ENQUIRY SAVED!\n\n" +
-        "Lead ID: " +
-        data.id +
-        "\n\n" +
-        "Lead Activity recorded successfully."
-      );
     }
 
+
+    alert(
+      "✅ CUSTOMER ENQUIRY SAVED!\n\n" +
+      "Lead ID: " +
+      data.id +
+      "\n\n" +
+      "Lead Source: " +
+      leadSource
+    );
+
+
+    /* CLEAR FORM */
 
     document.getElementById("leadName").value = "";
     document.getElementById("leadPhone").value = "";
@@ -2068,10 +2071,12 @@ const { data, error } =
 
     await displayLeads();
 
+    await loadMainLeadActivity();
+
   } catch (error) {
 
     console.error(
-      "SAVE ERROR:",
+      "JAVASCRIPT SAVE ERROR:",
       error
     );
 
