@@ -3630,32 +3630,41 @@ function createLeadCard(
 async function loadLeadActivity(leadId) {
 
   console.log(
-    "NEMBURIS: loadLeadActivity called for lead:",
-    leadId
-  );
+  "NEMBURIS: loadLeadActivity called for lead:",
+  leadId
+);
 
-  const container =
-    document.getElementById("activity-" + leadId);
-  
-  if (!container) {
-    return;
+const container =
+  document.getElementById("activity-" + leadId);
+
+if (!container) {
+  return;
+}
+
+const { data, error } =
+  await supabaseClient
+    .from("Lead_Activity")
+    .select("id, created_at, activity, details")
+    .eq("lead_id", leadId)
+    .order("id", {
+      ascending: false
+    });
+
+console.log(
+  "NEMBURIS Lead Activity result:",
+  {
+    leadId: leadId,
+    data: data,
+    error: error
   }
+);
 
-  const { data, error } =
-    await supabaseClient
-      .from("Lead_Activity")
-      .select("id, created_at, activity, details")
-      .eq("lead_id", leadId)
-      .order("id", {
-        ascending: false
-      });
+if (error) {
 
-  if (error) {
-
-    console.error(
-      "LEAD ACTIVITY ERROR:",
-      error
-    );
+  console.error(
+    "LEAD ACTIVITY ERROR:",
+    error
+  );
 
     container.innerHTML =
       "<strong>📋 Lead Activity</strong>" +
