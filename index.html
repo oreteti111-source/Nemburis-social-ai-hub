@@ -1959,7 +1959,7 @@ async function addLead() {
 
   try {
 
-    const { data, error } =
+const { data, error } =
   await supabaseClient
     .from("Leads")
     .insert([
@@ -1970,13 +1970,12 @@ async function addLead() {
         "Safari": safari,
         "Travel_date": travelDate || null,
         "Message": message,
-        "Leads": leadSource,
+        "Lead_Source": leadSource,
         "Status": "New"
       }
     ])
-        .select("id")
-        .single();
-
+    .select("id")
+    .single();
     if (error) {
 
       console.error(
