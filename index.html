@@ -2264,6 +2264,83 @@ if (followUpCountElement) {
   }
 
   }
+  /* FOLLOW-UP PANEL REFRESH BRIDGE */
+
+async function refreshNemburisFollowUpPanel() {
+
+  try {
+
+    const { data: leads, error } =
+      await supabaseClient
+        .from("Leads")
+        .select("*")
+        .order("created_at", {
+          ascending: false
+        });
+
+    if (error) {
+
+      console.error(
+        "FOLLOW-UP PANEL REFRESH ERROR:",
+        error
+      );
+
+      return;
+    }
+
+    if (!Array.isArray(leads)) {
+      return;
+    }
+
+    /* Update existing Follow-Up analytics */
+
+    if (
+      typeof updateFollowUpSummary === "function"
+    ) {
+      updateFollowUpSummary(leads);
+    }
+
+    if (
+      typeof updateFollowUpList === "function"
+    ) {
+      updateFollowUpList(leads);
+    }
+
+    /* Update Follow-Up counter */
+
+    const followUpCountElement =
+      document.getElementById("followUpCount");
+
+    if (followUpCountElement) {
+
+      const activeFollowUps =
+        leads.filter(function(lead) {
+
+          return (
+            lead.Status === "New" ||
+            lead.Status === "Contacted"
+          );
+
+        });
+
+      followUpCountElement.textContent =
+        String(activeFollowUps.length);
+    }
+
+    console.log(
+      "NEMBURIS: Follow-Up panel refreshed successfully"
+    );
+
+  } catch (error) {
+
+    console.error(
+      "FOLLOW-UP PANEL REFRESH ERROR:",
+      error
+    );
+
+  }
+
+  }
 
 async function updateLeadSummary(leads) {
 
