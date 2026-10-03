@@ -3629,9 +3629,14 @@ function createLeadCard(
 
 async function loadLeadActivity(leadId) {
 
+  console.log(
+    "NEMBURIS: loadLeadActivity called for lead:",
+    leadId
+  );
+
   const container =
     document.getElementById("activity-" + leadId);
-
+  
   if (!container) {
     return;
   }
