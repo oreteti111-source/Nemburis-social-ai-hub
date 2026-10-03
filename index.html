@@ -2205,13 +2205,119 @@ if (followUpCountElement) {
     leads.forEach(function(lead) {
 
       const item =
-        document.createElement("div");
+  document.createElement("div");
 
-      item.style.padding = "12px";
-      item.style.marginBottom = "10px";
-      item.style.border = "1px solid #ccc";
-      item.style.borderRadius = "8px";
+/* CUSTOMER ENQUIRY CARD */
 
+item.style.padding = "16px";
+item.style.marginBottom = "14px";
+item.style.border = "1px solid #ddd";
+item.style.borderRadius = "12px";
+item.style.background = "#ffffff";
+item.style.boxShadow =
+  "0 2px 8px rgba(0,0,0,0.06)";
+
+function addEnquiryField(label, value) {
+
+  const row =
+    document.createElement("div");
+
+  row.style.marginBottom = "7px";
+
+  const strong =
+    document.createElement("strong");
+
+  strong.textContent =
+    label + ": ";
+
+  row.appendChild(strong);
+
+  row.appendChild(
+    document.createTextNode(
+      value || "Not provided"
+    )
+  );
+
+  item.appendChild(row);
+}
+
+const name =
+  document.createElement("div");
+
+name.style.fontSize = "18px";
+name.style.fontWeight = "700";
+name.style.marginBottom = "12px";
+
+name.textContent =
+  "👤 " +
+  (lead.Name || "Unnamed Customer");
+
+item.appendChild(name);
+
+addEnquiryField(
+  "🆔 Lead ID",
+  String(lead.id || "")
+);
+
+addEnquiryField(
+  "📱 Phone",
+  lead.Phone
+);
+
+addEnquiryField(
+  "✉️ Email",
+  lead.Email
+);
+
+addEnquiryField(
+  "🦁 Safari",
+  lead.Safari
+);
+
+addEnquiryField(
+  "📅 Travel Date",
+  lead.Travel_date
+);
+
+addEnquiryField(
+  "📣 Lead Source",
+  lead.Lead_Source
+);
+
+addEnquiryField(
+  "📌 Status",
+  lead.Status || "New"
+);
+
+const messageBox =
+  document.createElement("div");
+
+messageBox.style.marginTop = "12px";
+messageBox.style.padding = "10px";
+messageBox.style.background = "#f7f7f7";
+messageBox.style.borderRadius = "8px";
+
+const messageLabel =
+  document.createElement("strong");
+
+messageLabel.textContent =
+  "💬 Message:";
+
+messageBox.appendChild(
+  messageLabel
+);
+
+messageBox.appendChild(
+  document.createElement("br")
+);
+
+messageBox.appendChild(
+  document.createTextNode(
+    lead.Message || "No message provided"
+  )
+);
+
+item.appendChild(messageBox);
       item.innerHTML =
         "<strong>" +
         (lead.Name ||
