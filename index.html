@@ -2105,8 +2105,8 @@ async function displayLeads() {
   try {
 
     const response = await fetch(
-      window.NEMBURIS_SUPABASE_URL +
-      "/rest/v1/Leads?select=id,Name,Phone,Email,Safari,Travel_date,Message,Status,Leads&order=id.desc",
+  window.NEMBURIS_SUPABASE_URL +
+  "/rest/v1/Leads?select=id,Name,Phone,Email,Safari,Travel_date,Message,Status,Lead_Source&order=id.desc",
   {
         method: "GET",
 
