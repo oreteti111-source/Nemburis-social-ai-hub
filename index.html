@@ -2318,11 +2318,137 @@ messageBox.appendChild(
 );
 
 item.appendChild(messageBox);
-      
 
-      leadList.appendChild(item);
 
-    });
+/* LEAD CONTROLS */
+
+const statusSelect =
+  document.createElement("select");
+
+statusSelect.style.padding = "6px";
+statusSelect.style.marginTop = "10px";
+
+["New", "Contacted", "Confirmed", "Completed"]
+  .forEach(function(status) {
+
+    const option =
+      document.createElement("option");
+
+    option.value = status;
+    option.textContent = status;
+
+    if (lead.Status === status) {
+      option.selected = true;
+    }
+
+    statusSelect.appendChild(option);
+  });
+
+statusSelect.onchange =
+  function() {
+    updateLeadStatus(
+      lead.id,
+      this.value
+    );
+  };
+
+item.appendChild(statusSelect);
+
+
+/* WHATSAPP BUTTON */
+
+const whatsappButton =
+  document.createElement("a");
+
+whatsappButton.href =
+  "https://wa.me/" +
+  (lead.Phone || "").replace(/\D/g, "");
+
+whatsappButton.target = "_blank";
+
+whatsappButton.textContent =
+  "WhatsApp";
+
+whatsappButton.style.display =
+  "inline-block";
+
+whatsappButton.style.margin = "10px 5px 5px 5px";
+
+whatsappButton.style.padding =
+  "8px 12px";
+
+whatsappButton.style.background =
+  "#25D366";
+
+whatsappButton.style.color =
+  "white";
+
+whatsappButton.style.textDecoration =
+  "none";
+
+whatsappButton.style.borderRadius =
+  "6px";
+
+item.appendChild(whatsappButton);
+
+
+/* DELETE BUTTON */
+
+const deleteButton =
+  document.createElement("button");
+
+deleteButton.textContent =
+  "Delete";
+
+deleteButton.style.margin =
+  "5px";
+
+deleteButton.style.padding =
+  "8px 12px";
+
+deleteButton.onclick =
+  function() {
+    deleteLead(lead.id);
+  };
+
+item.appendChild(deleteButton);
+
+
+/* LEAD ACTIVITY */
+
+const activityBox =
+  document.createElement("div");
+
+activityBox.id =
+  "activity-" + lead.id;
+
+activityBox.style.marginTop =
+  "15px";
+
+activityBox.style.padding =
+  "12px";
+
+activityBox.style.background =
+  "#f7f7f7";
+
+activityBox.style.borderRadius =
+  "8px";
+
+activityBox.style.border =
+  "1px solid #ddd";
+
+activityBox.innerHTML =
+  "<strong>📋 Lead Activity</strong>" +
+  "<p>Loading activity...</p>";
+
+item.appendChild(activityBox);
+
+loadLeadActivity(lead.id);
+
+
+leadList.appendChild(item);
+
+});
 
     console.log(
       "NEMBURIS REST: Leads displayed successfully"
