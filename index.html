@@ -2443,8 +2443,13 @@ activityBox.innerHTML =
 
 item.appendChild(activityBox);
 
-loadLeadActivity(lead.id).catch(function(activityError) {
+activityBox.innerHTML =
+  "<strong>📋 Lead Activity</strong>" +
+  "<p style='color:blue;'>Calling activity function for Lead " +
+  lead.id +
+  "...</p>";
 
+loadLeadActivity(lead.id).catch(function(activityError) {
   console.error(
     "NEMBURIS ACTIVITY CALL ERROR:",
     activityError
