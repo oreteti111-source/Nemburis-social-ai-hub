@@ -2443,12 +2443,15 @@ activityBox.innerHTML =
 
 item.appendChild(activityBox);
 
+console.log(
+  "CALLING loadLeadActivity FOR LEAD:",
+  lead.id
+);
+
 loadLeadActivity(lead.id);
 
 
 leadList.appendChild(item);
-
-});
 
     console.log(
       "NEMBURIS REST: Leads displayed successfully"
