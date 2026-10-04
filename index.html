@@ -2443,25 +2443,112 @@ activityBox.innerHTML =
 
 item.appendChild(activityBox);
 
-activityBox.innerHTML =
-  "<strong>📋 Lead Activity</strong>" +
-  "<p style='color:blue;'>Calling activity function for Lead " +
-  lead.id +
-  "...</p>";
+(async function() {
 
-loadLeadActivity(lead.id).catch(function(activityError) {
-  console.error(
-    "NEMBURIS ACTIVITY CALL ERROR:",
-    activityError
-  );
+  try {
 
-  activityBox.innerHTML =
-    "<strong>📋 Lead Activity</strong>" +
-    "<p style='color:red;'>Activity call error: " +
-    activityError.message +
-    "</p>";
+    const result =
+      await supabaseClient
+        .from("Lead_Activity")
+        .select("id, created_at, activity, details")
+        .eq("lead_id", lead.id)
+        .order("id", {
+          ascending: false
+        });
 
-});
+    if (result.error) {
+
+      console.error(
+        "NEMBURIS LEAD ACTIVITY ERROR:",
+        result.error
+      );
+
+      activityBox.innerHTML =
+        "<strong>📋 Lead Activity</strong>" +
+        "<p style='color:red;'>Unable to load activity.</p>";
+
+      return;
+    }
+
+    const activities =
+      result.data || [];
+
+    if (activities.length === 0) {
+
+      activityBox.innerHTML =
+        "<strong>📋 Lead Activity</strong>" +
+        "<p>No activity recorded yet.</p>";
+
+      return;
+    }
+
+    let activityHTML =
+      "<strong>📋 Lead Activity</strong>";
+
+    activities.forEach(function(activity) {
+
+      const date =
+        activity.created_at
+          ? new Date(
+              activity.created_at
+            ).toLocaleString()
+          : "";
+
+      activityHTML += `
+        <div
+          style="
+            margin-top:10px;
+            padding:10px;
+            background:white;
+            border-radius:6px;
+            border-left:4px solid #1f6f43;
+          "
+        >
+
+          <strong>
+            ${activity.activity || "Activity"}
+          </strong>
+
+          <br>
+
+          <small>
+            ${date}
+          </small>
+
+          ${
+            activity.details
+              ? `
+                <p style="margin:5px 0 0;">
+                  ${activity.details}
+                </p>
+              `
+              : ""
+          }
+
+        </div>
+      `;
+
+    });
+
+    activityBox.innerHTML =
+      activityHTML;
+
+  } catch (activityError) {
+
+    console.error(
+      "NEMBURIS LEAD ACTIVITY EXCEPTION:",
+      activityError
+    );
+
+    activityBox.innerHTML =
+      "<strong>📋 Lead Activity</strong>" +
+      "<p style='color:red;'>Unable to load activity: " +
+      activityError.message +
+      "</p>";
+
+  }
+
+})();
 
 leadList.appendChild(item);
 
