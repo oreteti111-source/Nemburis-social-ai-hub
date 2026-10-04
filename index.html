@@ -3641,6 +3641,10 @@ if (!container) {
   return;
 }
 
+console.log(
+  "NEMBURIS ACTIVITY FUNCTION RUNNING:",
+  leadId
+);
 const { data, error } =
   await supabaseClient
     .from("Lead_Activity")
