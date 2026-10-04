@@ -3645,24 +3645,47 @@ console.log(
   "NEMBURIS ACTIVITY FUNCTION RUNNING:",
   leadId
 );
-const { data, error } =
-  await supabaseClient
-    .from("Lead_Activity")
-    .select("id, created_at, activity, details")
-    .eq("lead_id", leadId)
-    .order("id", {
-      ascending: false
-    });
+let data;
+let error;
 
-console.log(
-  "NEMBURIS Lead Activity result:",
-  {
-    leadId: leadId,
-    data: data,
-    error: error
+try {
+
+  const result =
+    await supabaseClient
+      .from("Lead_Activity")
+      .select("id, created_at, activity, details")
+      .eq("lead_id", leadId)
+      .order("id", {
+        ascending: false
+      });
+
+  data = result.data;
+  error = result.error;
+
+  console.log(
+    "NEMBURIS Lead Activity result:",
+    {
+      leadId: leadId,
+      data: data,
+      error: error
+    }
+  );
+
+} catch (activityError) {
+
+  console.error(
+    "NEMBURIS LEAD ACTIVITY EXCEPTION:",
+    activityError
+  );
+
+  container.innerHTML =
+    "<strong>📋 Lead Activity</strong>" +
+    "<p style='color:red;'>Unable to load activity: " +
+    activityError.message +
+    "</p>";
+
+  return;
   }
-);
-
 if (error) {
 
   console.error(
