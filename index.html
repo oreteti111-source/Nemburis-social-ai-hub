@@ -2440,16 +2440,26 @@ activityBox.style.border =
 activityBox.innerHTML =
   "<strong>📋 Lead Activity</strong>" +
   "<p>Loading activity...</p>";
-
 item.appendChild(activityBox);
 
-loadLeadActivity(lead.id);
+loadLeadActivity(lead.id).catch(function(activityError) {
 
+  console.error(
+    "NEMBURIS ACTIVITY CALL ERROR:",
+    activityError
+  );
+
+  activityBox.innerHTML =
+    "<strong>📋 Lead Activity</strong>" +
+    "<p style='color:red;'>Activity call error: " +
+    activityError.message +
+    "</p>";
+
+});
 
 leadList.appendChild(item);
 
     });
-
     console.log(
       "NEMBURIS REST: Leads displayed successfully"
     );
