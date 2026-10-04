@@ -2354,7 +2354,6 @@ statusSelect.onchange =
 
 item.appendChild(statusSelect);
 
-
 /* WHATSAPP BUTTON */
 
 const whatsappButton =
@@ -2372,7 +2371,8 @@ whatsappButton.textContent =
 whatsappButton.style.display =
   "inline-block";
 
-whatsappButton.style.margin = "10px 5px 5px 5px";
+whatsappButton.style.margin =
+  "10px 5px 5px 5px";
 
 whatsappButton.style.padding =
   "8px 12px";
@@ -2440,6 +2440,7 @@ activityBox.style.border =
 activityBox.innerHTML =
   "<strong>📋 Lead Activity</strong>" +
   "<p>Loading activity...</p>";
+
 item.appendChild(activityBox);
 
 loadLeadActivity(lead.id).catch(function(activityError) {
@@ -2460,6 +2461,7 @@ loadLeadActivity(lead.id).catch(function(activityError) {
 leadList.appendChild(item);
 
     });
+
     console.log(
       "NEMBURIS REST: Leads displayed successfully"
     );
@@ -2479,6 +2481,8 @@ leadList.appendChild(item);
   }
 
   }
+
+
   /* FOLLOW-UP PANEL REFRESH BRIDGE */
 
 async function refreshNemburisFollowUpPanel() {
