@@ -1593,7 +1593,7 @@ async function addMarketingPlan() {
   }
   }
 
-async function deleteMarketingPlan(id, button) {
+ function deleteMarketingPlan(id, button) {
 
   const confirmed =
     confirm("Are you sure you want to delete this marketing plan?");
@@ -1664,13 +1664,15 @@ async function editMarketingPlan(id) {
 
   try {
 
-    const { error } =
+    const { data, error } =
       await supabaseClient
         .from("marketing_plans")
         .update({
           topic: topic
         })
-        .eq("id", id);
+        .eq("id", Number(id))
+        .select()
+        .single();
 
     if (error) {
 
@@ -1687,50 +1689,49 @@ async function editMarketingPlan(id) {
       return;
     }
 
-    /*
-     * Reload the Marketing Planner from Supabase.
-     * This makes sure the displayed card matches
-     * the data actually saved in the database.
-     */
-    if (typeof loadMarketingPlans === "function") {
+    console.log(
+      "MARKETING PLAN UPDATED:",
+      data
+    );
 
-      await loadMarketingPlans();
+    const card =
+      document.getElementById(
+        "marketing-plan-" + Number(id)
+      );
 
-    } else {
+    if (!card) {
 
-      const card =
-        document.getElementById(
-          "marketing-plan-" + Number(id)
-        );
+      alert(
+        "Marketing plan was updated, but the card could not be found."
+      );
 
-      if (card) {
-
-        card.innerHTML =
-          "<strong>📱 " +
-          card.dataset.platform +
-          "</strong><br>" +
-
-          "📝 " +
-          topic +
-          "<br>" +
-
-          "📅 " +
-          card.dataset.planDate +
-          "<br>" +
-
-          "📌 " +
-          card.dataset.status +
-          "<br><br>" +
-
-          "<button onclick='editMarketingPlan(" +
-          Number(id) +
-          ")'>✏️ Edit</button> " +
-
-          "<button onclick='deleteMarketingPlan(" +
-          Number(id) +
-          ", this)'>🗑️ Delete</button>";
-      }
+      return;
     }
+
+    card.innerHTML =
+      "<strong>📱 " +
+      data.platform +
+      "</strong><br>" +
+
+      "📝 " +
+      data.topic +
+      "<br>" +
+
+      "📅 " +
+      data.plan_date +
+      "<br>" +
+
+      "📌 " +
+      data.status +
+      "<br><br>" +
+
+      "<button onclick='editMarketingPlan(" +
+      Number(data.id) +
+      ")'>✏️ Edit</button> " +
+
+      "<button onclick='deleteMarketingPlan(" +
+      Number(data.id) +
+      ", this)'>🗑️ Delete</button>";
 
   } catch (error) {
 
@@ -1745,8 +1746,6 @@ async function editMarketingPlan(id) {
     );
   }
   }
-
-
 </script>
 <!-- NEMBURIS LEAD CENTER -->
 
