@@ -1517,7 +1517,7 @@ async function addMarketingPlan() {
 
     const { data, error } =
       await supabaseClient
-        .from("Marketing_Plans")
+        .from("marketing_plans")
         .insert([
           {
             topic: topic,
@@ -1545,7 +1545,7 @@ async function addMarketingPlan() {
       );
 
       return;
-    }
+  }
 
     console.log(
       "MARKETING PLAN SAVED:",
