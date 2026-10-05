@@ -1973,6 +1973,79 @@ Number(data.id) +
     );
   }
           }
+
+async function editContentLibraryItem(id) {
+
+  const newTitle =
+    prompt("Enter the new content title:");
+
+  if (newTitle === null) {
+    return;
+  }
+
+  const title =
+    newTitle.trim();
+
+  if (title === "") {
+    alert("Content title cannot be empty.");
+    return;
+  }
+
+  try {
+
+    const { error } =
+      await supabaseClient
+        .from("content_library")
+        .update({
+          title: title
+        })
+        .eq("id", Number(id));
+
+    if (error) {
+
+      console.error(
+        "CONTENT LIBRARY EDIT ERROR:",
+        error
+      );
+
+      alert(
+        "Unable to edit content.\n\n" +
+        error.message
+      );
+
+      return;
+    }
+
+    const card =
+      document.getElementById(
+        "content-library-" + Number(id)
+      );
+
+    if (card) {
+
+      const titleElement =
+        card.querySelector(".content-library-title");
+
+      if (titleElement) {
+        titleElement.textContent =
+          "📝 " + title;
+      }
+    }
+
+  } catch (error) {
+
+    console.error(
+      "CONTENT LIBRARY EDIT JAVASCRIPT ERROR:",
+      error
+    );
+
+    alert(
+      "CONTENT LIBRARY EDIT JAVASCRIPT ERROR\n\n" +
+      error.message
+    );
+  }
+  
+  
 </script>
 <!-- NEMBURIS LEAD CENTER -->
 
