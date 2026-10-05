@@ -1838,6 +1838,131 @@ async function deleteMarketingPlan(id, button) {
     );
   }
   }
+
+  async function addContentLibraryItem() {
+
+  const title =
+    document.getElementById("contentTitle").value.trim();
+
+  const category =
+    document.getElementById("contentCategory").value;
+
+  const platform =
+    document.getElementById("contentPlatform").value;
+
+  const destination =
+    document.getElementById("contentDestination").value.trim();
+
+  const content =
+    document.getElementById("contentText").value.trim();
+
+  const hashtags =
+    document.getElementById("contentHashtags").value.trim();
+
+  const cta =
+    document.getElementById("contentCTA").value.trim();
+
+  const status =
+    document.getElementById("contentStatus").value;
+
+  const plannedDate =
+    document.getElementById("contentPlannedDate").value;
+
+  if (title === "" || content === "") {
+    alert("Please enter a content title and content.");
+    return;
+  }
+
+  try {
+
+    const { data, error } =
+      await supabaseClient
+        .from("content_library")
+        .insert([{
+          title: title,
+          category: category,
+          platform: platform,
+          destination: destination,
+          content: content,
+          hashtags: hashtags,
+          cta: cta,
+          status: status,
+          planned_date: plannedDate || null
+        }])
+        .select()
+        .single();
+
+    if (error) {
+
+      console.error(
+        "CONTENT LIBRARY SAVE ERROR:",
+        error
+      );
+
+      alert(
+        "Unable to save content.\n\n" +
+        error.message
+      );
+
+      return;
+    }
+
+    console.log(
+      "CONTENT LIBRARY SAVED:",
+      data
+    );
+
+    const list =
+      document.getElementById("contentLibraryList");
+
+    list.innerHTML +=
+      "<div style='padding:15px;margin:10px 0;background:#f5f5f5;border-radius:10px;text-align:left;'>" +
+
+      "<strong>📝 " +
+      data.title +
+      "</strong><br>" +
+
+      "📂 Category: " +
+      (data.category || "Not provided") +
+      "<br>" +
+
+      "📱 Platform: " +
+      (data.platform || "Not provided") +
+      "<br>" +
+
+      "🌍 Destination: " +
+      (data.destination || "Not provided") +
+      "<br><br>" +
+
+      data.content +
+
+      "<br><br>" +
+
+      "📌 Status: " +
+      data.status +
+
+      "</div>";
+
+    document.getElementById("contentTitle").value = "";
+    document.getElementById("contentDestination").value = "";
+    document.getElementById("contentText").value = "";
+    document.getElementById("contentHashtags").value = "";
+    document.getElementById("contentCTA").value = "";
+    document.getElementById("contentPlannedDate").value = "";
+
+  } catch (error) {
+
+    console.error(
+      "CONTENT LIBRARY JAVASCRIPT ERROR:",
+      error
+    );
+
+    alert(
+      "CONTENT LIBRARY JAVASCRIPT ERROR\n\n" +
+      error.message
+    );
+  }
+          }
 </script>
 <!-- NEMBURIS LEAD CENTER -->
 
