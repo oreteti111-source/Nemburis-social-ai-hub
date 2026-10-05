@@ -1572,11 +1572,11 @@ async function addMarketingPlan() {
       data.status +
       "<br><br>" +
 
-      "<button onclick='editMarketingPlan(" + data.id + ")'>✏️ Edit</button> " +
+"<button onclick='editMarketingPlan(" + Number(data.id) + ")'>✏️ Edit</button> " +
 
-      "<button onclick='deleteMarketingPlan(" + data.id + ")'>🗑️ Delete</button>" +
+"<button onclick='deleteMarketingPlan(" + Number(data.id) + ")'>🗑️ Delete</button>" +
 
-      "</div>"; 
+"</div>";
 
     document.getElementById("planTopic").value = "";
     document.getElementById("planDate").value = "";
