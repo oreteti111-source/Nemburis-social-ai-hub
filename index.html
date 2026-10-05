@@ -1489,6 +1489,88 @@ function createMarketingContent() {
 
 </section>
 
+  <!-- NEMBURIS CONTENT LIBRARY -->
+<section id="content-library-section" style="padding:40px 20px;text-align:center;">
+
+  <h2>📚 NEMBURIS CONTENT LIBRARY</h2>
+
+  <p>
+    Store and organize reusable NEMBURIS marketing content.
+  </p>
+
+  <input
+    type="text"
+    id="contentTitle"
+    placeholder="Content title"
+  >
+
+  <select id="contentCategory">
+    <option value="">Select category</option>
+    <option value="Safari">Safari</option>
+    <option value="Beach">Beach</option>
+    <option value="Culture">Culture</option>
+    <option value="Kilimanjaro">Kilimanjaro</option>
+    <option value="Wildlife">Wildlife</option>
+    <option value="Travel Tips">Travel Tips</option>
+    <option value="Other">Other</option>
+  </select>
+
+  <select id="contentPlatform">
+    <option value="Facebook">Facebook</option>
+    <option value="Instagram">Instagram</option>
+    <option value="TikTok">TikTok</option>
+    <option value="YouTube">YouTube</option>
+    <option value="Website">Website</option>
+  </select>
+
+  <input
+    type="text"
+    id="contentDestination"
+    placeholder="Destination / topic"
+  >
+
+  <textarea
+    id="contentText"
+    placeholder="Write or paste your content here..."
+    rows="6"
+  ></textarea>
+
+  <input
+    type="text"
+    id="contentHashtags"
+    placeholder="#hashtags"
+  >
+
+  <input
+    type="text"
+    id="contentCTA"
+    placeholder="Call to action"
+  >
+
+  <select id="contentStatus">
+    <option value="Draft">Draft</option>
+    <option value="Ready">Ready</option>
+    <option value="Published">Published</option>
+  </select>
+
+  <input
+    type="date"
+    id="contentPlannedDate"
+  >
+
+  <br><br>
+
+  <button onclick="addContentLibraryItem()">
+    ➕ Save Content
+  </button>
+
+  <div id="contentLibraryList">
+    <p>No content saved yet.</p>
+  </div>
+
+</section>
+<!-- END NEMBURIS CONTENT LIBRARY -->
+
 <script>
 
   async function addMarketingPlan() {
