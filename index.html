@@ -1645,7 +1645,6 @@ if (card) {
   }
   }
 
-
 async function editMarketingPlan(id) {
 
   const newTopic =
@@ -1665,15 +1664,13 @@ async function editMarketingPlan(id) {
 
   try {
 
-    const { data, error } =
+    const { error } =
       await supabaseClient
         .from("marketing_plans")
         .update({
           topic: topic
         })
-        .eq("id", id)
-        .select()
-        .single();
+        .eq("id", id);
 
     if (error) {
 
@@ -1691,32 +1688,31 @@ async function editMarketingPlan(id) {
     }
 
     const card =
-      document.getElementById("marketing-plan-" + id);
+  document.getElementById("marketing-plan-" + Number(id));
 
-    if (card) {
+if (card) {
 
-      card.innerHTML =
-        "<strong>📱 " +
-        data.platform +
-        "</strong><br>" +
+  card.innerHTML =
+    "<strong>📱 " +
+    card.dataset.platform +
+    "</strong><br>" +
 
-        "📝 " +
-        data.topic +
-        "<br>" +
+    "📝 " +
+    topic +
+    "<br>" +
 
-        "📅 " +
-        data.plan_date +
-        "<br>" +
+    "📅 " +
+    card.dataset.planDate +
+    "<br>" +
 
-        "📌 " +
-        data.status +
-        "<br><br>" +
+    "📌 " +
+    card.dataset.status +
+    "<br><br>" +
 
-        "<button onclick='editMarketingPlan(" + data.id + ")'>✏️ Edit</button> " +
+    "<button onclick='editMarketingPlan(" + Number(id) + ")'>✏️ Edit</button> " +
 
-        "<button onclick='deleteMarketingPlan(" + data.id + ")'>🗑️ Delete</button>";
-    }
-
+    "<button onclick='deleteMarketingPlan(" + Number(id) + ", this)'>🗑️ Delete</button>";
+  }
   } catch (error) {
 
     console.error(
@@ -1729,7 +1725,8 @@ async function editMarketingPlan(id) {
       error.message
     );
   }
-      }
+  }
+
 </script>
 <!-- NEMBURIS LEAD CENTER -->
 
