@@ -2039,95 +2039,15 @@ async function editContentLibraryItem(id) {
       error
     );
 
-    alert(
+        alert(
       "CONTENT LIBRARY EDIT JAVASCRIPT ERROR\n\n" +
       error.message
     );
   }
-  
-  async function loadMarketingPlans() {
 
-  const planner =
-    document.getElementById("marketingPlan");
-
-  try {
-
-    const { data, error } =
-      await supabaseClient
-        .from("marketing_plans")
-        .select("*")
-        .order("id", { ascending: false });
-
-    if (error) {
-
-      console.error(
-        "MARKETING PLANS LOAD ERROR:",
-        error
-      );
-
-      return;
-    }
-
-    if (!data || data.length === 0) {
-      return;
-    }
-
-    planner.innerHTML = "";
-
-    data.forEach(function(item) {
-
-      planner.innerHTML +=
-        "<div id='marketing-plan-" +
-        Number(item.id) +
-        "' " +
-        "data-platform='" +
-        (item.platform || "") +
-        "' " +
-        "data-plan-date='" +
-        (item.plan_date || "") +
-        "' " +
-        "data-status='" +
-        (item.status || "Planned") +
-        "' " +
-        "style='padding:15px;margin:10px 0;background:#f5f5f5;border-radius:10px;'>" +
-
-        "<strong>📱 " +
-        (item.platform || "Not provided") +
-        "</strong><br>" +
-
-        "📝 " +
-        (item.topic || "") +
-        "<br>" +
-
-        "📅 " +
-        (item.plan_date || "Not provided") +
-        "<br>" +
-
-        "📌 " +
-        (item.status || "Planned") +
-        "<br><br>" +
-
-        "<button onclick='editMarketingPlan(" +
-        Number(item.id) +
-        ")'>✏️ Edit</button> " +
-
-        "<button onclick='deleteMarketingPlan(" +
-        Number(item.id) +
-        ", this)'>🗑️ Delete</button>" +
-
-        "</div>";
-    });
-
-  } catch (error) {
-
-    console.error(
-      "MARKETING PLANS LOAD JAVASCRIPT ERROR:",
-      error
-    );
   }
-}
-
-
+  
+  
 </script>
 <!-- NEMBURIS LEAD CENTER -->
 
