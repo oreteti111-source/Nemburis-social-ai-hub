@@ -1595,6 +1595,144 @@ async function addMarketingPlan() {
   }
   }
 
+  async function deleteMarketingPlan(id) {
+
+  const confirmed =
+    confirm("Are you sure you want to delete this marketing plan?");
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+
+    const { error } =
+      await supabaseClient
+        .from("marketing_plans")
+        .delete()
+        .eq("id", id);
+
+    if (error) {
+
+      console.error(
+        "MARKETING PLAN DELETE ERROR:",
+        error
+      );
+
+      alert(
+        "Unable to delete marketing plan.\n\n" +
+        error.message
+      );
+
+      return;
+    }
+
+    const card =
+      document.getElementById("marketing-plan-" + id);
+
+    if (card) {
+      card.remove();
+    }
+
+  } catch (error) {
+
+    console.error(
+      "MARKETING PLAN DELETE JAVASCRIPT ERROR:",
+      error
+    );
+
+    alert(
+      "MARKETING PLAN DELETE JAVASCRIPT ERROR\n\n" +
+      error.message
+    );
+  }
+}
+
+
+async function editMarketingPlan(id) {
+
+  const newTopic =
+    prompt("Enter the new marketing topic:");
+
+  if (newTopic === null) {
+    return;
+  }
+
+  const topic =
+    newTopic.trim();
+
+  if (topic === "") {
+    alert("Marketing topic cannot be empty.");
+    return;
+  }
+
+  try {
+
+    const { data, error } =
+      await supabaseClient
+        .from("marketing_plans")
+        .update({
+          topic: topic
+        })
+        .eq("id", id)
+        .select()
+        .single();
+
+    if (error) {
+
+      console.error(
+        "MARKETING PLAN EDIT ERROR:",
+        error
+      );
+
+      alert(
+        "Unable to edit marketing plan.\n\n" +
+        error.message
+      );
+
+      return;
+    }
+
+    const card =
+      document.getElementById("marketing-plan-" + id);
+
+    if (card) {
+
+      card.innerHTML =
+        "<strong>📱 " +
+        data.platform +
+        "</strong><br>" +
+
+        "📝 " +
+        data.topic +
+        "<br>" +
+
+        "📅 " +
+        data.plan_date +
+        "<br>" +
+
+        "📌 " +
+        data.status +
+        "<br><br>" +
+
+        "<button onclick='editMarketingPlan(" + data.id + ")'>✏️ Edit</button> " +
+
+        "<button onclick='deleteMarketingPlan(" + data.id + ")'>🗑️ Delete</button>";
+    }
+
+  } catch (error) {
+
+    console.error(
+      "MARKETING PLAN EDIT JAVASCRIPT ERROR:",
+      error
+    );
+
+    alert(
+      "MARKETING PLAN EDIT JAVASCRIPT ERROR\n\n" +
+      error.message
+    );
+  }
+      }
 </script>
 <!-- NEMBURIS LEAD CENTER -->
 
