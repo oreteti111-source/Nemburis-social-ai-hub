@@ -1599,7 +1599,6 @@ function createMarketingContent() {
   }
 }
 
-
 async function editMarketingPlan(id) {
 
   const newTopic =
@@ -1613,25 +1612,19 @@ async function editMarketingPlan(id) {
     newTopic.trim();
 
   if (topic === "") {
-
-    alert(
-      "Marketing topic cannot be empty."
-    );
-
+    alert("Marketing topic cannot be empty.");
     return;
   }
 
   try {
 
-    const { data, error } =
+    const { error } =
       await supabaseClient
         .from("marketing_plans")
         .update({
           topic: topic
         })
-        .eq("id", Number(id))
-        .select()
-        .single();
+        .eq("id", Number(id));
 
     if (error) {
 
@@ -1650,7 +1643,8 @@ async function editMarketingPlan(id) {
 
     console.log(
       "MARKETING PLAN UPDATED:",
-      data
+      id,
+      topic
     );
 
     const card =
@@ -1669,27 +1663,27 @@ async function editMarketingPlan(id) {
 
     card.innerHTML =
       "<strong>📱 " +
-      data.platform +
+      card.dataset.platform +
       "</strong><br>" +
 
       "📝 " +
-      data.topic +
+      topic +
       "<br>" +
 
       "📅 " +
-      data.plan_date +
+      card.dataset.planDate +
       "<br>" +
 
       "📌 " +
-      data.status +
+      card.dataset.status +
       "<br><br>" +
 
       "<button onclick='editMarketingPlan(" +
-      Number(data.id) +
+      Number(id) +
       ")'>✏️ Edit</button> " +
 
       "<button onclick='deleteMarketingPlan(" +
-      Number(data.id) +
+      Number(id) +
       ", this)'>🗑️ Delete</button>";
 
   } catch (error) {
@@ -1704,7 +1698,8 @@ async function editMarketingPlan(id) {
       error.message
     );
   }
-}
+  }
+
 
 
 async function deleteMarketingPlan(id, button) {
