@@ -1939,9 +1939,19 @@ async function deleteMarketingPlan(id, button) {
       "<br><br>" +
 
       "📌 Status: " +
-      data.status +
+data.status +
 
-      "</div>";
+"<br><br>" +
+
+"<button onclick='editContentLibraryItem(" +
+Number(data.id) +
+")'>✏️ Edit</button> " +
+
+"<button onclick='deleteContentLibraryItem(" +
+Number(data.id) +
+", this)'>🗑️ Delete</button>" +
+
+"</div>";
 
     document.getElementById("contentTitle").value = "";
     document.getElementById("contentDestination").value = "";
