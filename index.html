@@ -1573,7 +1573,9 @@ function createMarketingContent() {
 
 <script>
 
-  async function addMarketingPlan() {
+<script>
+
+async function addMarketingPlan() {
 
   const topic =
     document.getElementById("planTopic").value.trim();
@@ -1600,14 +1602,12 @@ function createMarketingContent() {
     const { data, error } =
       await supabaseClient
         .from("marketing_plans")
-        .insert([
-          {
-            topic: topic,
-            platform: platform,
-            plan_date: date,
-            status: "Planned"
-          }
-        ])
+        .insert([{
+          topic: topic,
+          platform: platform,
+          plan_date: date,
+          status: "Planned"
+        }])
         .select()
         .single();
 
@@ -1618,9 +1618,6 @@ function createMarketingContent() {
         error
       );
 
-      planner.innerHTML =
-        "<p>❌ Unable to save marketing plan.</p>";
-
       alert(
         "MARKETING PLAN SAVE ERROR\n\n" +
         error.message
@@ -1629,29 +1626,26 @@ function createMarketingContent() {
       return;
     }
 
-    console.log(
-      "MARKETING PLAN SAVED:",
-      data
-    );
-
     planner.innerHTML +=
-      "<div id='marketing-plan-" + Number(data.id) + "' " +
+      "<div id='marketing-plan-" +
+      Number(data.id) +
+      "' " +
       "style='padding:15px;margin:10px 0;background:#f5f5f5;border-radius:10px;'>" +
 
       "<strong>📱 " +
-      data.platform +
+      (data.platform || "Not provided") +
       "</strong><br>" +
 
       "📝 " +
-      data.topic +
+      (data.topic || "") +
       "<br>" +
 
       "📅 " +
-      data.plan_date +
+      (data.plan_date || "Not provided") +
       "<br>" +
 
       "📌 " +
-      data.status +
+      (data.status || "Planned") +
       "<br><br>" +
 
       "<button onclick='editMarketingPlan(" +
@@ -1680,6 +1674,7 @@ function createMarketingContent() {
     );
   }
 }
+
 
 async function editMarketingPlan(id) {
 
@@ -1710,11 +1705,6 @@ async function editMarketingPlan(id) {
 
     if (error) {
 
-      console.error(
-        "MARKETING PLAN EDIT ERROR:",
-        error
-      );
-
       alert(
         "Unable to edit marketing plan.\n\n" +
         error.message
@@ -1723,73 +1713,56 @@ async function editMarketingPlan(id) {
       return;
     }
 
-    console.log(
-      "MARKETING PLAN UPDATED:",
-      id,
-      topic
-    );
-
     const card =
       document.getElementById(
         "marketing-plan-" + Number(id)
       );
 
-    if (!card) {
+    if (card) {
 
-      alert(
-        "Marketing plan was updated, but its card could not be found."
-      );
+      const topicLines =
+        card.querySelectorAll("br");
 
-      return;
+      if (topicLines.length > 0) {
+
+        const textNodes =
+          card.childNodes;
+
+        for (let i = 0; i < textNodes.length; i++) {
+
+          if (
+            textNodes[i].nodeType === 3 &&
+            textNodes[i].textContent.includes("📝")
+          ) {
+
+            textNodes[i].textContent =
+              "📝 " + topic;
+
+            break;
+          }
+        }
+      }
     }
-
-    card.innerHTML =
-      "<strong>📱 " +
-      card.dataset.platform +
-      "</strong><br>" +
-
-      "📝 " +
-      topic +
-      "<br>" +
-
-      "📅 " +
-      card.dataset.planDate +
-      "<br>" +
-
-      "📌 " +
-      card.dataset.status +
-      "<br><br>" +
-
-      "<button onclick='editMarketingPlan(" +
-      Number(id) +
-      ")'>✏️ Edit</button> " +
-
-      "<button onclick='deleteMarketingPlan(" +
-      Number(id) +
-      ", this)'>🗑️ Delete</button>";
 
   } catch (error) {
 
     console.error(
-      "MARKETING PLAN EDIT JAVASCRIPT ERROR:",
+      "MARKETING PLAN EDIT ERROR:",
       error
     );
 
     alert(
-      "MARKETING PLAN EDIT JAVASCRIPT ERROR\n\n" +
+      "MARKETING PLAN EDIT ERROR\n\n" +
       error.message
     );
   }
-  }
-
+}
 
 
 async function deleteMarketingPlan(id, button) {
 
   const confirmed =
-    confirm(
-      "Are you sure you want to delete this marketing plan?"
-    );
+    confirm("Are you sure you want to delete this marketing plan?");
 
   if (!confirmed) {
     return;
@@ -1805,11 +1778,6 @@ async function deleteMarketingPlan(id, button) {
 
     if (error) {
 
-      console.error(
-        "MARKETING PLAN DELETE ERROR:",
-        error
-      );
-
       alert(
         "Unable to delete marketing plan.\n\n" +
         error.message
@@ -1819,7 +1787,9 @@ async function deleteMarketingPlan(id, button) {
     }
 
     const card =
-      button.closest("div");
+      document.getElementById(
+        "marketing-plan-" + Number(id)
+      );
 
     if (card) {
       card.remove();
@@ -1828,18 +1798,19 @@ async function deleteMarketingPlan(id, button) {
   } catch (error) {
 
     console.error(
-      "MARKETING PLAN DELETE JAVASCRIPT ERROR:",
+      "MARKETING PLAN DELETE ERROR:",
       error
     );
 
     alert(
-      "MARKETING PLAN DELETE JAVASCRIPT ERROR\n\n" +
+      "MARKETING PLAN DELETE ERROR\n\n" +
       error.message
     );
   }
-  }
+}
 
-  async function addContentLibraryItem() {
+
+async function addContentLibraryItem() {
 
   const title =
     document.getElementById("contentTitle").value.trim();
@@ -1869,7 +1840,11 @@ async function deleteMarketingPlan(id, button) {
     document.getElementById("contentPlannedDate").value;
 
   if (title === "" || content === "") {
-    alert("Please enter a content title and content.");
+
+    alert(
+      "Please enter a content title and content."
+    );
+
     return;
   }
 
@@ -1907,19 +1882,17 @@ async function deleteMarketingPlan(id, button) {
       return;
     }
 
-    console.log(
-      "CONTENT LIBRARY SAVED:",
-      data
-    );
-
     const list =
       document.getElementById("contentLibraryList");
 
     list.innerHTML +=
-      "<div id='content-library-" + Number(data.id) + "' style='padding:15px;margin:10px 0;background:#f5f5f5;border-radius:10px;text-align:left;'>" +
+      "<div id='content-library-" +
+      Number(data.id) +
+      "' " +
+      "style='padding:15px;margin:10px 0;background:#f5f5f5;border-radius:10px;text-align:left;'>" +
 
       "<strong class='content-library-title'>📝 " +
-      data.title +
+      (data.title || "") +
       "</strong><br>" +
 
       "📂 Category: " +
@@ -1934,24 +1907,24 @@ async function deleteMarketingPlan(id, button) {
       (data.destination || "Not provided") +
       "<br><br>" +
 
-      data.content +
+      (data.content || "") +
 
       "<br><br>" +
 
       "📌 Status: " +
-data.status +
+      (data.status || "Draft") +
 
-"<br><br>" +
+      "<br><br>" +
 
-"<button onclick='editContentLibraryItem(" +
-Number(data.id) +
-")'>✏️ Edit</button> " +
+      "<button onclick='editContentLibraryItem(" +
+      Number(data.id) +
+      ")'>✏️ Edit</button> " +
 
-"<button onclick='deleteContentLibraryItem(" +
-Number(data.id) +
-", this)'>🗑️ Delete</button>" +
+      "<button onclick='deleteContentLibraryItem(" +
+      Number(data.id) +
+      ", this)'>🗑️ Delete</button>" +
 
-"</div>";
+      "</div>";
 
     document.getElementById("contentTitle").value = "";
     document.getElementById("contentDestination").value = "";
@@ -1972,7 +1945,8 @@ Number(data.id) +
       error.message
     );
   }
-          }
+}
+
 
 async function editContentLibraryItem(id) {
 
@@ -1987,7 +1961,11 @@ async function editContentLibraryItem(id) {
     newTitle.trim();
 
   if (title === "") {
-    alert("Content title cannot be empty.");
+
+    alert(
+      "Content title cannot be empty."
+    );
+
     return;
   }
 
@@ -2002,11 +1980,6 @@ async function editContentLibraryItem(id) {
         .eq("id", Number(id));
 
     if (error) {
-
-      console.error(
-        "CONTENT LIBRARY EDIT ERROR:",
-        error
-      );
 
       alert(
         "Unable to edit content.\n\n" +
@@ -2024,9 +1997,12 @@ async function editContentLibraryItem(id) {
     if (card) {
 
       const titleElement =
-        card.querySelector(".content-library-title");
+        card.querySelector(
+          ".content-library-title"
+        );
 
       if (titleElement) {
+
         titleElement.textContent =
           "📝 " + title;
       }
@@ -2035,18 +2011,240 @@ async function editContentLibraryItem(id) {
   } catch (error) {
 
     console.error(
-      "CONTENT LIBRARY EDIT JAVASCRIPT ERROR:",
+      "CONTENT LIBRARY EDIT ERROR:",
       error
     );
 
-        alert(
-      "CONTENT LIBRARY EDIT JAVASCRIPT ERROR\n\n" +
+    alert(
+      "CONTENT LIBRARY EDIT ERROR\n\n" +
       error.message
     );
   }
+}
 
+
+async function deleteContentLibraryItem(id, button) {
+
+  const confirmed =
+    confirm("Are you sure you want to delete this content?");
+
+  if (!confirmed) {
+    return;
   }
-  
+
+  try {
+
+    const { error } =
+      await supabaseClient
+        .from("content_library")
+        .delete()
+        .eq("id", Number(id));
+
+    if (error) {
+
+      alert(
+        "Unable to delete content.\n\n" +
+        error.message
+      );
+
+      return;
+    }
+
+    const card =
+      document.getElementById(
+        "content-library-" + Number(id)
+      );
+
+    if (card) {
+      card.remove();
+    }
+
+  } catch (error) {
+
+    console.error(
+      "CONTENT LIBRARY DELETE ERROR:",
+      error
+    );
+
+    alert(
+      "CONTENT LIBRARY DELETE ERROR\n\n" +
+      error.message
+    );
+  }
+}
+
+
+async function loadMarketingPlans() {
+
+  const planner =
+    document.getElementById("marketingPlan");
+
+  try {
+
+    const { data, error } =
+      await supabaseClient
+        .from("marketing_plans")
+        .select("*")
+        .order("id", { ascending: false });
+
+    if (error) {
+
+      console.error(
+        "MARKETING PLANS LOAD ERROR:",
+        error
+      );
+
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      return;
+    }
+
+    planner.innerHTML = "";
+
+    data.forEach(function(item) {
+
+      planner.innerHTML +=
+        "<div id='marketing-plan-" +
+        Number(item.id) +
+        "' " +
+        "style='padding:15px;margin:10px 0;background:#f5f5f5;border-radius:10px;'>" +
+
+        "<strong>📱 " +
+        (item.platform || "Not provided") +
+        "</strong><br>" +
+
+        "📝 " +
+        (item.topic || "") +
+        "<br>" +
+
+        "📅 " +
+        (item.plan_date || "Not provided") +
+        "<br>" +
+
+        "📌 " +
+        (item.status || "Planned") +
+        "<br><br>" +
+
+        "<button onclick='editMarketingPlan(" +
+        Number(item.id) +
+        ")'>✏️ Edit</button> " +
+
+        "<button onclick='deleteMarketingPlan(" +
+        Number(item.id) +
+        ", this)'>🗑️ Delete</button>" +
+
+        "</div>";
+    });
+
+  } catch (error) {
+
+    console.error(
+      "MARKETING PLANS LOAD ERROR:",
+      error
+    );
+  }
+}
+
+
+async function loadContentLibrary() {
+
+  const list =
+    document.getElementById("contentLibraryList");
+
+  try {
+
+    const { data, error } =
+      await supabaseClient
+        .from("content_library")
+        .select("*")
+        .order("id", { ascending: false });
+
+    if (error) {
+
+      console.error(
+        "CONTENT LIBRARY LOAD ERROR:",
+        error
+      );
+
+      return;
+    }
+
+    if (!data || data.length === 0) {
+
+      list.innerHTML =
+        "<p>No content saved yet.</p>";
+
+      return;
+    }
+
+    list.innerHTML = "";
+
+    data.forEach(function(item) {
+
+      list.innerHTML +=
+        "<div id='content-library-" +
+        Number(item.id) +
+        "' " +
+        "style='padding:15px;margin:10px 0;background:#f5f5f5;border-radius:10px;text-align:left;'>" +
+
+        "<strong class='content-library-title'>📝 " +
+        (item.title || "") +
+        "</strong><br>" +
+
+        "📂 Category: " +
+        (item.category || "Not provided") +
+        "<br>" +
+
+        "📱 Platform: " +
+        (item.platform || "Not provided") +
+        "<br>" +
+
+        "🌍 Destination: " +
+        (item.destination || "Not provided") +
+        "<br><br>" +
+
+        (item.content || "") +
+
+        "<br><br>" +
+
+        "📌 Status: " +
+        (item.status || "Draft") +
+
+        "<br><br>" +
+
+        "<button onclick='editContentLibraryItem(" +
+        Number(item.id) +
+        ")'>✏️ Edit</button> " +
+
+        "<button onclick='deleteContentLibraryItem(" +
+        Number(item.id) +
+        ", this)'>🗑️ Delete</button>" +
+
+        "</div>";
+    });
+
+  } catch (error) {
+
+    console.error(
+      "CONTENT LIBRARY LOAD ERROR:",
+      error
+    );
+  }
+}
+
+
+document.addEventListener("DOMContentLoaded", function() {
+
+  loadMarketingPlans();
+  loadContentLibrary();
+
+});
+
+</script>
+
+
   
 </script>
 <!-- NEMBURIS LEAD CENTER -->
