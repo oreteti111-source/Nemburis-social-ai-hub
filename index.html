@@ -1687,32 +1687,51 @@ async function editMarketingPlan(id) {
       return;
     }
 
-    const card =
-  document.getElementById("marketing-plan-" + Number(id));
+    /*
+     * Reload the Marketing Planner from Supabase.
+     * This makes sure the displayed card matches
+     * the data actually saved in the database.
+     */
+    if (typeof loadMarketingPlans === "function") {
 
-if (card) {
+      await loadMarketingPlans();
 
-  card.innerHTML =
-    "<strong>📱 " +
-    card.dataset.platform +
-    "</strong><br>" +
+    } else {
 
-    "📝 " +
-    topic +
-    "<br>" +
+      const card =
+        document.getElementById(
+          "marketing-plan-" + Number(id)
+        );
 
-    "📅 " +
-    card.dataset.planDate +
-    "<br>" +
+      if (card) {
 
-    "📌 " +
-    card.dataset.status +
-    "<br><br>" +
+        card.innerHTML =
+          "<strong>📱 " +
+          card.dataset.platform +
+          "</strong><br>" +
 
-    "<button onclick='editMarketingPlan(" + Number(id) + ")'>✏️ Edit</button> " +
+          "📝 " +
+          topic +
+          "<br>" +
 
-    "<button onclick='deleteMarketingPlan(" + Number(id) + ", this)'>🗑️ Delete</button>";
-  }
+          "📅 " +
+          card.dataset.planDate +
+          "<br>" +
+
+          "📌 " +
+          card.dataset.status +
+          "<br><br>" +
+
+          "<button onclick='editMarketingPlan(" +
+          Number(id) +
+          ")'>✏️ Edit</button> " +
+
+          "<button onclick='deleteMarketingPlan(" +
+          Number(id) +
+          ", this)'>🗑️ Delete</button>";
+      }
+    }
+
   } catch (error) {
 
     console.error(
@@ -1726,6 +1745,7 @@ if (card) {
     );
   }
   }
+
 
 </script>
 <!-- NEMBURIS LEAD CENTER -->
