@@ -1552,7 +1552,7 @@ async function addMarketingPlan() {
       data
     );
 
-        planner.innerHTML +=
+               planner.innerHTML +=
       "<div id='marketing-plan-" + data.id + "' " +
       "style='padding:15px;margin:10px 0;background:#f5f5f5;border-radius:10px;'>" +
 
@@ -1576,7 +1576,7 @@ async function addMarketingPlan() {
 
       "<button onclick='deleteMarketingPlan(" + data.id + ")'>🗑️ Delete</button>" +
 
-      "</div>";
+      "</div>"; 
 
     document.getElementById("planTopic").value = "";
     document.getElementById("planDate").value = "";
