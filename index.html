@@ -1595,7 +1595,7 @@ async function addMarketingPlan() {
   }
   }
 
-  async function deleteMarketingPlan(id) {
+async function deleteMarketingPlan(id) {
 
   const confirmed =
     confirm("Are you sure you want to delete this marketing plan?");
@@ -1628,10 +1628,19 @@ async function addMarketingPlan() {
     }
 
     const card =
-      document.getElementById("marketing-plan-" + id);
+      document.getElementById("marketing-plan-" + Number(id));
 
     if (card) {
+
       card.remove();
+
+    } else {
+
+      console.warn(
+        "Marketing plan card not found:",
+        id
+      );
+
     }
 
   } catch (error) {
@@ -1646,7 +1655,7 @@ async function addMarketingPlan() {
       error.message
     );
   }
-}
+  }
 
 
 async function editMarketingPlan(id) {
