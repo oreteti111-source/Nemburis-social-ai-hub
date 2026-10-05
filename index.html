@@ -1573,9 +1573,7 @@ async function addMarketingPlan() {
       "<br><br>" +
 
 "<button onclick='editMarketingPlan(" + Number(data.id) + ")'>✏️ Edit</button> " +
-
-"<button onclick='deleteMarketingPlan(" + Number(data.id) + ")'>🗑️ Delete</button>" +
-
+"<button onclick='deleteMarketingPlan(" + Number(data.id) + ", this)'>🗑️ Delete</button>" +
 "</div>";
 
     document.getElementById("planTopic").value = "";
