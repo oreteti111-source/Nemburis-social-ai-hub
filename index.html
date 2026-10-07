@@ -2239,9 +2239,175 @@ document.addEventListener("DOMContentLoaded", function() {
   loadContentLibrary();
 
 });
+<!-- NEMBURIS SAFARI PLANNER -->
 
+<section id="safari-planner" style="padding:40px 20px;text-align:center;">
+
+  <h2>🦁 NEMBURIS SAFARI PLANNER</h2>
+
+  <p>
+    Plan your Tanzania safari and tell us what kind of experience you are looking for.
+  </p>
+
+  <div class="tour-card"
+    style="
+      max-width:600px;
+      margin:20px auto;
+      padding:25px;
+      text-align:left;
+    ">
+
+    <h3>✈️ Tell Us About Your Trip</h3>
+
+    <label>Where would you like to go?</label>
+
+    <select id="plannerDestination" style="width:100%;padding:10px;margin:8px 0 15px;">
+      <option value="">Select destination</option>
+      <option value="Serengeti">Serengeti</option>
+      <option value="Ngorongoro">Ngorongoro</option>
+      <option value="Tarangire">Tarangire</option>
+      <option value="Kilimanjaro">Kilimanjaro</option>
+      <option value="Zanzibar">Zanzibar</option>
+      <option value="Tanzania Safari">Tanzania Safari</option>
+      <option value="Not sure">Not sure yet</option>
+    </select>
+
+    <label>When would you like to travel?</label>
+
+    <input
+      type="date"
+      id="plannerTravelDate"
+      style="width:100%;padding:10px;margin:8px 0 15px;"
+    >
+
+    <label>How many travellers?</label>
+
+    <input
+      type="number"
+      id="plannerTravellers"
+      min="1"
+      placeholder="Number of travellers"
+      style="width:100%;padding:10px;margin:8px 0 15px;"
+    >
+
+    <label>What type of experience interests you?</label>
+
+    <select id="plannerExperience" style="width:100%;padding:10px;margin:8px 0 15px;">
+      <option value="">Select experience</option>
+      <option value="Luxury Safari">Luxury Safari</option>
+      <option value="Wildlife Safari">Wildlife Safari</option>
+      <option value="Beach & Zanzibar">Beach & Zanzibar</option>
+      <option value="Safari + Zanzibar">Safari + Zanzibar</option>
+      <option value="Kilimanjaro">Kilimanjaro</option>
+      <option value="Culture">Culture</option>
+      <option value="Not sure">Not sure yet</option>
+    </select>
+
+    <label>Tell us anything else about your trip</label>
+
+    <textarea
+      id="plannerMessage"
+      rows="5"
+      placeholder="Tell us about your interests, budget, preferred style, or anything important..."
+      style="width:100%;padding:10px;margin:8px 0 15px;"
+    ></textarea>
+
+
+
+</section>
 
 </script>
+  <!-- NEMBURIS SAFARI PLANNER -->
+
+<section id="safari-planner" style="padding:40px 20px;text-align:center;">
+
+  <h2>🦁 NEMBURIS SAFARI PLANNER</h2>
+
+  <p>
+    Plan your Tanzania safari and tell us what kind of experience you are looking for.
+  </p>
+
+  <div class="tour-card"
+    style="
+      max-width:600px;
+      margin:20px auto;
+      padding:25px;
+      text-align:left;
+    ">
+
+    <h3>✈️ Tell Us About Your Trip</h3>
+
+    <label>Where would you like to go?</label>
+
+    <select id="plannerDestination" style="width:100%;padding:10px;margin:8px 0 15px;">
+      <option value="">Select destination</option>
+      <option value="Serengeti">Serengeti</option>
+      <option value="Ngorongoro">Ngorongoro</option>
+      <option value="Tarangire">Tarangire</option>
+      <option value="Kilimanjaro">Kilimanjaro</option>
+      <option value="Zanzibar">Zanzibar</option>
+      <option value="Tanzania Safari">Tanzania Safari</option>
+      <option value="Not sure">Not sure yet</option>
+    </select>
+
+    <label>When would you like to travel?</label>
+
+    <input
+      type="date"
+      id="plannerTravelDate"
+      style="width:100%;padding:10px;margin:8px 0 15px;"
+    >
+
+    <label>How many travellers?</label>
+
+    <input
+      type="number"
+      id="plannerTravellers"
+      min="1"
+      placeholder="Number of travellers"
+      style="width:100%;padding:10px;margin:8px 0 15px;"
+    >
+
+    <label>What type of experience interests you?</label>
+
+    <select id="plannerExperience" style="width:100%;padding:10px;margin:8px 0 15px;">
+      <option value="">Select experience</option>
+      <option value="Luxury Safari">Luxury Safari</option>
+      <option value="Wildlife Safari">Wildlife Safari</option>
+      <option value="Beach & Zanzibar">Beach & Zanzibar</option>
+      <option value="Safari + Zanzibar">Safari + Zanzibar</option>
+      <option value="Kilimanjaro">Kilimanjaro</option>
+      <option value="Culture">Culture</option>
+      <option value="Not sure">Not sure yet</option>
+    </select>
+
+    <label>Tell us anything else about your trip</label>
+
+    <textarea
+      id="plannerMessage"
+      rows="5"
+      placeholder="Tell us about your interests, budget, preferred style, or anything important..."
+      style="width:100%;padding:10px;margin:8px 0 15px;"
+    ></textarea>
+
+    <button
+      type="button"
+      onclick="submitSafariPlanner()"
+      style="padding:12px 20px;cursor:pointer;"
+    >
+      🦁 Plan My Safari
+    </button>
+
+    <div
+      id="safariPlannerResult"
+      style="margin-top:20px;"
+    ></div>
+
+  </div>
+
+</section>
+
+<!-- END NEMBURIS SAFARI PLANNER -->
 <!-- NEMBURIS LEAD CENTER -->
 
 <section id="lead-center"
