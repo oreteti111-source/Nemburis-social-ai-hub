@@ -2239,6 +2239,103 @@ document.addEventListener("DOMContentLoaded", function() {
   loadContentLibrary();
 
 });
+  
+async function submitSafariPlanner() {
+
+  const destination =
+    document.getElementById("plannerDestination").value;
+
+  const travelDate =
+    document.getElementById("plannerTravelDate").value;
+
+  const travellers =
+    document.getElementById("plannerTravellers").value;
+
+  const experience =
+    document.getElementById("plannerExperience").value;
+
+  const message =
+    document.getElementById("plannerMessage").value.trim();
+
+  const result =
+    document.getElementById("safariPlannerResult");
+
+  if (
+    destination === "" ||
+    travelDate === "" ||
+    travellers === "" ||
+    experience === ""
+  ) {
+    result.innerHTML =
+      "<p>⚠️ Please complete the required trip details.</p>";
+    return;
+  }
+
+  result.innerHTML =
+    "<p>⏳ Preparing your safari enquiry...</p>";
+
+  try {
+
+    const plannerMessage =
+      "Safari Planner Enquiry\n\n" +
+      "Destination: " + destination + "\n" +
+      "Travel Date: " + travelDate + "\n" +
+      "Travellers: " + travellers + "\n" +
+      "Experience: " + experience + "\n" +
+      "Message: " + message;
+
+    const { data, error } =
+      await supabaseClient
+        .from("Leads")
+        .insert([{
+          Name: "Safari Planner Enquiry",
+          Phone: "",
+          Email: "",
+          Safari: destination,
+          Travel_date: travelDate,
+          Message: plannerMessage,
+          Status: "New",
+          Lead_Source: "Safari Planner"
+        }])
+        .select()
+        .single();
+
+    if (error) {
+
+      console.error(
+        "SAFARI PLANNER SAVE ERROR:",
+        error
+      );
+
+      result.innerHTML =
+        "<p>❌ Unable to submit your safari enquiry.</p>";
+
+      return;
+    }
+
+    console.log(
+      "SAFARI PLANNER LEAD SAVED:",
+      data
+    );
+
+    result.innerHTML =
+      "<p>✅ Your safari enquiry has been received.</p>" +
+      "<p>Our team will review your trip details and get back to you.</p>";
+
+  } catch (error) {
+
+    console.error(
+      "SAFARI PLANNER JAVASCRIPT ERROR:",
+      error
+    );
+
+    result.innerHTML =
+      "<p>❌ Something went wrong while submitting your enquiry.</p>";
+    }
+}
+
+</script>
+
 <!-- NEMBURIS SAFARI PLANNER -->
 
 <section id="safari-planner" style="padding:40px 20px;text-align:center;">
