@@ -1809,7 +1809,34 @@ async function editMarketingPlan(id) {
   }
   }
 
+
 async function deleteMarketingPlan(id, button) {
+
+  /*
+   * Never send null, undefined, or an invalid value
+   * to a bigint database column.
+   */
+  const numericId =
+    Number(id);
+
+  if (
+    id === null ||
+    id === undefined ||
+    id === "" ||
+    !Number.isInteger(numericId)
+  ) {
+
+    console.error(
+      "INVALID MARKETING PLAN ID:",
+      id
+    );
+
+    alert(
+      "❌ This marketing plan has an invalid database ID."
+    );
+
+    return;
+  }
 
   const confirmed =
     confirm(
@@ -1826,7 +1853,7 @@ async function deleteMarketingPlan(id, button) {
       await supabaseClient
         .from("marketing_plans")
         .delete()
-        .eq("id", id);
+        .eq("id", numericId);
 
     if (error) {
 
@@ -1845,7 +1872,7 @@ async function deleteMarketingPlan(id, button) {
 
     console.log(
       "MARKETING PLAN DELETED:",
-      id
+      numericId
     );
 
     await loadMarketingPlans();
@@ -1863,6 +1890,7 @@ async function deleteMarketingPlan(id, button) {
     );
   }
   }
+    
 async function addContentLibraryItem() {
 
   const title =
@@ -2126,6 +2154,7 @@ async function deleteContentLibraryItem(id, button) {
   }
 }
 
+
 async function loadMarketingPlans() {
 
   const container =
@@ -2135,8 +2164,6 @@ async function loadMarketingPlans() {
     return;
   }
 
-  // Always clear the current display first.
-  // The database is the source of truth.
   container.innerHTML = "";
 
   try {
@@ -2144,7 +2171,7 @@ async function loadMarketingPlans() {
     const { data, error } =
       await supabaseClient
         .from("marketing_plans")
-        .select("*")
+        .select("id,topic,platform,plan_date,status")
         .order("id", { ascending: false });
 
     if (error) {
@@ -2162,6 +2189,20 @@ async function loadMarketingPlans() {
     }
 
     data.forEach(plan => {
+
+      /*
+       * Every database record must have an ID
+       * before an Edit/Delete button is created.
+       */
+      if (plan.id === null || plan.id === undefined) {
+
+        console.error(
+          "MARKETING PLAN HAS NO ID:",
+          plan
+        );
+
+        return;
+      }
 
       const card =
         document.createElement("div");
@@ -2187,11 +2228,11 @@ async function loadMarketingPlans() {
         "</p>" +
 
         '<button type="button" onclick="editMarketingPlan(' +
-        plan.id +
+        Number(plan.id) +
         ')">✏️ Edit</button> ' +
 
         '<button type="button" onclick="deleteMarketingPlan(' +
-        plan.id +
+        Number(plan.id) +
         ', this)">🗑️ Delete</button>';
 
       container.appendChild(card);
@@ -2206,9 +2247,7 @@ async function loadMarketingPlans() {
     );
   }
   }
-
-
-    
+      
 
 async function loadContentLibrary() {
 
