@@ -2318,6 +2318,21 @@ async function submitSafariPlanner() {
       data
     );
 
+    localStorage.setItem(
+      "nemburisSafariPlannerLastSubmission",
+      JSON.stringify({
+        leadId: data.id,
+        destination: destination,
+        travelDate: travelDate,
+        travellers: travellers,
+        experience: experience,
+        message: message
+      })
+    );
+
+    localStorage.removeItem(
+      "nemburisSafariPlannerDraft"
+    );
 
     result.innerHTML =
       "<p>✅ Your safari enquiry has been received.</p>" +
@@ -2334,55 +2349,170 @@ async function submitSafariPlanner() {
       "<p>❌ Something went wrong while submitting your enquiry.</p>";
   }
   }
-async function loadSafariPlanner() {
+
+  function initSafariPlannerPersistence() {
+
+  const destination =
+    document.getElementById("plannerDestination");
+
+  const travelDate =
+    document.getElementById("plannerTravelDate");
+
+  const travellers =
+    document.getElementById("plannerTravellers");
+
+  const experience =
+    document.getElementById("plannerExperience");
+
+  const message =
+    document.getElementById("plannerMessage");
 
   const result =
     document.getElementById("safariPlannerResult");
 
-  if (!result) {
+  if (
+    !destination ||
+    !travelDate ||
+    !travellers ||
+    !experience ||
+    !message ||
+    !result
+  ) {
     return;
   }
 
-  try {
+  const submitted =
+    localStorage.getItem(
+      "nemburisSafariPlannerLastSubmission"
+    );
 
-    const { data, error } =
-      await supabaseClient
-        .from("Leads")
-        .select(
-          "id,Name,Safari,Travel_date,Message,Status,Lead_Source"
-        )
-        .eq("Lead_Source", "Safari Planner")
-        .order("id", { ascending: false })
-        .limit(1)
-        .maybeSingle();
+  const draft =
+    localStorage.getItem(
+      "nemburisSafariPlannerDraft"
+    );
 
-    if (error) {
+  if (submitted) {
+
+    try {
+
+      const saved =
+        JSON.parse(submitted);
+
+      destination.value =
+        saved.destination || "";
+
+      travelDate.value =
+        saved.travelDate || "";
+
+      travellers.value =
+        saved.travellers || "";
+
+      experience.value =
+        saved.experience || "";
+
+      message.value =
+        saved.message || "";
+
+      result.innerHTML =
+        "<p>✅ Your safari enquiry has been received.</p>" +
+        "<p>Our team will review your trip details and get back to you.</p>";
+
+    } catch (error) {
 
       console.error(
-        "SAFARI PLANNER LOAD ERROR:",
+        "SAFARI PLANNER SUBMITTED STATE ERROR:",
         error
       );
 
-      return;
+      localStorage.removeItem(
+        "nemburisSafariPlannerLastSubmission"
+      );
     }
 
-    if (!data) {
-      return;
+  } else if (draft) {
+
+    try {
+
+      const savedDraft =
+        JSON.parse(draft);
+
+      destination.value =
+        savedDraft.destination || "";
+
+      travelDate.value =
+        savedDraft.travelDate || "";
+
+      travellers.value =
+        savedDraft.travellers || "";
+
+      experience.value =
+        savedDraft.experience || "";
+
+      message.value =
+        savedDraft.message || "";
+
+    } catch (error) {
+
+      console.error(
+        "SAFARI PLANNER DRAFT ERROR:",
+        error
+      );
+
+      localStorage.removeItem(
+        "nemburisSafariPlannerDraft"
+      );
     }
+  }
 
-    result.innerHTML =
-      "<p>✅ Your safari enquiry has been received.</p>" +
-      "<p>Our team will review your trip details and get back to you.</p>";
+  function saveDraft() {
 
-  } catch (error) {
+    const draftData = {
+      destination: destination.value,
+      travelDate: travelDate.value,
+      travellers: travellers.value,
+      experience: experience.value,
+      message: message.value
+    };
 
-    console.error(
-      "SAFARI PLANNER LOAD JAVASCRIPT ERROR:",
-      error
+    localStorage.setItem(
+      "nemburisSafariPlannerDraft",
+      JSON.stringify(draftData)
+    );
+
+    localStorage.removeItem(
+      "nemburisSafariPlannerLastSubmission"
     );
   }
+
+  destination.addEventListener(
+    "change",
+    saveDraft
+  );
+
+  travelDate.addEventListener(
+    "change",
+    saveDraft
+  );
+
+  travellers.addEventListener(
+    "input",
+    saveDraft
+  );
+
+  experience.addEventListener(
+    "change",
+    saveDraft
+  );
+
+  message.addEventListener(
+    "input",
+    saveDraft
+  );
   }
-  loadSafariPlanner();
+  
+initSafariPlannerPersistence();
+    
+
 </script>
   <!-- NEMBURIS SAFARI PLANNER -->
 
