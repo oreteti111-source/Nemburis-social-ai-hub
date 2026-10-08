@@ -2510,7 +2510,9 @@ async function submitSafariPlanner() {
   );
   }
   
-initSafariPlannerPersistence();
+window.addEventListener("load", function () {
+  initSafariPlannerPersistence();
+});
     
 
 </script>
