@@ -2318,18 +2318,6 @@ async function submitSafariPlanner() {
       data
     );
 
-    /* Persist the latest successful planner result */
-    localStorage.setItem(
-      "nemburisSafariPlannerResult",
-      JSON.stringify({
-        destination: destination,
-        travelDate: travelDate,
-        travellers: travellers,
-        experience: experience,
-        message: message,
-        savedAt: new Date().toISOString()
-      })
-    );
 
     result.innerHTML =
       "<p>✅ Your safari enquiry has been received.</p>" +
@@ -2346,40 +2334,7 @@ async function submitSafariPlanner() {
       "<p>❌ Something went wrong while submitting your enquiry.</p>";
   }
   }
-   function restoreSafariPlannerResult() {
 
-  const savedPlanner =
-    localStorage.getItem("nemburisSafariPlannerResult");
-
-  const result =
-    document.getElementById("safariPlannerResult");
-
-  if (!savedPlanner || !result) {
-    return;
-  }
-
-  try {
-
-    const planner =
-      JSON.parse(savedPlanner);
-
-    result.innerHTML =
-      "<p>✅ Your safari enquiry has been received.</p>" +
-      "<p>Our team will review your trip details and get back to you.</p>";
-
-  } catch (error) {
-
-    console.error(
-      "SAFARI PLANNER RESTORE ERROR:",
-      error
-    );
-
-    localStorage.removeItem(
-      "nemburisSafariPlannerResult"
-    );
-  }
-  } 
-restoreSafariPlannerResult();
 </script>
   <!-- NEMBURIS SAFARI PLANNER -->
 
