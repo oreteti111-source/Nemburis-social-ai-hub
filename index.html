@@ -2334,7 +2334,55 @@ async function submitSafariPlanner() {
       "<p>❌ Something went wrong while submitting your enquiry.</p>";
   }
   }
+async function loadSafariPlanner() {
 
+  const result =
+    document.getElementById("safariPlannerResult");
+
+  if (!result) {
+    return;
+  }
+
+  try {
+
+    const { data, error } =
+      await supabaseClient
+        .from("Leads")
+        .select(
+          "id,Name,Safari,Travel_date,Message,Status,Lead_Source"
+        )
+        .eq("Lead_Source", "Safari Planner")
+        .order("id", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+    if (error) {
+
+      console.error(
+        "SAFARI PLANNER LOAD ERROR:",
+        error
+      );
+
+      return;
+    }
+
+    if (!data) {
+      return;
+    }
+
+    result.innerHTML =
+      "<p>✅ Your safari enquiry has been received.</p>" +
+      "<p>Our team will review your trip details and get back to you.</p>";
+
+  } catch (error) {
+
+    console.error(
+      "SAFARI PLANNER LOAD JAVASCRIPT ERROR:",
+      error
+    );
+  }
+  }
+  loadSafariPlanner();
 </script>
   <!-- NEMBURIS SAFARI PLANNER -->
 
