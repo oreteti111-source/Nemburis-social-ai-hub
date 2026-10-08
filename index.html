@@ -2241,7 +2241,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
   
 async function submitSafariPlanner() {
-  alert("Safari Planner button is working.");
 
   const destination =
     document.getElementById("plannerDestination").value;
@@ -2319,6 +2318,19 @@ async function submitSafariPlanner() {
       data
     );
 
+    /* Persist the latest successful planner result */
+    localStorage.setItem(
+      "nemburisSafariPlannerResult",
+      JSON.stringify({
+        destination: destination,
+        travelDate: travelDate,
+        travellers: travellers,
+        experience: experience,
+        message: message,
+        savedAt: new Date().toISOString()
+      })
+    );
+
     result.innerHTML =
       "<p>✅ Your safari enquiry has been received.</p>" +
       "<p>Our team will review your trip details and get back to you.</p>";
@@ -2332,8 +2344,8 @@ async function submitSafariPlanner() {
 
     result.innerHTML =
       "<p>❌ Something went wrong while submitting your enquiry.</p>";
-    }
-}
+  }
+  }
 
 </script>
   <!-- NEMBURIS SAFARI PLANNER -->
