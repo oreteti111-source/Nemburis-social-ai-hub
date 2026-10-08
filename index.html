@@ -1676,85 +1676,136 @@ async function addMarketingPlan() {
 
 async function editMarketingPlan(id) {
 
-  const newTopic =
-    prompt("Enter the new marketing topic:");
-
-  if (newTopic === null) {
-    return;
-  }
-
-  const topic =
-    newTopic.trim();
-
-  if (topic === "") {
-    alert("Marketing topic cannot be empty.");
-    return;
-  }
-
   try {
 
-    const { error } =
+    const { data, error } =
       await supabaseClient
         .from("marketing_plans")
-        .update({
-          topic: topic
-        })
-        .eq("id", Number(id));
+        .select("id,topic,platform,plan_date,status")
+        .eq("id", id)
+        .maybeSingle();
 
     if (error) {
 
+      console.error(
+        "MARKETING PLAN EDIT LOAD ERROR:",
+        error
+      );
+
       alert(
-        "Unable to edit marketing plan.\n\n" +
-        error.message
+        "❌ Unable to load this marketing plan."
       );
 
       return;
     }
 
-    const card =
-      document.getElementById(
-        "marketing-plan-" + Number(id)
+    if (!data) {
+
+      alert(
+        "❌ Marketing plan not found."
       );
 
-    if (card) {
-
-      const topicLines =
-        card.querySelectorAll("br");
-
-      if (topicLines.length > 0) {
-
-        const textNodes =
-          card.childNodes;
-
-        for (let i = 0; i < textNodes.length; i++) {
-
-          if (
-            textNodes[i].nodeType === 3 &&
-            textNodes[i].textContent.includes("📝")
-          ) {
-
-            textNodes[i].textContent =
-              "📝 " + topic;
-
-            break;
-          }
-        }
-      }
+      return;
     }
+
+    const newTopic =
+      prompt(
+        "Content topic:",
+        data.topic || ""
+      );
+
+    if (newTopic === null) {
+      return;
+    }
+
+    const newPlatform =
+      prompt(
+        "Platform:",
+        data.platform || ""
+      );
+
+    if (newPlatform === null) {
+      return;
+    }
+
+    const newDate =
+      prompt(
+        "Plan date (YYYY-MM-DD):",
+        data.plan_date || ""
+      );
+
+    if (newDate === null) {
+      return;
+    }
+
+    const newStatus =
+      prompt(
+        "Status:",
+        data.status || "Planned"
+      );
+
+    if (newStatus === null) {
+      return;
+    }
+
+    if (
+      newTopic.trim() === "" ||
+      newPlatform.trim() === "" ||
+      newDate.trim() === ""
+    ) {
+
+      alert(
+        "⚠️ Topic, platform and date are required."
+      );
+
+      return;
+    }
+
+    const { error: updateError } =
+      await supabaseClient
+        .from("marketing_plans")
+        .update({
+          topic: newTopic.trim(),
+          platform: newPlatform.trim(),
+          plan_date: newDate.trim(),
+          status:
+            newStatus.trim() || "Planned"
+        })
+        .eq("id", id);
+
+    if (updateError) {
+
+      console.error(
+        "MARKETING PLAN UPDATE ERROR:",
+        updateError
+      );
+
+      alert(
+        "❌ Unable to save marketing plan changes."
+      );
+
+      return;
+    }
+
+    console.log(
+      "MARKETING PLAN UPDATED:",
+      id
+    );
+
+    await loadMarketingPlans();
 
   } catch (error) {
 
     console.error(
-      "MARKETING PLAN EDIT ERROR:",
+      "MARKETING PLAN EDIT JAVASCRIPT ERROR:",
       error
     );
 
     alert(
-      "MARKETING PLAN EDIT ERROR\n\n" +
-      error.message
+      "❌ Something went wrong while editing the marketing plan."
     );
   }
-}
+  }
 
 
 async function deleteMarketingPlan(id, button) {
@@ -1772,41 +1823,58 @@ async function deleteMarketingPlan(id, button) {
       await supabaseClient
         .from("marketing_plans")
         .delete()
-        .eq("id", Number(id));
+        .eq("id", id);
 
     if (error) {
 
+      console.error(
+        "MARKETING PLAN DELETE ERROR:",
+        error
+      );
+
       alert(
-        "Unable to delete marketing plan.\n\n" +
-        error.message
+        "❌ Unable to delete this marketing plan."
       );
 
       return;
     }
 
-    const card =
-      document.getElementById(
-        "marketing-plan-" + Number(id)
-      );
+    console.log(
+      "MARKETING PLAN DELETED:",
+      id
+    );
 
-    if (card) {
-      card.remove();
+    /*
+     * Remove the card immediately from the screen.
+     */
+    if (button) {
+
+      const card =
+        button.parentElement;
+
+      if (card) {
+        card.remove();
+      }
     }
+
+    /*
+     * Reload from Supabase so the screen
+     * remains synchronized with the database.
+     */
+    await loadMarketingPlans();
 
   } catch (error) {
 
     console.error(
-      "MARKETING PLAN DELETE ERROR:",
+      "MARKETING PLAN DELETE JAVASCRIPT ERROR:",
       error
     );
 
     alert(
-      "MARKETING PLAN DELETE ERROR\n\n" +
-      error.message
+      "❌ Something went wrong while deleting the marketing plan."
     );
   }
-}
-
+  }
 
 async function addContentLibraryItem() {
 
