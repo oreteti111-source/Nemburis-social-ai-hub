@@ -2071,11 +2071,18 @@ async function deleteContentLibraryItem(id, button) {
   }
 }
 
-
 async function loadMarketingPlans() {
 
-  const planner =
+  const container =
     document.getElementById("marketingPlan");
+
+  if (!container) {
+    return;
+  }
+
+  // Always clear the current display first.
+  // The database is the source of truth.
+  container.innerHTML = "";
 
   try {
 
@@ -2099,52 +2106,54 @@ async function loadMarketingPlans() {
       return;
     }
 
-    planner.innerHTML = "";
+    data.forEach(plan => {
 
-    data.forEach(function(item) {
+      const card =
+        document.createElement("div");
 
-      planner.innerHTML +=
-        "<div id='marketing-plan-" +
-        Number(item.id) +
-        "' " +
-        "style='padding:15px;margin:10px 0;background:#f5f5f5;border-radius:10px;'>" +
+      card.className =
+        "marketing-plan-card";
 
-        "<strong>📱 " +
-        (item.platform || "Not provided") +
-        "</strong><br>" +
+      card.innerHTML =
+        "<strong>" +
+        (plan.topic || "Untitled") +
+        "</strong>" +
 
-        "📝 " +
-        (item.topic || "") +
-        "<br>" +
+        "<p>📱 " +
+        (plan.platform || "Not specified") +
+        "</p>" +
 
-        "📅 " +
-        (item.plan_date || "Not provided") +
-        "<br>" +
+        "<p>📅 " +
+        (plan.plan_date || "No date") +
+        "</p>" +
 
-        "📌 " +
-        (item.status || "Planned") +
-        "<br><br>" +
+        "<p>📌 " +
+        (plan.status || "Planned") +
+        "</p>" +
 
-        "<button onclick='editMarketingPlan(" +
-        Number(item.id) +
-        ")'>✏️ Edit</button> " +
+        '<button type="button" onclick="editMarketingPlan(' +
+        plan.id +
+        ')">✏️ Edit</button> ' +
 
-        "<button onclick='deleteMarketingPlan(" +
-        Number(item.id) +
-        ", this)'>🗑️ Delete</button>" +
+        '<button type="button" onclick="deleteMarketingPlan(' +
+        plan.id +
+        ', this)">🗑️ Delete</button>';
 
-        "</div>";
+      container.appendChild(card);
+
     });
 
   } catch (error) {
 
     console.error(
-      "MARKETING PLANS LOAD ERROR:",
+      "MARKETING PLANS LOAD JAVASCRIPT ERROR:",
       error
     );
   }
-}
+  }
 
+
+    
 
 async function loadContentLibrary() {
 
