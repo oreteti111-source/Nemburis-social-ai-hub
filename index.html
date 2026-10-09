@@ -5693,15 +5693,21 @@ let flipVertical = false;
     ctx.filter = "none";
     canvas.style.display = "block";
   }
-
-  upload.addEventListener("change", function () {
+upload.addEventListener("change", function () {
     const file = upload.files && upload.files[0];
-    if (!file) return;
 
-    if (!file.type.startsWith("image/")) {
-      message.textContent = "Please select a valid image file.";
+    if (!file) {
+      message.textContent = "No image selected. Please try again.";
       return;
     }
+
+    if (!file.type || !file.type.startsWith("image/")) {
+      message.textContent = "Please select a valid image file.";
+      upload.value = "";
+      return;
+    }
+
+    message.textContent = "Loading image...";
 
     const reader = new FileReader();
 
@@ -5710,27 +5716,38 @@ let flipVertical = false;
 
       image.onload = function () {
         originalImage = image;
+
         rotation = 0;
         flipHorizontal = false;
-flipVertical = false;
-        brightness.value = 100;
-        contrast.value = 100;
+        flipVertical = false;
+
+        brightness.value = "100";
+        contrast.value = "100";
+
         renderImage();
 
         message.textContent =
           "Image loaded: " + file.name +
           ". You can now edit and download it.";
+
+        upload.value = "";
       };
 
       image.onerror = function () {
-        message.textContent = "Unable to open this image.";
+        message.textContent =
+          "Unable to open this image. Please try another file.";
+
+        upload.value = "";
       };
 
       image.src = event.target.result;
     };
 
     reader.onerror = function () {
-      message.textContent = "Unable to read this file.";
+      message.textContent =
+        "Unable to read this file. Please try again.";
+
+      upload.value = "";
     };
 
     reader.readAsDataURL(file);
