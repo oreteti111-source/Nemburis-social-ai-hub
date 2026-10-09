@@ -5659,7 +5659,9 @@ document.addEventListener(
   const contrast = document.getElementById("nemburisContrast");
 
   let originalImage = null;
-  let rotation = 0;
+let rotation = 0;
+let flipHorizontal = false;
+let flipVertical = false;
 
   function renderImage() {
     if (!originalImage) return;
@@ -5673,6 +5675,10 @@ document.addEventListener(
     ctx.save();
     ctx.translate(canvas.width / 2, canvas.height / 2);
     ctx.rotate(rotation * Math.PI / 180);
+    ctx.scale(
+  flipHorizontal ? -1 : 1,
+  flipVertical ? -1 : 1
+);
     ctx.filter =
       "brightness(" + brightness.value + "%) contrast(" +
       contrast.value + "%)";
