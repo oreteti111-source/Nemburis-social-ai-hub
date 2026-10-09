@@ -5711,6 +5711,8 @@ let flipVertical = false;
       image.onload = function () {
         originalImage = image;
         rotation = 0;
+        flipHorizontal = false;
+flipVertical = false;
         brightness.value = 100;
         contrast.value = 100;
         renderImage();
@@ -5755,7 +5757,27 @@ let flipVertical = false;
       rotation = (rotation + 90) % 360;
       renderImage();
     });
+document.getElementById("nemburisFlipHorizontal")
+.addEventListener("click", function () {
+if (!originalImage) {
+message.textContent = "Upload an image first.";
+return;
+}
 
+  flipHorizontal = !flipHorizontal;
+  renderImage();
+});
+
+document.getElementById("nemburisFlipVertical")
+.addEventListener("click", function () {
+if (!originalImage) {
+message.textContent = "Upload an image first.";
+return;
+}
+
+  flipVertical = !flipVertical;
+  renderImage();
+});
   brightness.addEventListener("input", renderImage);
   contrast.addEventListener("input", renderImage);
 
@@ -5767,11 +5789,12 @@ let flipVertical = false;
       }
 
       rotation = 0;
-      brightness.value = 100;
-      contrast.value = 100;
-      renderImage();
-    });
-
+flipHorizontal = false;
+flipVertical = false;
+brightness.value = 100;
+contrast.value = 100;
+renderImage();
+      
   document.getElementById("nemburisDownload")
     .addEventListener("click", function () {
       if (!originalImage) {
