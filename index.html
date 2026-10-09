@@ -5612,6 +5612,189 @@ document.addEventListener(
   }
 );
 </script>
+      <!-- NEMBURIS MEDIA STUDIO - START -->
+<section id="nemburis-media-studio" style="padding:30px 16px;max-width:900px;margin:auto;text-align:center;font-family:Arial,sans-serif;">
+  <h2>🎬 NEMBURIS MEDIA STUDIO</h2>
+  <p>Create and edit safari marketing images using free browser tools.</p>
+
+  <label for="nemburisMediaUpload" style="display:inline-block;padding:12px 18px;background:#1f6b45;color:white;border-radius:8px;cursor:pointer;">
+    📷 Upload Images
+  </label>
+  <input id="nemburisMediaUpload" type="file" accept="image/*" multiple style="display:none;">
+
+  <div id="nemburisMediaMessage" role="status" style="margin:14px 0;">Choose an image to begin.</div>
+
+  <div style="max-width:100%;overflow:hidden;">
+    <canvas id="nemburisMediaCanvas" style="display:none;width:100%;height:auto;border-radius:8px;"></canvas>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:18px 0;">
+    <button type="button" id="nemburisRotateLeft">↶ Rotate Left</button>
+    <button type="button" id="nemburisRotateRight">↷ Rotate Right</button>
+    <button type="button" id="nemburisReset">Reset Adjustments</button>
+    <button type="button" id="nemburisDownload">⬇ Download Image</button>
+  </div>
+
+  <div style="max-width:450px;margin:18px auto;text-align:left;">
+    <label for="nemburisBrightness">Brightness</label>
+    <input id="nemburisBrightness" type="range" min="50" max="150" value="100" style="width:100%;">
+
+    <label for="nemburisContrast">Contrast</label>
+    <input id="nemburisContrast" type="range" min="50" max="150" value="100" style="width:100%;">
+  </div>
+
+  <p style="font-size:13px;color:#666;">Images are processed in your browser. Original files are not uploaded to Supabase.</p>
+</section>
+
+<script>
+(function () {
+  "use strict";
+
+  const upload = document.getElementById("nemburisMediaUpload");
+  const canvas = document.getElementById("nemburisMediaCanvas");
+  const ctx = canvas.getContext("2d");
+  const message = document.getElementById("nemburisMediaMessage");
+  const brightness = document.getElementById("nemburisBrightness");
+  const contrast = document.getElementById("nemburisContrast");
+
+  let originalImage = null;
+  let rotation = 0;
+
+  function renderImage() {
+    if (!originalImage) return;
+
+    const sideways = Math.abs(rotation % 180) === 90;
+
+    canvas.width = sideways ? originalImage.height : originalImage.width;
+    canvas.height = sideways ? originalImage.width : originalImage.height;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate(rotation * Math.PI / 180);
+    ctx.filter =
+      "brightness(" + brightness.value + "%) contrast(" +
+      contrast.value + "%)";
+
+    ctx.drawImage(
+      originalImage,
+      -originalImage.width / 2,
+      -originalImage.height / 2
+    );
+
+    ctx.restore();
+    ctx.filter = "none";
+    canvas.style.display = "block";
+  }
+
+  upload.addEventListener("change", function () {
+    const file = upload.files && upload.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      message.textContent = "Please select a valid image file.";
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      const image = new Image();
+
+      image.onload = function () {
+        originalImage = image;
+        rotation = 0;
+        brightness.value = 100;
+        contrast.value = 100;
+        renderImage();
+
+        message.textContent =
+          "Image loaded: " + file.name +
+          ". You can now edit and download it.";
+      };
+
+      image.onerror = function () {
+        message.textContent = "Unable to open this image.";
+      };
+
+      image.src = event.target.result;
+    };
+
+    reader.onerror = function () {
+      message.textContent = "Unable to read this file.";
+    };
+
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById("nemburisRotateLeft")
+    .addEventListener("click", function () {
+      if (!originalImage) {
+        message.textContent = "Upload an image first.";
+        return;
+      }
+
+      rotation = (rotation + 270) % 360;
+      renderImage();
+    });
+
+  document.getElementById("nemburisRotateRight")
+    .addEventListener("click", function () {
+      if (!originalImage) {
+        message.textContent = "Upload an image first.";
+        return;
+      }
+
+      rotation = (rotation + 90) % 360;
+      renderImage();
+    });
+
+  brightness.addEventListener("input", renderImage);
+  contrast.addEventListener("input", renderImage);
+
+  document.getElementById("nemburisReset")
+    .addEventListener("click", function () {
+      if (!originalImage) {
+        message.textContent = "Upload an image first.";
+        return;
+      }
+
+      rotation = 0;
+      brightness.value = 100;
+      contrast.value = 100;
+      renderImage();
+    });
+
+  document.getElementById("nemburisDownload")
+    .addEventListener("click", function () {
+      if (!originalImage) {
+        message.textContent = "Upload an image before downloading.";
+        return;
+      }
+
+      canvas.toBlob(function (blob) {
+        if (!blob) {
+          message.textContent = "Unable to export this image.";
+          return;
+        }
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = "nemburis-edited-image.png";
+        link.click();
+
+        setTimeout(function () {
+          URL.revokeObjectURL(url);
+        }, 1000);
+
+        message.textContent = "Your edited image is ready to download.";
+      }, "image/png");
+    });
+})();
+</script>
+<!-- NEMBURIS MEDIA STUDIO - END -->
 <footer>
   <h3>NEMBURIS SAFARI TOURS</h3>
 
