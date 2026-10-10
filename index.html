@@ -5666,7 +5666,7 @@ document.addEventListener(
     }
 
     message.textContent = "Reading selected image...";
-
+console.log("Media Studio selected file:", file.name, file.type, file.size);
     const reader = new FileReader();
 
     reader.onload = function (event) {
