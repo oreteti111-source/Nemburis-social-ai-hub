@@ -5709,13 +5709,12 @@ upload.addEventListener("change", function () {
 
     message.textContent = "Loading image...";
 
-    const reader = new FileReader();
+const reader = new FileReader();
 
-    reader.onload = function (event) {
-      const image = new Image();
+reader.onload = function (event) {
+  message.textContent = "File read successfully. Opening image...";
 
-      image.onload = function () {
-        originalImage = image;
+  const image = new Image();
 
         rotation = 0;
         flipHorizontal = false;
